@@ -1,1 +1,1 @@
-![Project Preview](./preview.jpg)
+![Project Preview](./LNPC.jpg)
