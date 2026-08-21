@@ -6,7 +6,7 @@ import { Reveal } from "@/components/site/Reveal";
 import sitemapImg from "@/assets/Sitemap.png";
 import figmaWorkspaceImg from "@/assets/phase02.png";
 import aiImg from "@/assets/ai-workflows.png";
-import gitImg from "@/assets/phase04.png"; // <-- Updated to phase04.png
+import gitImg from "@/assets/gitcard.png"; // Fallback to verified existing asset
 
 const PROCESS_ARTIFACTS = [sitemapImg, figmaWorkspaceImg, aiImg, gitImg];
 
