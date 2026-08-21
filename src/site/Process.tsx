@@ -6,7 +6,7 @@ import { Reveal } from "@/components/site/Reveal";
 import sitemapImg from "@/assets/Sitemap.png";
 import figmaWorkspaceImg from "@/assets/phase02.png";
 import aiImg from "@/assets/ai-workflows.png";
-import gitImg from "@/assets/phase04.png";
+import gitImg from "@/assets/gitcard.png"; // Correct asset for Phase 04 Production & Deployment
 
 const PROCESS_ARTIFACTS = [sitemapImg, figmaWorkspaceImg, aiImg, gitImg];
 
@@ -56,14 +56,14 @@ export function Process() {
                                         key={item.step}
                                         onClick={() => setActiveStep(idx)}
                                         className={`group flex items-center gap-3 p-4 rounded-xl border transition-all duration-300 text-left ${isActive
-                                                ? "bg-surface border-accent text-foreground shadow-[0_0_24px_rgba(0,255,255,0.15)]"
-                                                : "bg-surface/30 border-white/5 text-muted-foreground hover:border-white/20 hover:text-foreground"
+                                            ? "bg-surface border-accent text-foreground shadow-[0_0_24px_rgba(0,255,255,0.15)]"
+                                            : "bg-surface/30 border-white/5 text-muted-foreground hover:border-white/20 hover:text-foreground"
                                             }`}
                                     >
                                         <span
                                             className={`text-mono text-xs font-bold px-2.5 py-1 rounded transition-colors ${isActive
-                                                    ? "bg-accent text-background"
-                                                    : "bg-white/5 text-accent/80 group-hover:bg-white/10"
+                                                ? "bg-accent text-background"
+                                                : "bg-white/5 text-accent/80 group-hover:bg-white/10"
                                                 }`}
                                         >
                                             {item.step}
