@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { WORK_PROCESS } from "@/lib/site-data";
 import { Reveal } from "@/components/site/Reveal";
 
-// Asset imports following codebase conventions
+// Direct asset imports following project conventions
 import sitemapImg from "@/assets/Sitemap.png";
 import figmaWorkspaceImg from "@/assets/phase02.png";
 import aiImg from "@/assets/ai-workflows.png";
-import gitImg from "@/assets/gitcard.png"; // Fallback to verified existing asset
+import gitImg from "@/assets/phase04.png";
 
 const PROCESS_ARTIFACTS = [sitemapImg, figmaWorkspaceImg, aiImg, gitImg];
 
@@ -15,7 +15,7 @@ export function Process() {
 
     return (
         <section className="relative py-24 bg-background border-t border-white/5 overflow-hidden">
-            {/* Ambient Background Glow */}
+            {/* Background Glow */}
             <div
                 aria-hidden
                 className="pointer-events-none absolute -left-32 top-1/2 -translate-y-1/2 size-96 rounded-full bg-accent/5 blur-[120px]"
@@ -42,9 +42,7 @@ export function Process() {
                 {/* Dynamic Pipeline Selector Bar */}
                 <Reveal delay={80}>
                     <div className="relative mb-8">
-                        {/* Base Track */}
                         <div className="hidden md:block absolute top-1/2 left-0 right-0 h-px bg-white/10 -translate-y-1/2 z-0" />
-                        {/* Active Cyan Connector Line */}
                         <div
                             className="hidden md:block absolute top-1/2 left-0 h-px bg-accent transition-all duration-500 -translate-y-1/2 z-0 shadow-[0_0_12px_oklch(0.82_0.18_195)]"
                             style={{ width: `${(activeStep / (WORK_PROCESS.length - 1)) * 100}%` }}
@@ -124,21 +122,18 @@ export function Process() {
                                 </div>
                             </div>
 
-                            {/* Right Column — Full-Bleed Uniform Image Viewport with Zoom Hover */}
+                            {/* Right Column — Full-Bleed Uniform Viewport */}
                             <div className="group lg:col-span-6 bg-surface-elevated/80 rounded-xl border hairline relative h-[280px] md:h-[340px] flex items-center justify-center overflow-hidden cursor-pointer">
-                                {/* Spatial Grid Pattern Overlay */}
                                 <div
                                     aria-hidden
                                     className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none z-10"
                                 />
 
-                                {/* Top Status Badge */}
                                 <div className="absolute top-3 left-3 z-20 flex items-center gap-2 rounded-md border hairline bg-background/80 px-2.5 py-1 text-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur">
                                     <span className="size-1.5 rounded-full bg-accent animate-pulse" />
                                     SPEC_NODE_0{activeStep + 1}
                                 </div>
 
-                                {/* Full Image Display - Uniform Size across all phases */}
                                 <img
                                     key={activeStep}
                                     src={PROCESS_ARTIFACTS[activeStep]}
@@ -146,7 +141,6 @@ export function Process() {
                                     className="h-full w-full object-cover object-center relative z-0 transition-transform duration-500 ease-out group-hover:scale-105"
                                 />
 
-                                {/* Bottom Spec Label */}
                                 <div className="absolute bottom-3 right-3 z-20 text-mono text-[9px] uppercase tracking-[0.2em] text-accent bg-background/90 px-3 py-1 rounded border hairline backdrop-blur transition-colors group-hover:border-accent/40">
                                     Phase {WORK_PROCESS[activeStep].step} Spec Sheet
                                 </div>
