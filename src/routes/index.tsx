@@ -4,6 +4,8 @@ import { Footer } from "@/components/site/Footer";
 import { Ambient } from "@/components/site/Ambient";
 import { Reveal } from "@/components/site/Reveal";
 import { CORE_SERVICES, DESIGN_PROJECTS } from "@/lib/site-data";
+import { Process } from "@/site/Process";
+import { DesignPlayground } from "@/site/DesignPlayground";
 import { ChipIcon } from "@/components/site/ChipIcon";
 import nicolasAsset from "@/assets/nicolas.png";
 import intelBg from "@/assets/stackbg.png";
@@ -17,8 +19,7 @@ export const Route = createFileRoute("/")({
       { title: "Nico Centeno — UI UX Designer" },
       {
         name: "description",
-        content:
-          "Portfolio of Nico Centeno — UI UX Designer.",
+        content: "Portfolio of Nico Centeno — UI UX Designer.",
       },
     ],
   }),
@@ -30,12 +31,12 @@ function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
 
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section className="relative overflow-hidden">
         <Ambient />
         <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-28 sm:pt-32 sm:pb-40">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
-            {/* LEFT — copy */}
+            {/* LEFT — Copy */}
             <div className="lg:col-span-7">
               <Reveal>
                 <div className="text-mono mb-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
@@ -95,7 +96,7 @@ function Home() {
               </Reveal>
             </div>
 
-            {/* RIGHT — portrait flip card */}
+            {/* RIGHT — Portrait flip card */}
             <div className="lg:col-span-5">
               <Reveal delay={140}>
                 <ProfileFlipCard src={nicolasAsset} />
@@ -107,7 +108,6 @@ function Home() {
 
       {/* ── INTELLIGENCE STACK ── */}
       <section className="relative w-full overflow-hidden">
-        {/* full-bleed background image — bright at top, fades to dark at bottom */}
         <img
           src={intelBg}
           alt=""
@@ -116,10 +116,9 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/60 to-background" />
 
         <div className="relative mx-auto max-w-7xl px-6 py-24">
-          {/* header — all left aligned */}
           <Reveal>
             <div className="mb-4 text-mono text-xs uppercase tracking-[0.25em] text-accent">
-              / 01 — Intelligence Stack
+              / 01 — Capabilities
             </div>
             <h2 className="text-display text-4xl font-medium leading-tight sm:text-5xl">
               Design. AI. <span className="neon-text text-accent">Deploy.</span>
@@ -129,12 +128,10 @@ function Home() {
             </p>
           </Reveal>
 
-          {/* cards */}
           <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
             {CORE_SERVICES.map((svc, i) => (
               <Reveal key={svc.slug} delay={i * 80}>
                 <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.8)]">
-                  {/* full image — fixed height for uniform cards */}
                   {svc.index === "01" && <div className="h-[280px] flex items-center justify-center p-8"><img src={visualArch} alt="Visual Architecture" className="h-full w-full object-contain" /></div>}
                   {svc.index === "02" && <div className="h-[280px] flex items-center justify-center p-8"><img src={aiCard} alt="AI Orchestration" className="h-full w-full object-contain" /></div>}
                   {svc.index === "03" && <div className="h-[280px] flex items-center justify-center"><img src={gitCard} alt="Edge Delivery" className="h-full w-full object-contain" /></div>}
@@ -169,15 +166,19 @@ function Home() {
         </div>
       </section>
 
+      {/* ── WORK PROCESS ── */}
+      <Process />
 
+      {/* ── DESIGN PLAYGROUND & ARTIFACTS ── */}
+      <DesignPlayground />
 
-      {/* PROJECTS */}
+      {/* ── PROJECTS ── */}
       <section className="relative mx-auto max-w-7xl px-6 py-24">
         <Reveal>
           <div className="mb-16 flex items-end justify-between">
             <div>
               <div className="text-mono mb-4 text-xs uppercase tracking-[0.25em] text-accent">
-                / 03 — Projects
+                / 04 — Featured Work
               </div>
               <h2 className="text-display text-4xl font-medium leading-tight sm:text-5xl">
                 Featured work.
@@ -195,7 +196,8 @@ function Home() {
         <div className="mb-6 text-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
           UI/UX &amp; Design
         </div>
-        {/* EES — featured wide card */}
+
+        {/* EES — Featured Wide Card */}
         <div className="mb-6">
           <Reveal>
             <Link
@@ -225,7 +227,8 @@ function Home() {
             </Link>
           </Reveal>
         </div>
-        {/* Ongoing 3 — equal grid */}
+
+        {/* Projects Grid */}
         <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-3">
           {DESIGN_PROJECTS.slice(1).map((p, i) => (
             <Reveal key={p.slug} delay={i * 60}>
@@ -257,18 +260,16 @@ function Home() {
             </Reveal>
           ))}
         </div>
-
-
       </section>
 
-      {/* CONTACT TEASER */}
+      {/* ── CONTACT TEASER ── */}
       <section className="relative mx-auto max-w-7xl px-6 py-24">
         <Reveal>
           <div className="glass-card rounded-xl p-8 sm:p-12">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
               <div className="md:col-span-5">
                 <div className="text-mono mb-4 text-xs uppercase tracking-[0.25em] text-accent">
-                  / 04 — Contact
+                  / 05 — Contact
                 </div>
                 <h2 className="text-display text-3xl font-medium leading-tight sm:text-4xl">
                   Have a project? Start the conversation.
@@ -302,20 +303,16 @@ function Home() {
         </Reveal>
       </section>
 
-      {/* ABOUT TEASER */}
+      {/* ── ABOUT TEASER ── */}
       <section className="relative mx-auto max-w-7xl px-6 py-24 overflow-hidden">
-        {/* ambient dots */}
         <div aria-hidden className="pointer-events-none absolute left-8 top-16 size-3 rounded-full bg-accent opacity-70 blur-[1px]" />
         <div aria-hidden className="pointer-events-none absolute left-1/2 bottom-32 size-2.5 rounded-full bg-accent opacity-50 blur-[1px]" />
         <div aria-hidden className="pointer-events-none absolute right-6 top-24 size-3.5 rounded-full bg-accent opacity-60 blur-[1px]" />
         <div aria-hidden className="pointer-events-none absolute right-1/4 bottom-16 size-2 rounded-full bg-accent opacity-40" />
 
-        {/* TOP ROW — mockups | profile | skills */}
         <div className="relative mb-16 grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-
-          {/* LEFT — floating UI mockup cards */}
+          {/* LEFT — Floating UI mockup cards */}
           <div className="relative hidden h-[280px] lg:col-span-5 lg:block">
-            {/* card 1 — top left */}
             <div className="absolute left-0 top-0 w-[200px] rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.9)] p-4 shadow-xl">
               <div className="mb-3 flex items-center gap-2">
                 <div className="size-2.5 rounded-full bg-red-500/80" />
@@ -336,7 +333,6 @@ function Home() {
                 ))}
               </div>
             </div>
-            {/* card 2 — top right overlap */}
             <div className="absolute left-[160px] top-4 w-[200px] rounded-xl border border-white/10 bg-[oklch(0.15_0.009_240/0.95)] p-4 shadow-xl">
               <div className="mb-3 flex items-center gap-2">
                 <div className="size-2.5 rounded-full bg-red-500/80" />
@@ -349,7 +345,6 @@ function Home() {
                 <div className="size-8 rounded-full bg-green-500" />
               </div>
             </div>
-            {/* card 3 — bottom */}
             <div className="absolute bottom-0 left-12 w-[220px] rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.9)] p-4 shadow-xl">
               <div className="mb-2 flex items-center gap-2">
                 <div className="size-2 rounded-full bg-red-500/80" />
@@ -364,17 +359,11 @@ function Home() {
                 ))}
               </div>
             </div>
-            {/* connector lines */}
-            <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
-              <line x1="200" y1="60" x2="260" y2="80" stroke="oklch(0.82 0.18 195 / 30%)" strokeWidth="1" strokeDasharray="4 3" />
-              <line x1="160" y1="120" x2="120" y2="200" stroke="oklch(0.82 0.18 195 / 20%)" strokeWidth="1" strokeDasharray="4 3" />
-            </svg>
           </div>
 
-          {/* CENTER — profile photo */}
+          {/* CENTER — Profile photo */}
           <div className="flex justify-center lg:col-span-3">
             <div className="relative">
-              {/* glow rings */}
               <div aria-hidden className="absolute inset-0 rounded-2xl" style={{ boxShadow: "0 0 60px oklch(0.82 0.18 195 / 20%), 0 0 120px oklch(0.82 0.18 195 / 10%)" }} />
               <div aria-hidden className="absolute -inset-3 rounded-3xl border border-accent/10" />
               <div aria-hidden className="absolute -inset-6 rounded-3xl border border-accent/5" />
@@ -385,14 +374,13 @@ function Home() {
                   className="h-full w-full object-cover object-top"
                 />
               </div>
-              {/* Read Full Profile badge */}
               <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[oklch(0.13_0.009_240/0.95)] px-4 py-1.5 text-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur">
                 Read Full Profile →
               </div>
             </div>
           </div>
 
-          {/* RIGHT — skill chips */}
+          {/* RIGHT — Skill chips */}
           <div className="flex flex-col gap-3 lg:col-span-4">
             {[
               { icon: "⚡", label: "Rapid Prototyping (AI)" },
@@ -412,12 +400,12 @@ function Home() {
           </div>
         </div>
 
-        {/* BOTTOM ROW — heading | description + CTA */}
+        {/* BOTTOM ROW — Heading | Description + CTA */}
         <Reveal>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
             <div className="md:col-span-5">
               <div className="text-mono mb-4 text-xs uppercase tracking-[0.25em] text-accent">
-                / 05 — About
+                / 06 — About
               </div>
               <h2 className="text-display text-4xl font-medium leading-tight">
                 Operational discipline, applied to software.
@@ -452,11 +440,8 @@ function ProfileFlipCard({ src }: { src: string }) {
       <div className="profile-flip-card">
         {/* FRONT */}
         <div className="profile-flip-face profile-flip-front">
-          {/* spinning conic border ring */}
           <div className="profile-ring" aria-hidden />
-          {/* static cyan pulse ring */}
           <div className="profile-pulse-ring" aria-hidden />
-          {/* circular image */}
           <div className="profile-circle">
             <img
               src={src}
@@ -465,7 +450,6 @@ function ProfileFlipCard({ src }: { src: string }) {
               loading="eager"
             />
           </div>
-          {/* label */}
           <div className="mt-6 text-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
             <span className="text-accent">◆</span> LNC · Operator
           </div>
@@ -505,69 +489,6 @@ function ProfileFlipCard({ src }: { src: string }) {
   );
 }
 
-/* ── Software Marquee ── */
-const SOFTWARE_ICONS = [
-  { name: "windows", label: "Windows" },
-  { name: "microsoft", label: "Microsoft" },
-  { name: "chrome", label: "Chrome" },
-  { name: "edge", label: "Edge" },
-  { name: "firefox", label: "Firefox" },
-  { name: "figma", label: "Figma" },
-  { name: "canva", label: "Canva" },
-  { name: "autocad", label: "AutoCAD" },
-  { name: "sketchup", label: "SketchUp" },
-  { name: "blender", label: "Blender" },
-  { name: "zoom", label: "Zoom" },
-  { name: "slack", label: "Slack" },
-  { name: "notion", label: "Notion" },
-  { name: "discord", label: "Discord" },
-  { name: "github", label: "GitHub" },
-  { name: "vercel", label: "Vercel" },
-  { name: "vscode", label: "VS Code" },
-  { name: "unity", label: "Unity" },
-  { name: "androidstudio", label: "Android Studio" },
-  { name: "opera", label: "Opera" },
-  { name: "spotify", label: "Spotify" },
-];
-
-function SoftwareMarquee() {
-  const doubled = [...SOFTWARE_ICONS, ...SOFTWARE_ICONS];
-  return (
-    <div className="relative overflow-hidden">
-      {/* left fade */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-surface/80 to-transparent" />
-      {/* right fade */}
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-surface/80 to-transparent" />
-      <div
-        className="flex gap-6 px-6"
-        style={{
-          animation: "marquee 28s linear infinite",
-          width: "max-content",
-        }}
-      >
-        {doubled.map((sw, i) => (
-          <div
-            key={i}
-            className="group flex flex-col items-center gap-2 rounded-lg border hairline bg-surface/40 px-4 py-3 transition-all duration-300 hover:border-accent/40 hover:bg-surface"
-            style={{ minWidth: "64px" }}
-          >
-            <ChipIcon name={sw.name} className="size-5 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />
-            <span className="text-mono text-[9px] uppercase tracking-[0.15em] text-muted-foreground/60 group-hover:text-muted-foreground">
-              {sw.label}
-            </span>
-          </div>
-        ))}
-      </div>
-      <style>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
-        }
-      `}</style>
-    </div>
-  );
-}
-
 function SocialCard({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
   return (
     <a
@@ -585,7 +506,7 @@ function SocialCard({ href, label, icon }: { href: string; label: string; icon: 
   );
 }
 
-/* ── Icons ── */
+/* ── SVG Icons ── */
 function GitHubIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">

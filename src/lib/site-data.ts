@@ -126,3 +126,48 @@ export const DESIGN_PROJECTS = [
 ] as const;
 
 export type Slug<T extends readonly { slug: string }[]> = T[number]["slug"];
+
+export const WORK_PROCESS = [
+  {
+    step: "01",
+    title: "Discovery & Architecture",
+    description:
+      "Analyzing system requirements, mapping user flows, and defining information architecture before writing code or drawing frames.",
+    tags: ["UX RESEARCH", "SITEMAPS", "WIREFRAMING"],
+  },
+  {
+    step: "02",
+    title: "High-Fidelity Interface Design",
+    description:
+      "Crafting scalable design systems, interactive components, and visual layouts built with auto-layout precision in Figma.",
+    tags: ["FIGMA SYSTEMS", "UI COMPONENTS", "INTERACTIVE PROTOTYPES"],
+  },
+  {
+    step: "03",
+    title: "AI-Accelerated Workflows",
+    description:
+      "Leveraging custom prompt orchestration and AI logic to rapidly prototype features and audit user experiences at high velocity.",
+    tags: ["PROMPT ENGINEERING", "UX AUDITING", "RAPID PROTOTYPING"],
+  },
+  {
+    step: "04",
+    title: "Production Hand-off & Delivery",
+    description:
+      "Translating design specs into clean code standards with version control and seamless deployment pipelines.",
+    tags: ["GITHUB", "VERCEL", "FRONT-END READY"],
+  },
+];
+
+export const DESIGN_TOKENS = [
+  { name: "--bg-background", value: "oklch(0.10 0.008 240)", label: "Deep Canvas" },
+  { name: "--accent-cyan", value: "oklch(0.82 0.18 195)", label: "Neon Cyan Glow" },
+  { name: "--surface-card", value: "oklch(0.13 0.009 240)", label: "Glass Surface" },
+  { name: "--border-hairline", value: "rgba(255, 255, 255, 0.08)", label: "Subtle Stroke" },
+];
+
+export const PLAYGROUND_METRICS = [
+  { label: "Spatial Grid", value: "8px / 16px Strict Base" },
+  { label: "Auto-Layout", value: "Version 5.0 Responsive Frames" },
+  { label: "WCAG Contrast", value: "AAA Compliant Dark Palette" },
+  { label: "Component Tokens", value: "100+ Scalable Figma Variables" },
+];
