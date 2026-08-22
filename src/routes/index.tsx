@@ -31,38 +31,38 @@ function Home() {
   const gridProjects = DESIGN_PROJECTS.slice(1);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Nav />
 
       {/* ── HERO SECTION ── */}
       <section className="relative overflow-hidden">
         <Ambient />
-        <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-28 sm:pt-32 sm:pb-36">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-20 sm:pt-32 sm:pb-36">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
             {/* LEFT — Copy & Actions */}
             <div className="lg:col-span-7">
               <Reveal>
-                <div className="text-mono mb-8 inline-flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                  <span className="pulse-dot size-1.5 rounded-full bg-accent" />
-                  Available for select engagements · 2026
+                <div className="text-mono mb-6 sm:mb-8 inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] text-muted-foreground">
+                  <span className="pulse-dot size-1.5 rounded-full bg-accent flex-shrink-0" />
+                  <span>Available for select engagements · 2026</span>
                 </div>
               </Reveal>
 
               <Reveal delay={80}>
-                <h1 className="text-display text-5xl font-medium leading-[0.95] sm:text-7xl lg:text-8xl xl:text-[6.8rem]">
+                <h1 className="text-display text-4xl sm:text-7xl lg:text-8xl xl:text-[6.8rem] font-medium leading-[0.95] tracking-tight break-words">
                   Nico{" "}
                   <span className="neon-text text-accent">Centeno</span>
                 </h1>
-                <div className="mt-4 text-mono text-sm sm:text-base uppercase tracking-[0.35em] text-accent/80 font-semibold">
+                <div className="mt-3 sm:mt-4 text-mono text-xs sm:text-base uppercase tracking-[0.25em] sm:tracking-[0.35em] text-accent/80 font-semibold">
                   UI UX Designer &amp; AI Prototyper
                 </div>
-                <div className="mt-8 flex items-center gap-5">
+                <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-5">
                   <a
                     href="https://www.linkedin.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="LinkedIn"
-                    className="text-muted-foreground transition-colors hover:text-accent"
+                    className="text-muted-foreground transition-colors hover:text-accent p-1"
                   >
                     <LinkedInIcon className="size-5" />
                   </a>
@@ -71,7 +71,7 @@ function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Facebook"
-                    className="text-muted-foreground transition-colors hover:text-accent"
+                    className="text-muted-foreground transition-colors hover:text-accent p-1"
                   >
                     <FacebookIcon className="size-5" />
                   </a>
@@ -80,7 +80,7 @@ function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram"
-                    className="text-muted-foreground transition-colors hover:text-accent"
+                    className="text-muted-foreground transition-colors hover:text-accent p-1"
                   >
                     <InstagramIcon className="size-5" />
                   </a>
@@ -89,7 +89,7 @@ function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="TikTok"
-                    className="text-muted-foreground transition-colors hover:text-accent"
+                    className="text-muted-foreground transition-colors hover:text-accent p-1"
                   >
                     <TikTokIcon className="size-5" />
                   </a>
@@ -98,14 +98,14 @@ function Home() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="GitHub"
-                    className="text-muted-foreground transition-colors hover:text-accent"
+                    className="text-muted-foreground transition-colors hover:text-accent p-1"
                   >
                     <GitHubIcon className="size-5" />
                   </a>
                   <a
                     href="mailto:centeno.lorenzo.nicholas@gmail.com"
                     aria-label="Gmail"
-                    className="text-muted-foreground transition-colors hover:text-accent"
+                    className="text-muted-foreground transition-colors hover:text-accent p-1"
                   >
                     <MailIcon className="size-5" />
                   </a>
@@ -113,31 +113,38 @@ function Home() {
               </Reveal>
 
               <Reveal delay={180}>
-                <p className="mt-8 max-w-xl border-l-2 border-accent/40 pl-4 text-base leading-relaxed text-muted-foreground">
+                <p className="mt-6 sm:mt-8 max-w-xl border-l-2 border-accent/40 pl-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                   Crafting visual architecture in Figma Auto-Layout 5.0 and utilizing AI prototyping workflows (Lovable &amp; Claude) to ship production-ready interfaces on Vercel.
                 </p>
               </Reveal>
 
+              {/* RESTORED & BALANCED HERO BUTTONS */}
               <Reveal delay={260}>
-                <div className="mt-10 flex flex-wrap gap-4">
-                  <Link
-                    to="/contact"
-                    className="text-mono inline-flex h-11 items-center rounded-md bg-foreground px-6 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-transform hover:-translate-y-0.5"
-                  >
-                    Hire Me
-                  </Link>
-                  <Link
-                    to="/projects"
-                    className="text-mono inline-flex h-11 items-center gap-2 rounded-md border hairline bg-transparent px-6 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:border-accent/40"
-                  >
-                    Explore Artifacts <span className="transition-transform group-hover:translate-x-1">→</span>
-                  </Link>
+                <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-4">
+                  <div className="motion-btn-container motion-btn-primary-stroke">
+                    <Link
+                      to="/contact"
+                      className="text-mono inline-flex h-12 min-w-[220px] sm:min-w-[240px] items-center justify-center rounded-[calc(0.5rem-1px)] bg-foreground px-8 text-xs uppercase tracking-[0.25em] text-background font-bold transition-all duration-300 hover:bg-white hover:shadow-[0_0_25px_rgba(255,255,255,0.4)]"
+                    >
+                      Hire Me
+                    </Link>
+                  </div>
+
+                  <div className="motion-btn-container motion-btn-secondary-stroke">
+                    <Link
+                      to="/projects"
+                      className="text-mono group inline-flex h-12 min-w-[220px] sm:min-w-[240px] items-center justify-center gap-2 rounded-[calc(0.5rem-1px)] bg-background/90 px-8 text-xs uppercase tracking-[0.25em] text-foreground font-semibold transition-all duration-300 hover:bg-surface/80 hover:text-accent"
+                    >
+                      <span>Explore Artifacts</span>
+                      <span className="transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                  </div>
                 </div>
               </Reveal>
             </div>
 
             {/* RIGHT — Portrait flip card */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 flex justify-center w-full">
               <Reveal delay={140}>
                 <ProfileFlipCard src={nicolasAsset} />
               </Reveal>
@@ -146,7 +153,7 @@ function Home() {
         </div>
       </section>
 
-      {/* ── 01 / INTELLIGENCE STACK (CAPABILITIES) ── */}
+      {/* ── 01 / CAPABILITIES (INTELLIGENCE STACK) ── */}
       <section className="relative w-full overflow-hidden">
         <img
           src={intelBg}
@@ -155,45 +162,45 @@ function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/80 to-background" />
 
-        <div className="relative mx-auto max-w-7xl px-6 py-24">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
           <Reveal>
-            <div className="mb-4 text-mono text-xs uppercase tracking-[0.25em] text-accent">
+            <div className="mb-3 sm:mb-4 text-mono text-xs uppercase tracking-[0.25em] text-accent">
               / 01 — Capabilities
             </div>
-            <h2 className="text-display text-4xl font-medium leading-tight sm:text-5xl">
+            <h2 className="text-display text-3xl sm:text-5xl font-medium leading-tight">
               Design. AI. <span className="neon-text text-accent">Deploy.</span>
             </h2>
-            <p className="mt-4 max-w-lg text-sm text-muted-foreground">
+            <p className="mt-3 sm:mt-4 max-w-lg text-xs sm:text-sm text-muted-foreground leading-relaxed">
               Visual architecture, AI orchestration, and production edge delivery — producing production-grade software at speed.
             </p>
           </Reveal>
 
-          <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {CORE_SERVICES.map((svc, i) => (
               <Reveal key={svc.slug} delay={i * 80}>
                 <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.85)] backdrop-blur-md">
                   {svc.index === "01" && (
-                    <div className="h-[280px] flex items-center justify-center p-6 bg-black/40">
+                    <div className="aspect-[16/10] sm:h-[280px] flex items-center justify-center p-4 sm:p-6 bg-black/40 overflow-hidden">
                       <img src={visualArch} alt="Visual Architecture" className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   )}
                   {svc.index === "02" && (
-                    <div className="h-[280px] flex items-center justify-center p-6 bg-black/40">
+                    <div className="aspect-[16/10] sm:h-[280px] flex items-center justify-center p-4 sm:p-6 bg-black/40 overflow-hidden">
                       <img src={aiCard} alt="AI Orchestration" className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   )}
                   {svc.index === "03" && (
-                    <div className="h-[280px] flex items-center justify-center p-6 bg-black/40">
+                    <div className="aspect-[16/10] sm:h-[280px] flex items-center justify-center p-4 sm:p-6 bg-black/40 overflow-hidden">
                       <img src={gitCard} alt="Edge Delivery" className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" />
                     </div>
                   )}
 
-                  <div className="flex flex-1 flex-col px-6 py-5">
+                  <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <div className="text-mono mb-3 flex items-center justify-between text-xs uppercase tracking-[0.25em] text-muted-foreground">
                       <span>{svc.index} / {svc.kicker}</span>
                       <span className="pulse-dot size-1.5 rounded-full bg-accent" />
                     </div>
-                    <h3 className="text-display text-xl font-medium leading-tight text-foreground group-hover:text-accent transition-colors">
+                    <h3 className="text-display text-lg sm:text-xl font-medium leading-tight text-foreground group-hover:text-accent transition-colors">
                       {svc.title}
                     </h3>
                     <p className="mt-2 flex-1 text-xs leading-relaxed text-muted-foreground">
@@ -205,7 +212,7 @@ function Home() {
                           key={chip.label}
                           className="inline-flex items-center gap-1.5 rounded-md border hairline bg-surface/60 px-2.5 py-1 text-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground"
                         >
-                          <ChipIcon name={chip.icon} className="size-3 text-accent" />
+                          <ChipIcon name={chip.icon} className="size-3 text-accent flex-shrink-0" />
                           {chip.label}
                         </span>
                       ))}
@@ -218,27 +225,27 @@ function Home() {
         </div>
       </section>
 
-      {/* ── WORK PROCESS ── */}
+      {/* ── 02 / WORK PROCESS ── */}
       <Process />
 
-      {/* ── DESIGN PLAYGROUND & ARTIFACTS ── */}
+      {/* ── 03 / DESIGN SYSTEMS & RESOURCE HUB ── */}
       <DesignPlayground />
 
-      {/* ── 03 / IMAGE-FIRST FEATURED PROJECTS SHOWCASE ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24">
+      {/* ── 04 / FEATURED WORK ── */}
+      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
         <Reveal>
-          <div className="mb-12 flex items-end justify-between">
+          <div className="mb-8 sm:mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
               <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
-                / 03 — Featured Work
+                / 04 — Featured Work
               </div>
-              <h2 className="text-display text-4xl font-medium leading-tight sm:text-5xl">
+              <h2 className="text-display text-3xl sm:text-5xl font-medium leading-tight">
                 Featured Product <span className="neon-text text-accent">Case Studies.</span>
               </h2>
             </div>
             <Link
               to="/projects"
-              className="text-mono hidden text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-accent sm:inline-flex"
+              className="text-mono text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-accent inline-flex items-center gap-1"
             >
               All projects archive →
             </Link>
@@ -246,7 +253,7 @@ function Home() {
         </Reveal>
 
         {/* Featured Wide Showcase Hero (Everest Energy Solutions) */}
-        <div className="mb-10">
+        <div className="mb-8 sm:mb-10">
           <Reveal>
             <Link
               to="/projects/$slug"
@@ -254,21 +261,21 @@ function Home() {
               className="glass-card glass-card-hover group block overflow-hidden rounded-2xl border border-white/10"
             >
               <div className="grid grid-cols-1 lg:grid-cols-12">
-                <div className="lg:col-span-8 relative aspect-[16/9] lg:aspect-auto overflow-hidden bg-black/60">
+                <div className="lg:col-span-8 relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto overflow-hidden bg-black/60 min-h-[220px] sm:min-h-[320px]">
                   <img
                     src={featuredProject.cover}
                     alt={featuredProject.title}
                     loading="eager"
                     className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent lg:hidden" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent lg:hidden" />
                 </div>
-                <div className="lg:col-span-4 p-8 sm:p-10 flex flex-col justify-between">
+                <div className="lg:col-span-4 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
                   <div>
-                    <span className="text-mono text-[10px] uppercase tracking-[0.2em] text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20 block w-fit mb-4">
+                    <span className="text-mono text-[10px] uppercase tracking-[0.2em] text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20 block w-fit mb-3 sm:mb-4">
                       {featuredProject.tag}
                     </span>
-                    <h3 className="text-display text-2xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+                    <h3 className="text-display text-xl sm:text-2xl font-bold text-foreground mb-2 sm:mb-3 group-hover:text-accent transition-colors">
                       {featuredProject.title}
                     </h3>
                     <p className="text-xs text-muted-foreground leading-relaxed mb-6">
@@ -276,11 +283,11 @@ function Home() {
                     </p>
                   </div>
 
-                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-mono text-[11px] text-accent font-semibold flex items-center gap-2">
+                  <div className="pt-4 sm:pt-6 border-t border-white/10 flex items-center justify-between">
+                    <span className="text-mono text-[11px] text-accent font-semibold flex items-center gap-1.5">
                       View 9 Screen Artifacts →
                     </span>
-                    <span className="text-mono text-[10px] text-muted-foreground">Complete</span>
+                    <span className="text-mono text-[10px] text-muted-foreground uppercase">Complete</span>
                   </div>
                 </div>
               </div>
@@ -289,7 +296,7 @@ function Home() {
         </div>
 
         {/* 3-Column Image Grid Projects */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {gridProjects.map((p, i) => (
             <Reveal key={p.slug} delay={i * 80}>
               <Link
@@ -298,7 +305,7 @@ function Home() {
                 className="glass-card glass-card-hover group block overflow-hidden rounded-xl border border-white/10 h-full flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative aspect-[4/3] overflow-hidden bg-black/50">
+                  <div className="relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden bg-black/50">
                     <img
                       src={p.cover}
                       alt={p.title}
@@ -309,8 +316,8 @@ function Home() {
                       {p.tag}
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-display text-lg font-medium text-foreground group-hover:text-accent transition-colors mb-2">
+                  <div className="p-5 sm:p-6">
+                    <h3 className="text-display text-base sm:text-lg font-medium text-foreground group-hover:text-accent transition-colors mb-2">
                       {p.title}
                     </h3>
                     <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
@@ -319,7 +326,7 @@ function Home() {
                   </div>
                 </div>
 
-                <div className="px-6 pb-6">
+                <div className="px-5 sm:px-6 pb-5 sm:pb-6">
                   <span className="text-mono text-[10px] text-accent uppercase tracking-widest group-hover:underline">
                     View Case Study →
                   </span>
@@ -330,53 +337,14 @@ function Home() {
         </div>
       </section>
 
-      {/* ── 04 / CONTACT TEASER ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24">
-        <Reveal>
-          <div className="glass-card rounded-2xl p-8 sm:p-12 border border-white/10">
-            <div className="grid grid-cols-1 gap-12 md:grid-cols-12 items-center">
-              <div className="md:col-span-6">
-                <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
-                  / 04 — Contact
-                </div>
-                <h2 className="text-display text-3xl font-medium leading-tight sm:text-4xl text-foreground">
-                  Ready to accelerate your product development?
-                </h2>
-                <p className="mt-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Available for full design system engineering, rapid AI prototyping, or UI/UX consultation.
-                </p>
-                <Link
-                  to="/contact"
-                  className="text-mono mt-8 inline-flex h-11 items-center rounded-md bg-foreground px-6 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-transform hover:-translate-y-0.5"
-                >
-                  Initiate Discussion →
-                </Link>
-              </div>
-
-              <div className="md:col-span-6">
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <SocialCard href="https://www.linkedin.com" label="LinkedIn" icon={<LinkedInIcon className="size-4" />} />
-                  <SocialCard href="https://www.facebook.com" label="Facebook" icon={<FacebookIcon className="size-4" />} />
-                  <SocialCard href="https://www.instagram.com" label="Instagram" icon={<InstagramIcon className="size-4" />} />
-                  <SocialCard href="https://www.tiktok.com" label="TikTok" icon={<TikTokIcon className="size-4" />} />
-                  <SocialCard href="https://www.github.com" label="GitHub" icon={<GitHubIcon className="size-4" />} />
-                  <SocialCard href="mailto:centeno.lorenzo.nicholas@gmail.com" label="Gmail" icon={<MailIcon className="size-4" />} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </section>
-
       {/* ── 05 / ABOUT TEASER ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-24 overflow-hidden">
+      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24 overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute left-8 top-16 size-3 rounded-full bg-accent opacity-70 blur-[1px]" />
         <div aria-hidden className="pointer-events-none absolute left-1/2 bottom-32 size-2.5 rounded-full bg-accent opacity-50 blur-[1px]" />
         <div aria-hidden className="pointer-events-none absolute right-6 top-24 size-3.5 rounded-full bg-accent opacity-60 blur-[1px]" />
-        <div aria-hidden className="pointer-events-none absolute right-1/4 bottom-16 size-2 rounded-full bg-accent opacity-40" />
 
-        <div className="relative mb-16 grid grid-cols-1 items-start gap-6 lg:grid-cols-12">
-          {/* LEFT — Floating UI mockup cards */}
+        <div className="relative mb-12 sm:mb-16 grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
+          {/* LEFT — Floating UI mockup cards (Desktop only) */}
           <div className="relative hidden h-[280px] lg:col-span-5 lg:block">
             <div className="absolute left-0 top-0 w-[200px] rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.9)] p-4 shadow-xl">
               <div className="mb-3 flex items-center gap-2">
@@ -428,11 +396,11 @@ function Home() {
 
           {/* CENTER — Profile photo */}
           <div className="flex justify-center lg:col-span-3">
-            <div className="relative">
+            <div className="relative my-4">
               <div aria-hidden className="absolute inset-0 rounded-2xl" style={{ boxShadow: "0 0 60px oklch(0.82 0.18 195 / 20%), 0 0 120px oklch(0.82 0.18 195 / 10%)" }} />
               <div aria-hidden className="absolute -inset-3 rounded-3xl border border-accent/10" />
               <div aria-hidden className="absolute -inset-6 rounded-3xl border border-accent/5" />
-              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[oklch(0.13_0.009_240)]" style={{ width: 200, height: 260 }}>
+              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[oklch(0.13_0.009_240)] w-[180px] sm:w-[200px] h-[240px] sm:h-[260px]">
                 <img
                   src={nicolasAsset}
                   alt="Nico Centeno"
@@ -446,7 +414,7 @@ function Home() {
           </div>
 
           {/* RIGHT — Skill chips */}
-          <div className="flex flex-col gap-3 lg:col-span-4">
+          <div className="flex flex-col gap-2.5 sm:gap-3 lg:col-span-4 w-full">
             {[
               { icon: "⚡", label: "Rapid Prototyping (AI)" },
               { icon: "🎨", label: "Interactive Wireframing (Figma)" },
@@ -454,12 +422,12 @@ function Home() {
               { icon: "💻", label: "VS Code + AI Prompt Tuning" },
               { icon: "📐", label: "Figma Auto-Layout 5.0" },
             ].map((s) => (
-              <div key={s.label} className="flex items-center justify-between rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.8)] px-4 py-3 backdrop-blur">
-                <div className="flex items-center gap-3">
-                  <span className="text-base">{s.icon}</span>
-                  <span className="text-sm text-foreground">{s.label}</span>
+              <div key={s.label} className="flex items-center justify-between rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.8)] px-3.5 sm:px-4 py-2.5 sm:py-3 backdrop-blur">
+                <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                  <span className="text-base flex-shrink-0">{s.icon}</span>
+                  <span className="text-xs sm:text-sm text-foreground truncate">{s.label}</span>
                 </div>
-                <div className="size-5 rounded border border-white/10 bg-white/5" />
+                <div className="size-4 sm:size-5 rounded border border-white/10 bg-white/5 flex-shrink-0" />
               </div>
             ))}
           </div>
@@ -467,25 +435,63 @@ function Home() {
 
         {/* BOTTOM ROW — Heading | Description + CTA */}
         <Reveal>
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
             <div className="md:col-span-5">
-              <div className="text-mono mb-4 text-xs uppercase tracking-[0.25em] text-accent">
+              <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
                 / 05 — About
               </div>
-              <h2 className="text-display text-4xl font-medium leading-tight">
+              <h2 className="text-display text-3xl sm:text-4xl font-medium leading-tight">
                 Operational discipline, applied to software.
               </h2>
             </div>
             <div className="md:col-span-7 md:col-start-6">
-              <p className="text-lg leading-relaxed text-muted-foreground">
+              <p className="text-sm sm:text-lg leading-relaxed text-muted-foreground">
                 Years of computer science fundamentals, design system creation, and prompt-assisted development inject strict engineering discipline, robust documentation, and rapid execution into every digital product I build.
               </p>
               <Link
                 to="/about"
-                className="text-mono mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:text-accent"
+                className="text-mono mt-6 sm:mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:text-accent"
               >
                 Read the full profile →
               </Link>
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* ── 06 / CONTACT TEASER ── */}
+      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
+        <Reveal>
+          <div className="glass-card rounded-2xl p-6 sm:p-10 lg:p-12 border border-white/10">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-12 items-center">
+              <div className="md:col-span-6">
+                <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
+                  / 06 — Contact
+                </div>
+                <h2 className="text-display text-2xl sm:text-4xl font-medium leading-tight text-foreground">
+                  Ready to accelerate your product development?
+                </h2>
+                <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  Available for full design system engineering, rapid AI prototyping, or UI/UX consultation.
+                </p>
+                <Link
+                  to="/contact"
+                  className="text-mono mt-6 sm:mt-8 inline-flex h-11 items-center justify-center rounded-md bg-foreground px-6 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-transform hover:-translate-y-0.5"
+                >
+                  Initiate Discussion →
+                </Link>
+              </div>
+
+              <div className="md:col-span-6">
+                <div className="grid grid-cols-1 gap-2.5 sm:gap-3 xs:grid-cols-2">
+                  <SocialCard href="https://www.linkedin.com" label="LinkedIn" icon={<LinkedInIcon className="size-4" />} />
+                  <SocialCard href="https://www.facebook.com" label="Facebook" icon={<FacebookIcon className="size-4" />} />
+                  <SocialCard href="https://www.instagram.com" label="Instagram" icon={<InstagramIcon className="size-4" />} />
+                  <SocialCard href="https://www.tiktok.com" label="TikTok" icon={<TikTokIcon className="size-4" />} />
+                  <SocialCard href="https://www.github.com" label="GitHub" icon={<GitHubIcon className="size-4" />} />
+                  <SocialCard href="mailto:centeno.lorenzo.nicholas@gmail.com" label="Gmail" icon={<MailIcon className="size-4" />} />
+                </div>
+              </div>
             </div>
           </div>
         </Reveal>
@@ -557,11 +563,11 @@ function SocialCard({ href, label, icon }: { href: string; label: string; icon: 
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex items-center gap-3 rounded-md border hairline bg-surface/40 px-4 py-3 text-sm text-muted-foreground transition-all hover:border-accent/30 hover:bg-surface hover:text-foreground"
+      className="group flex items-center gap-3 rounded-md border hairline bg-surface/40 px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm text-muted-foreground transition-all hover:border-accent/30 hover:bg-surface hover:text-foreground"
     >
-      <span className="text-accent/70 transition-colors group-hover:text-accent">{icon}</span>
-      <span className="text-mono text-xs uppercase tracking-[0.2em]">{label}</span>
-      <span className="ml-auto text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-accent">
+      <span className="text-accent/70 transition-colors group-hover:text-accent flex-shrink-0">{icon}</span>
+      <span className="text-mono text-xs uppercase tracking-[0.2em] truncate">{label}</span>
+      <span className="ml-auto text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-accent flex-shrink-0">
         →
       </span>
     </a>
@@ -580,7 +586,7 @@ function GitHubIcon({ className }: { className?: string }) {
 function LinkedInIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 012.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   );
 }
