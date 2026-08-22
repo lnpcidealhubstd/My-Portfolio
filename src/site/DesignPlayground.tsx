@@ -1,87 +1,97 @@
 import React, { useState } from "react";
-import { DESIGN_TOKENS, PLAYGROUND_METRICS } from "@/lib/site-data";
 import { Reveal } from "@/components/site/Reveal";
 
 // Asset Diagrams
 import figmaCardImg from "@/assets/figmacard.png";
 import aiCardImg from "@/assets/aicard.png";
 
-// ── CURATED MODERN 2026 UI/UX RESOURCE REGISTRY ──
 interface ResourceItem {
     name: string;
-    category:
-    | "Inspiration"
-    | "AI & Prototyping"
-    | "Research & Testing"
-    | "Typography"
-    | "Icons & Systems"
-    | "Colors & Gradients"
-    | "Assets & Imagery";
     description: string;
     tag: string;
     url: string;
-    isFavorite?: boolean;
+    icon: string;
+    isOfficialDownload?: boolean;
 }
 
-const UI_RESOURCE_LIBRARY: ResourceItem[] = [
-    // AI & Generative UI Prototyping (2026 Modern Standard)
-    { name: "Lovable", category: "AI & Prototyping", description: "AI web builder generating production-ready React + Tailwind interfaces rapidly.", tag: "AI Prototyper", url: "https://lovable.dev", isFavorite: true },
-    { name: "v0 by Vercel", category: "AI & Prototyping", description: "Generative UI system rendering accessible Shadcn + Tailwind code snippets.", tag: "Generative UI", url: "https://v0.dev", isFavorite: true },
-    { name: "Relume AI", category: "AI & Prototyping", description: "AI-powered sitemap builder, wireframe generator, and website copy orchestrator.", tag: "AI Wireframing", url: "https://relume.io", isFavorite: true },
-    { name: "Recraft AI", category: "AI & Prototyping", description: "Generative AI vector canvas for custom brand illustrations and iconography.", tag: "AI Vector Graphics", url: "https://recraft.ai" },
+interface ResourceCategoryGroup {
+    id: string;
+    title: string;
+    categoryIcon: string;
+    badgeColor: string;
+    items: ResourceItem[];
+}
 
-    // User Research & Prototype Testing
-    { name: "Maze", category: "Research & Testing", description: "Rapid prototype testing, user mission analytics, and usability metrics.", tag: "User Testing", url: "https://maze.co", isFavorite: true },
-    { name: "Lyssna", category: "Research & Testing", description: "Usability testing platform for 5-second preference tests and navigation flows.", tag: "UX Research", url: "https://lyssna.com" },
-
-    // Design Inspiration & Flows
-    { name: "Mobbin", category: "Inspiration", description: "Real-world iOS, Android & Web app UI patterns and user flows.", tag: "Patterns & Flows", url: "https://mobbin.com", isFavorite: true },
-    { name: "Dribbble", category: "Inspiration", description: "Visual design inspiration, micro-interactions, and visual shots.", tag: "Visual Shots", url: "https://dribbble.com" },
-    { name: "Behance", category: "Inspiration", description: "In-depth case studies, branding architecture, and product design showcase.", tag: "Case Studies", url: "https://behance.net" },
-    { name: "Webframe", category: "Inspiration", description: "Categorized collection of web app design frames and dashboard layouts.", tag: "Web App UI", url: "https://webframe.xyz" },
-
-    // Fonts & Typography
-    { name: "Google Fonts", category: "Typography", description: "Open-source variable typography web library directly integrated into Figma.", tag: "Web Fonts", url: "https://fonts.google.com", isFavorite: true },
-    { name: "Fontshare", category: "Typography", description: "Free modern professional quality fonts by Indian Type Foundry.", tag: "Variable Fonts", url: "https://fontshare.com", isFavorite: true },
-
-    // Icons & Design Systems
-    { name: "Lucide Icons", category: "Icons & Systems", description: "Clean, consistent vector icon library for modern React & Figma setups.", tag: "Vector Icons", url: "https://lucide.dev", isFavorite: true },
-    { name: "Iconify", category: "Icons & Systems", description: "Universal vector icon framework with 100,000+ open-source icons for Figma.", tag: "Figma Plugin", url: "https://iconify.design", isFavorite: true },
-    { name: "Tokens Studio", category: "Icons & Systems", description: "Figma plugin for managing multi-brand design tokens and code variables.", tag: "Token Manager", url: "https://tokens.studio", isFavorite: true },
-    { name: "Shadcn UI", category: "Icons & Systems", description: "Re-usable component architecture mapped from Figma to React + Tailwind.", tag: "Design Tokens", url: "https://ui.shadcn.com" },
-
-    // Colors & Gradients
-    { name: "Coolors", category: "Colors & Gradients", description: "Superfast color palette generator and WCAG contrast checker.", tag: "Color Palette", url: "https://coolors.co", isFavorite: true },
-    { name: "Realtime Colors", category: "Colors & Gradients", description: "Test system colors and UI themes live on a mock website canvas.", tag: "Live Theme Test", url: "https://realtimecolors.com", isFavorite: true },
-
-    // Assets & Imagery
-    { name: "Unsplash", category: "Assets & Imagery", description: "High-resolution royalty-free imagery for web and app hero mockups.", tag: "Photography", url: "https://unsplash.com", isFavorite: true },
-    { name: "Storyset", category: "Assets & Imagery", description: "Customizable vector illustrations for onboarding and empty states.", tag: "Vector Illustrations", url: "https://storyset.com" },
+const RESOURCE_GROUPS: ResourceCategoryGroup[] = [
+    {
+        id: "deployment-optimization",
+        title: "Deployment & Optimization Resources",
+        categoryIcon: "⚡",
+        badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+        items: [
+            { name: "Vercel", description: "Global edge platform for instant React & Next.js frontend deployments.", tag: "Edge Hosting", url: "https://vercel.com", icon: "▲", isOfficialDownload: true },
+            { name: "Netlify", description: "Automated CI/CD deployment pipeline and web hosting for modern static sites.", tag: "Cloud Hosting", url: "https://netlify.com", icon: "🌐", isOfficialDownload: true },
+            { name: "Google PageSpeed Insights", description: "Official web performance audit tool analyzing Core Web Vitals.", tag: "Performance Audit", url: "https://pagespeed.web.dev", icon: "⚡" },
+            { name: "GTmetrix", description: "Analyze web page speed performance, waterfalls, and optimization scores.", tag: "Speed Analysis", url: "https://gtmetrix.com", icon: "📈" },
+            { name: "Google Analytics 4", description: "Official web user analytics, traffic attribution, and conversion tracking.", tag: "User Analytics", url: "https://analytics.google.com", icon: "📊" },
+            { name: "Optimizilla", description: "Ultimate image optimizer for lossless PNG, JPEG, and WebP compression.", tag: "Image Compressor", url: "https://imagecompressor.com", icon: "🖼️" },
+        ],
+    },
+    {
+        id: "dev-tools",
+        title: "Development & Editor Tools",
+        categoryIcon: "🛠️",
+        badgeColor: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
+        items: [
+            { name: "Visual Studio Code", description: "Industry-standard code editor with rich extension ecosystem for web development.", tag: "Code Editor", url: "https://code.visualstudio.com", icon: "💻", isOfficialDownload: true },
+            { name: "Cursor AI Editor", description: "The AI-first code editor built on VS Code with direct prompt-to-code orchestration.", tag: "AI IDE", url: "https://cursor.com", icon: "🤖", isOfficialDownload: true },
+            { name: "GitHub Desktop / Web", description: "Version control platform for code repositories, branches, and collaboration.", tag: "Version Control", url: "https://github.com", icon: "🐙", isOfficialDownload: true },
+            { name: "Tailwind CSS Documentation", description: "Utility-first CSS framework for rapid UI component development.", tag: "CSS Framework", url: "https://tailwindcss.com", icon: "🎨" },
+        ],
+    },
+    {
+        id: "ui-ux-design",
+        title: "Design Systems & UI/UX Software",
+        categoryIcon: "🎨",
+        badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+        items: [
+            { name: "Figma", description: "The collaborative interface design tool for auto-layout, prototyping, and systems.", tag: "Primary UI Tool", url: "https://figma.com", icon: "🎨", isOfficialDownload: true },
+            { name: "Tokens Studio for Figma", description: "Figma plugin for managing multi-brand design tokens and code sync.", tag: "Token Manager", url: "https://tokens.studio", icon: "⚙️" },
+            { name: "Relume AI", description: "AI sitemap builder, wireframe generator, and website copy orchestrator.", tag: "AI Wireframing", url: "https://relume.io", icon: "🕸️" },
+            { name: "Mobbin", description: "Real-world iOS, Android & Web app UI patterns and user flow inspiration.", tag: "UI Flows", url: "https://mobbin.com", icon: "📱" },
+        ],
+    },
+    {
+        id: "ai-prototyping-mcp",
+        title: "AI Prototyping & MCP Servers",
+        categoryIcon: "🤖",
+        badgeColor: "bg-violet-500/10 text-violet-400 border-violet-500/20",
+        items: [
+            { name: "Claude 3.5 Sonnet", description: "Primary AI model for complex UI architecture, component logic, and prompt tuning.", tag: "AI Reasoner", url: "https://claude.ai", icon: "🧠" },
+            { name: "Replit", description: "Cloud dev environment with Replit Agent for rapid full-stack app prototyping.", tag: "AI Cloud IDE", url: "https://replit.com", icon: "⚡", isOfficialDownload: true },
+            { name: "Lovable", description: "AI web builder generating production-ready React + Tailwind interfaces rapidly.", tag: "AI Prototyper", url: "https://lovable.dev", icon: "❤️" },
+            { name: "Figma Context MCP", description: "Feeds Figma variable tokens, frame layouts, and component specs to Cursor & Claude.", tag: "Figma MCP", url: "https://modelcontextprotocol.io", icon: "🔌" },
+        ],
+    },
+    {
+        id: "colors-typography",
+        title: "Colors, Fonts & Asset Libraries",
+        categoryIcon: "🔤",
+        badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+        items: [
+            { name: "Google Fonts", description: "Open-source variable typography web library directly integrated into Figma.", tag: "Typography", url: "https://fonts.google.com", icon: "🔤" },
+            { name: "Fontshare", description: "Free modern professional quality fonts by Indian Type Foundry.", tag: "Variable Fonts", url: "https://fontshare.com", icon: "✍️" },
+            { name: "Coolors", description: "Superfast color palette generator and WCAG contrast checker.", tag: "Color Palette", url: "https://coolors.co", icon: "🎨" },
+            { name: "Realtime Colors", description: "Test system colors and UI themes live on a mock website canvas.", tag: "Live Theme Test", url: "https://realtimecolors.com", icon: "🌈" },
+            { name: "Lucide Icons", description: "Clean, consistent vector icon library for modern React & Figma setups.", tag: "Vector Icons", url: "https://lucide.dev", icon: "💎" },
+            { name: "Unsplash", description: "High-resolution royalty-free imagery for web and app hero mockups.", tag: "Photography", url: "https://unsplash.com", icon: "📷" },
+        ],
+    },
 ];
 
 export function DesignPlayground() {
-    const [selectedCategory, setSelectedCategory] = useState<string>("All");
     const [searchQuery, setSearchQuery] = useState("");
-
-    const categories = [
-        "All",
-        "AI & Prototyping",
-        "Research & Testing",
-        "Inspiration",
-        "Typography",
-        "Icons & Systems",
-        "Colors & Gradients",
-        "Assets & Imagery",
-    ];
-
-    const filteredResources = UI_RESOURCE_LIBRARY.filter((item) => {
-        const matchesCategory = selectedCategory === "All" || item.category === selectedCategory;
-        const matchesSearch =
-            item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.tag.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-    });
+    const [activeCategoryFilter, setActiveCategoryFilter] = useState("all");
 
     return (
         <section className="relative py-24 bg-background border-t border-white/5 overflow-hidden">
@@ -106,18 +116,18 @@ export function DesignPlayground() {
                                 / 03 — DESIGN SYSTEMS &amp; AI WORKFLOW
                             </p>
                             <h2 className="text-display text-3xl md:text-5xl font-bold text-white tracking-tight">
-                                Curated Design <span className="text-accent neon-text">Stack.</span>
+                                Developer &amp; Designer <span className="text-accent neon-text">Resources.</span>
                             </h2>
                         </div>
                         <p className="text-white/60 text-sm max-w-md leading-relaxed">
-                            A handpicked registry of industry-standard Figma tools, generative AI prototypers, usability testing suites, variable typography, and design workflow inspiration.
+                            Curated stack of deployment pipelines, development tools, Figma plugins, AI prototypers, and typography libraries with official download links.
                         </p>
                     </div>
                 </Reveal>
 
                 {/* ── ARCHITECTURE DIAGRAM CARDS ── */}
                 <Reveal delay={80}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
                         <div className="glass-card rounded-2xl border border-white/10 overflow-hidden p-6 bg-black/40 flex flex-col justify-between group">
                             <div>
                                 <div className="flex items-center justify-between mb-3">
@@ -162,84 +172,127 @@ export function DesignPlayground() {
                     </div>
                 </Reveal>
 
-                {/* ── RESOURCE LIBRARY SEARCH & FILTER CONTROLS ── */}
+                {/* ── GMX ACADEMY STYLE CATEGORIZED RESOURCE GROUPS ── */}
                 <Reveal delay={120}>
-                    <div className="glass-card rounded-2xl border border-white/10 bg-white/[0.02] p-8 backdrop-blur-xl mb-12">
+                    <div className="space-y-16">
 
-                        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 mb-8">
-                            {/* Category Filter Chips */}
-                            <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-                                {categories.map((cat) => (
+                        {/* Top Quick Filter Bar & Search */}
+                        <div className="glass-card rounded-2xl border border-white/10 bg-white/[0.02] p-6 backdrop-blur-xl flex flex-col md:flex-row items-center justify-between gap-4">
+                            <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto scrollbar-none">
+                                <button
+                                    onClick={() => setActiveCategoryFilter("all")}
+                                    className={`px-4 py-2 rounded-xl text-mono text-xs transition-all whitespace-nowrap ${activeCategoryFilter === "all"
+                                            ? "bg-accent text-background font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                                            : "bg-white/5 text-white/60 hover:text-white border border-white/10"
+                                        }`}
+                                >
+                                    All Categories
+                                </button>
+                                {RESOURCE_GROUPS.map((group) => (
                                     <button
-                                        key={cat}
-                                        onClick={() => setSelectedCategory(cat)}
-                                        className={`px-3.5 py-1.5 rounded-lg text-mono text-xs transition-all whitespace-nowrap ${selectedCategory === cat
+                                        key={group.id}
+                                        onClick={() => setActiveCategoryFilter(group.id)}
+                                        className={`px-4 py-2 rounded-xl text-mono text-xs transition-all whitespace-nowrap flex items-center gap-1.5 ${activeCategoryFilter === group.id
                                                 ? "bg-accent text-background font-bold shadow-[0_0_15px_rgba(34,211,238,0.3)]"
                                                 : "bg-white/5 text-white/60 hover:text-white border border-white/10"
                                             }`}
                                     >
-                                        {cat}
+                                        <span>{group.categoryIcon}</span>
+                                        <span>{group.title.split("&")[0]}</span>
                                     </button>
                                 ))}
                             </div>
 
-                            {/* Search Bar */}
-                            <div className="relative min-w-[240px]">
+                            <div className="relative w-full md:w-64">
                                 <input
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    placeholder="Search tools, AI engines, fonts..."
+                                    placeholder="Search resources..."
                                     className="w-full px-4 py-2 rounded-xl bg-black/60 border border-white/10 text-xs text-white placeholder:text-white/30 focus:border-accent focus:outline-none transition-colors font-mono"
                                 />
                             </div>
                         </div>
 
-                        {/* Resource Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {filteredResources.map((res) => (
-                                <a
-                                    key={res.name}
-                                    href={res.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="p-5 rounded-xl bg-black/40 border border-white/5 hover:border-accent/40 transition-all duration-300 flex flex-col justify-between group hover:translate-y-[-2px]"
-                                >
-                                    <div>
-                                        <div className="flex items-center justify-between mb-2">
-                                            <div className="flex items-center gap-2">
-                                                <h4 className="text-display font-bold text-sm text-white group-hover:text-accent transition-colors">
-                                                    {res.name}
-                                                </h4>
-                                                {res.isFavorite && (
-                                                    <span className="text-[10px] text-accent bg-accent/10 px-1.5 py-0.2 rounded border border-accent/20 font-mono">
-                                                        Top Choice
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <span className="text-mono text-[10px] text-white/40 group-hover:text-accent transition-colors">
-                                                ↗
-                                            </span>
+                        {/* RESOURCE SECTIONS (GMX Visual Style) */}
+                        {RESOURCE_GROUPS.filter(
+                            (group) => activeCategoryFilter === "all" || activeCategoryFilter === group.id
+                        ).map((group) => {
+                            const matchingItems = group.items.filter(
+                                (item) =>
+                                    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                    item.tag.toLowerCase().includes(searchQuery.toLowerCase())
+                            );
+
+                            if (matchingItems.length === 0) return null;
+
+                            return (
+                                <div key={group.id} className="relative">
+
+                                    {/* Floating Category Icon Badge (GMX Visual Style) */}
+                                    <div className="flex flex-col items-center justify-center mb-8">
+                                        <div className="w-16 h-16 rounded-2xl bg-black/80 border border-white/15 flex items-center justify-center text-3xl shadow-[0_0_30px_rgba(255,255,255,0.05)] mb-3">
+                                            {group.categoryIcon}
                                         </div>
-
-                                        <p className="text-xs text-white/60 leading-relaxed mb-4">
-                                            {res.description}
-                                        </p>
+                                        <h3 className="text-display font-bold text-xl md:text-2xl text-white text-center">
+                                            {group.title}
+                                        </h3>
                                     </div>
 
-                                    <div className="flex items-center justify-between pt-3 border-t border-white/5 text-mono text-[10px]">
-                                        <span className="text-accent/80 font-medium">{res.tag}</span>
-                                        <span className="text-white/30 uppercase">{res.category}</span>
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
+                                    {/* Resource Item Grid */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                                        {matchingItems.map((item) => (
+                                            <a
+                                                key={item.name}
+                                                href={item.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="glass-card glass-card-hover rounded-2xl border border-white/10 p-6 bg-white/[0.02] backdrop-blur-xl flex flex-col justify-between group transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 relative overflow-hidden"
+                                            >
+                                                <div>
+                                                    <div className="flex items-center justify-between mb-4">
+                                                        <div className="flex items-center gap-3">
+                                                            <span className="w-10 h-10 rounded-xl bg-black/60 border border-white/10 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+                                                                {item.icon}
+                                                            </span>
+                                                            <div>
+                                                                <h4 className="text-display font-bold text-base text-white group-hover:text-accent transition-colors">
+                                                                    {item.name}
+                                                                </h4>
+                                                                <span className="text-mono text-[10px] text-accent/80">
+                                                                    {item.tag}
+                                                                </span>
+                                                            </div>
+                                                        </div>
 
-                        {filteredResources.length === 0 && (
-                            <div className="text-center py-12 text-mono text-xs text-white/40">
-                                No design resources found matching "{searchQuery}".
-                            </div>
-                        )}
+                                                        <span className="text-mono text-xs text-white/30 group-hover:text-accent transition-colors">
+                                                            ↗
+                                                        </span>
+                                                    </div>
+
+                                                    <p className="text-xs text-white/60 leading-relaxed mb-6">
+                                                        {item.description}
+                                                    </p>
+                                                </div>
+
+                                                <div className="pt-4 border-t border-white/5 flex items-center justify-between text-mono text-[10px]">
+                                                    <span className="text-white/40">Official Website</span>
+                                                    {item.isOfficialDownload ? (
+                                                        <span className="text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+                                                            ✓ Direct App / Download
+                                                        </span>
+                                                    ) : (
+                                                        <span className="text-accent underline">Visit Site</span>
+                                                    )}
+                                                </div>
+                                            </a>
+                                        ))}
+                                    </div>
+
+                                </div>
+                            );
+                        })}
 
                     </div>
                 </Reveal>
