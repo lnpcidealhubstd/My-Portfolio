@@ -27,39 +27,39 @@ export const CORE_SERVICES: CoreService[] = [
     slug: "design-architecture",
     index: "01",
     kicker: "Visual Architecture",
-    title: "UI/UX Systems",
+    title: "UI/UX & Design Systems",
     description:
-      "High-fidelity user interfaces, experience mapping, and production-ready component blueprints engineered for scale.",
+      "High-fidelity interfaces, auto-layout 5.0 components, and strict variable token registries engineered in Figma for seamless dev handoff.",
     chips: [
       { label: "Figma", icon: "figma", kind: "tool" },
-      { label: "Canva", icon: "canva", kind: "tool" },
-      { label: "Blender", icon: "blender", kind: "tool" },
+      { label: "Design Tokens", icon: "cpu", kind: "feature" },
+      { label: "FigJam", icon: "figma", kind: "tool" },
     ],
   },
   {
     slug: "ai-native-architecture",
     index: "02",
     kicker: "AI Orchestration",
-    title: "AI-Native Products",
+    title: "AI Prototyping Workflow",
     description:
-      "Proprietary AI orchestration layer for rapid UX auditing, feature mapping, and complex system logic at extreme velocity.",
+      "Accelerating interface discovery and rapid prototyping using Figma AI, Lovable, and Claude to build functional React concepts at speed.",
     chips: [
       { label: "Prompt Engineering", icon: "ai", kind: "feature" },
-      { label: "Agent Workflows", icon: "cpu", kind: "feature" },
-      { label: "UX Auditing", icon: "shield", kind: "feature" },
+      { label: "Lovable / Claude", icon: "cpu", kind: "tool" },
+      { label: "Rapid Prototyping", icon: "shield", kind: "feature" },
     ],
   },
   {
     slug: "production-deployment",
     index: "03",
-    kicker: "Production & Deployment",
-    title: "Edge Delivery",
+    kicker: "Production & Handoff",
+    title: "Edge Execution & Delivery",
     description:
-      "High-performance local and edge pipeline with 100% version control ownership and instant global deployment.",
+      "Cloning & refining UI code locally in VS Code with AI extensions, managing Git feature branches on GitHub, and deploying live to Vercel.",
     chips: [
+      { label: "VS Code", icon: "vscode", kind: "tool" },
       { label: "GitHub", icon: "github", kind: "tool" },
       { label: "Vercel", icon: "vercel", kind: "tool" },
-      { label: "VS Code", icon: "vscode", kind: "tool" },
     ],
   },
 ];
@@ -69,13 +69,13 @@ export const SERVICES = [
     slug: "ui-ux-prototyping",
     index: "01",
     title: "High-Velocity UI/UX & Rapid Prototyping",
-    short: "Figma Auto-Layout, component systems engineering, and fast sync to live code.",
+    short: "Figma Auto-Layout 5.0, design token registries, and fast sync to live React prototypes.",
   },
   {
     slug: "ai-native-architecture",
     index: "02",
-    title: "AI-Native Product Architecture",
-    short: "Custom advanced AI orchestration for UX auditing, feature mapping, and complex technical logic.",
+    title: "AI-Native Product Architecture & Edge Delivery",
+    short: "AI orchestration via Lovable, Claude, VS Code, and GitHub for instant Vercel edge deployment.",
   },
 ] as const;
 
@@ -146,14 +146,14 @@ export const WORK_PROCESS = [
     step: "03",
     title: "AI-Accelerated Workflows",
     description:
-      "Leveraging custom prompt orchestration and AI logic to rapidly prototype features and audit user experiences at high velocity.",
-    tags: ["PROMPT ENGINEERING", "UX AUDITING", "RAPID PROTOTYPING"],
+      "Leveraging prompt orchestration in Lovable & Claude with VS Code AI extensions to rapidly prototype features and audit UX.",
+    tags: ["PROMPT ENGINEERING", "LOVABLE / CLAUDE", "RAPID PROTOTYPING"],
   },
   {
     step: "04",
     title: "Production Hand-off & Delivery",
     description:
-      "Translating design specs into clean code standards with version control and seamless deployment pipelines.",
+      "Translating design specs into clean code standards with Git version control and seamless Vercel deployment pipelines.",
     tags: ["GITHUB", "VERCEL", "FRONT-END READY"],
   },
 ];

@@ -194,7 +194,7 @@ import myImage from "@/assets/filename.png";
 ### Profile Flip Card (Hero)
 
 - Scene: `profile-flip-scene` → `profile-flip-card` → `profile-flip-front` / `profile-flip-back`
-- Front: spinning conic `profile-ring`, static `profile-pulse-ring`, circular `profile-circle` image, `LNC · Operator` label
+- Front: animated conic `profile-gradient-ring`, `profile-circle` image, `LNC · Operator` label
 - Back: `profile-back-ring`, "Let's build something remarkable." heading, Hire Me button (accent fill), Download CV button (accent outline)
 - All CSS defined in `src/styles.css`
 
