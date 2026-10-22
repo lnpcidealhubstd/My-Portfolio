@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   FaFacebook,
@@ -25,6 +25,7 @@ import { Ambient } from "@/components/site/Ambient";
 import { Reveal } from "@/components/site/Reveal";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolio-projects";
 import nicolasAsset from "@/assets/nicolas.png";
+import nicoLogo from "@/assets/nico-logo.png";
 
 /*
  * CONTACT AND RESUME CONFIGURATION
@@ -212,11 +213,45 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const heroRef = useRef<HTMLElement | null>(null);
+  const [heroVisible, setHeroVisible] = useState(true);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero || !("IntersectionObserver" in window)) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry) setHeroVisible(entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: "-64px 0px 0px 0px" },
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, []);
+
   const featuredProjects = PORTFOLIO_PROJECTS.filter((project) => project.hasCaseStudy);
   const ongoingProjects = PORTFOLIO_PROJECTS.filter((project) => !project.hasCaseStudy);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="relative isolate min-h-screen bg-background text-foreground">
+      {/* Fixed decorative logo: stronger blur while the hero is visible. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10 flex items-center justify-center overflow-hidden select-none"
+      >
+        <img
+          src={nicoLogo}
+          alt=""
+          className="w-[85vw] max-w-[800px] transition-[filter,opacity] duration-700 ease-out motion-reduce:transition-none sm:w-[65vw]"
+          style={{
+            filter: heroVisible ? "blur(56px)" : "blur(18px)",
+            opacity: heroVisible ? 0.045 : 0.08,
+          }}
+        />
+      </div>
+
       <a
         href="#main-content"
         className="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-accent px-5 py-3 font-medium text-background focus:not-sr-only"
@@ -229,6 +264,7 @@ function Home() {
       <main id="main-content" tabIndex={-1}>
         {/* HERO */}
         <section
+          ref={heroRef}
           aria-labelledby="hero-heading"
           className="relative isolate overflow-hidden"
         >

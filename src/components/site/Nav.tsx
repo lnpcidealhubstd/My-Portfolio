@@ -3,6 +3,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
+import nicoLogo from "@/assets/nico-logo.png";
 
 const links = [
   { id: "about", label: "About" },
@@ -47,8 +48,11 @@ export function Nav() {
     };
 
     const desktopQuery = window.matchMedia("(min-width: 768px)");
+
     const onBreakpointChange = () => {
-      if (desktopQuery.matches) setMenuOpen(false);
+      if (desktopQuery.matches) {
+        setMenuOpen(false);
+      }
     };
 
     document.addEventListener("keydown", onKeyDown);
@@ -71,15 +75,23 @@ export function Nav() {
       ].join(" ")}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-6">
+        {/* Portfolio logo */}
         <Link
           to="/"
           aria-label="Nico Centeno — Home"
           onClick={() => setMenuOpen(false)}
-          className={`rounded-md py-2 text-sm font-semibold uppercase tracking-[0.25em] ${focusClass}`}
+          className={`inline-flex size-16 shrink-0 items-center justify-center rounded-lg ${focusClass}`}
         >
-          LNC<span className="text-accent">.</span>
+          <img
+            src={nicoLogo}
+            alt=""
+            width={64}
+            height={64}
+            className="block size-16 object-contain"
+          />
         </Link>
 
+        {/* Desktop navigation */}
         <nav aria-label="Main navigation" className="hidden md:block">
           <ul className="flex items-center gap-1">
             {links.map(({ id, label }) => (
@@ -100,6 +112,7 @@ export function Nav() {
           </ul>
         </nav>
 
+        {/* Mobile menu toggle */}
         <button
           ref={toggleRef}
           type="button"
@@ -117,6 +130,7 @@ export function Nav() {
         </button>
       </div>
 
+      {/* Mobile navigation */}
       <nav
         id="mobile-navigation"
         aria-label="Mobile navigation"
