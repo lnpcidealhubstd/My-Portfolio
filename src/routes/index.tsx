@@ -15,7 +15,6 @@ import {
   Layers3,
   Network,
   Sparkles,
-  Terminal,
   Triangle,
   Workflow,
 } from "lucide-react";
@@ -24,7 +23,7 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { Ambient } from "@/components/site/Ambient";
 import { Reveal } from "@/components/site/Reveal";
-import { DESIGN_PROJECTS } from "@/lib/site-data";
+import { PORTFOLIO_PROJECTS } from "@/lib/portfolio-projects";
 import nicolasAsset from "@/assets/nicolas.png";
 
 /*
@@ -57,26 +56,77 @@ const SOCIALS = [
 
 const TECHNOLOGIES = [
   {
+    number: "01",
     title: "Design & Prototyping",
+    description:
+      "Planning user journeys and turning ideas into clear, consistent interfaces.",
     tools: [
-      { label: "Figma", Icon: FaFigma },
-      { label: "FigJam", Icon: Network },
-      { label: "Design Systems & Tokens", Icon: Layers3 },
+      {
+        label: "Figma",
+        detail: "Wireframes, UI design & interactive prototypes",
+        Icon: FaFigma,
+      },
+      {
+        label: "FigJam",
+        detail: "Discovery, information architecture & user flows",
+        Icon: Network,
+      },
+      {
+        label: "Design Systems & Tokens",
+        detail: "Reusable components & consistent visual styles",
+        Icon: Layers3,
+      },
+      {
+        label: "Responsive Design",
+        detail: "Layouts for desktop, tablet & mobile",
+        Icon: Code2,
+      },
     ],
   },
   {
+    number: "02",
     title: "AI-Assisted Prototyping",
+    description:
+      "Using AI to explore concepts, clarify ideas, and support prototype development.",
     tools: [
-      { label: "Lovable", Icon: Sparkles },
-      { label: "Claude", Icon: Sparkles },
+      {
+        label: "Lovable",
+        detail: "Interactive product concepts & rapid prototypes",
+        Icon: Sparkles,
+      },
+      {
+        label: "Claude",
+        detail: "Design exploration & coding assistance",
+        Icon: Code2,
+      },
+      {
+        label: "ChatGPT",
+        detail: "Requirements clarification, UX copy & code refinement",
+        Icon: Sparkles,
+      },
     ],
   },
   {
+    number: "03",
     title: "Development & Handoff",
+    description:
+      "Connecting design decisions with implementation, collaboration, and delivery.",
     tools: [
-      { label: "Visual Studio Code", Icon: Code2 },
-      { label: "GitHub", Icon: FaGithub },
-      { label: "Vercel", Icon: Triangle },
+      {
+        label: "Visual Studio Code",
+        detail: "Frontend editing & code refinement",
+        Icon: Code2,
+      },
+      {
+        label: "GitHub",
+        detail: "Version control & collaboration",
+        Icon: FaGithub,
+      },
+      {
+        label: "Vercel",
+        detail: "Deployment & preview sharing",
+        Icon: Triangle,
+      },
     ],
   },
 ];
@@ -162,11 +212,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const [featuredProject, ...gridProjects] = DESIGN_PROJECTS;
-
-  const hasLodgingProject = DESIGN_PROJECTS.some((project) =>
-    /lodging/i.test(`${project.slug} ${project.title}`),
-  );
+  const featuredProjects = PORTFOLIO_PROJECTS.filter((project) => project.hasCaseStudy);
+  const ongoingProjects = PORTFOLIO_PROJECTS.filter((project) => !project.hasCaseStudy);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -305,26 +352,60 @@ function Home() {
           id="technologies"
           label="02 / My Toolkit"
           title="Technologies I Work With"
-          description="Tools that support design exploration, collaboration, and implementation."
+          description="A focused toolkit for thoughtful design, faster exploration, and collaborative delivery."
         >
           <div className="grid gap-5 md:grid-cols-3">
             {TECHNOLOGIES.map((group) => (
               <article
-                key={group.title}
-                className={`${panelClass} p-6 sm:p-7`}
+                key={group.number}
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-colors duration-300 hover:border-accent/35 motion-reduce:transition-none sm:p-7"
               >
-                <h3 className="text-lg font-medium">{group.title}</h3>
+                {/* Subtle top accent */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-7 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
+                />
 
-                <ul className="mt-5 space-y-3">
-                  {group.tools.map(({ label, Icon }) => (
+                <div className="mb-6 flex items-center justify-between gap-3">
+                  <span className="text-mono text-xs tracking-widest text-accent">
+                    {group.number}
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className="h-px w-12 bg-white/10 transition-colors group-hover:bg-accent/40"
+                  />
+                </div>
+
+                <h3 className="text-display text-xl font-medium leading-snug tracking-tight">
+                  {group.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  {group.description}
+                </p>
+
+                <ul className="mt-6 space-y-2 border-t border-white/10 pt-5">
+                  {group.tools.map(({ label, detail, Icon }) => (
                     <li
                       key={label}
-                      className="flex items-center gap-3 text-sm leading-6 text-muted-foreground"
+                      className="flex items-center gap-3 rounded-xl border border-transparent bg-white/[0.02] p-3"
                     >
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-accent">
-                        <Icon aria-hidden="true" className="size-4" />
+                      <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent">
+                        <Icon
+                          aria-hidden="true"
+                          className="size-5"
+                        />
                       </span>
-                      {label}
+
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium leading-6 text-foreground">
+                          {label}
+                        </p>
+                        <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
+                          {detail}
+                        </p>
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -376,111 +457,89 @@ function Home() {
         </Section>
 
         {/* PROJECTS */}
-        <Section
+        <section
           id="projects"
-          label="04 / Selected Work"
-          title="Featured Projects"
-          description="A selection of interface design, digital experiences, and projects guided from discovery toward delivery."
+          aria-labelledby="projects-heading"
+          className="mx-auto max-w-7xl scroll-mt-24 px-5 py-16 sm:px-6 sm:py-24"
         >
-          {featuredProject && (
-            <Link
-              to="/projects/$slug"
-              params={{ slug: featuredProject.slug }}
-              className={`group mb-6 grid overflow-hidden ${panelClass} transition-colors hover:border-accent/40 lg:grid-cols-5 ${focusClass}`}
-            >
-              <div className="min-w-0 bg-white/[0.03] lg:col-span-3">
-                <img
-                  src={featuredProject.cover}
-                  alt={`${featuredProject.title} interface preview`}
-                  loading="lazy"
-                  className="aspect-[16/10] w-full object-contain object-top"
-                />
-              </div>
+          <Reveal>
+            <div className="mb-10 sm:mb-12">
+              <p className="text-xs font-medium uppercase tracking-widest text-accent">
+                04 / Selected Work
+              </p>
 
-              <div className="flex flex-col justify-center p-6 sm:p-9 lg:col-span-2">
-                <p className="text-xs font-medium uppercase tracking-widest text-accent">
-                  {featuredProject.tag}
-                </p>
-                <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">
-                  {featuredProject.title}
-                </h3>
-                <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                  {featuredProject.summary}
-                </p>
-                <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
-                  View Project
-                  <ArrowUpRight aria-hidden="true" className="size-4" />
-                </span>
-              </div>
-            </Link>
-          )}
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {gridProjects.map((project) => (
-              <Link
-                key={project.slug}
-                to="/projects/$slug"
-                params={{ slug: project.slug }}
-                className={`group flex h-full flex-col overflow-hidden ${panelClass} transition-colors hover:border-accent/40 ${focusClass}`}
+              <h2
+                id="projects-heading"
+                className="text-display mt-4 text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl"
               >
-                <div className="bg-white/[0.03]">
-                  <img
-                    src={project.cover}
-                    alt={`${project.title} interface preview`}
-                    loading="lazy"
-                    className="aspect-[16/10] w-full object-contain object-top"
-                  />
-                </div>
+                Featured Projects
+              </h2>
 
-                <div className="flex flex-1 flex-col p-6">
-                  <p className="text-xs text-accent">{project.tag}</p>
-                  <h3 className="text-display mt-3 text-xl font-medium">
-                    {project.title}
-                  </h3>
-                  <p className="mt-3 flex-1 text-sm leading-7 text-muted-foreground">
-                    {project.summary}
-                  </p>
-                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent">
-                    View Project
-                    <ArrowUpRight aria-hidden="true" className="size-4" />
-                  </span>
-                </div>
-              </Link>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
+                A selection of interface design, digital experiences, and
+                projects guided from discovery toward delivery.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="space-y-6">
+            {featuredProjects.map((project, index) => (
+              <Reveal key={project.slug} delay={index * 80}>
+                <article className="project-card group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+                  <div className="grid lg:grid-cols-5">
+                    <div className="flex min-w-0 items-center overflow-hidden bg-white/[0.03] p-3 sm:p-5 lg:col-span-3">
+                      {project.cover ? (
+                        <img src={project.cover} alt={`${project.title} — ${project.previewNote ? "temporary design preview" : "website preview"}`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                      ) : (
+                        <p className="flex aspect-[16/10] w-full items-center justify-center p-8 text-center text-sm text-muted-foreground">Project screenshots coming soon.</p>
+                      )}
+                    </div>
+                    <div className="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2">
+                      <p className="text-xs font-medium uppercase tracking-widest text-accent">{index === 0 ? "01 / Lead Project" : "02 / Completed Project"}</p>
+                      <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">{project.title}</h3>
+                      <p className="mt-4 text-sm leading-7 text-muted-foreground">{project.summary}</p>
+                      <dl className="mt-6 space-y-4 border-t border-white/10 pt-5">
+                        <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-1 text-sm font-medium">{project.role}</dd></div>
+                        <div><dt className="text-xs text-muted-foreground">Status</dt><dd className="mt-1 text-sm text-accent">{project.status}</dd></div>
+                      </dl>
+                      <Link to="/projects/$slug" params={{ slug: project.slug }} className={`mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-lg text-sm font-medium text-accent ${focusClass}`}>
+                        View Case Study <ArrowUpRight aria-hidden="true" className="project-arrow size-4" />
+                      </Link>
+                    </div>
+                  </div>
+                  {project.previewNote && <p className="border-t border-white/10 px-6 py-4 text-xs leading-6 text-muted-foreground">{project.previewNote}</p>}
+                </article>
+              </Reveal>
             ))}
-
-            {!hasLodgingProject && (
-              <article className="flex h-full flex-col rounded-2xl border border-accent/20 bg-accent/[0.04] p-6 sm:p-8">
-                <BriefcaseBusiness
-                  aria-hidden="true"
-                  className="size-7 text-accent"
-                />
-                <p className="mt-6 text-xs font-medium uppercase tracking-widest text-accent">
-                  Design & Project Management
-                </p>
-                <h3 className="text-display mt-4 text-2xl font-medium">
-                  Lodging Technologies
-                </h3>
-                <p className="mt-4 flex-1 text-sm leading-7 text-muted-foreground">
-                  Discovery, requirements alignment, interface planning, and
-                  delivery coordination across a phased implementation.
-                </p>
-                <div className="mt-6 space-y-3 border-t border-white/10 pt-5 text-sm leading-6">
-                  <p>UI/UX Designer & Project Manager</p>
-                  <p className="text-muted-foreground">
-                    Phase 1 completed; Phase 2 CRM implementation ongoing.
-                  </p>
-                </div>
-              </article>
-            )}
           </div>
 
-          <div className="mt-8">
+          <div className="mt-12">
+            <h3 className="text-display text-2xl font-medium">More Work in Progress</h3>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">A preview of ongoing design projects. Full case studies will follow.</p>
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {ongoingProjects.map((project, index) => (
+                <Reveal key={project.slug} delay={index * 70} className="h-full">
+                  <article className="project-card group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+                    <div className="overflow-hidden bg-white/[0.03] p-3">
+                      <img src={project.cover} alt={`${project.title} design preview`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                    </div>
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 p-5">
+                      <h4 className="text-base font-medium">{project.title}</h4>
+                      <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs text-accent">Ongoing</span>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-9 flex justify-center">
             <Link to="/projects" className={secondaryButton}>
-              All Projects
+              Explore All Projects
               <ArrowUpRight aria-hidden="true" className="size-4" />
             </Link>
           </div>
-        </Section>
+        </section>
 
         {/* SKILLS */}
         <Section

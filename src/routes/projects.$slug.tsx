@@ -1,322 +1,183 @@
-import { useState, useEffect, useCallback } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useRef, useState } from "react";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Maximize2, X } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
-import { Ambient } from "@/components/site/Ambient";
 import { Reveal } from "@/components/site/Reveal";
-import { BackButton } from "@/components/site/BackButton";
-import { DESIGN_PROJECTS } from "@/lib/site-data";
+import {
+  findProject,
+  getCaseStudy,
+  type Project,
+  type CaseStudy,
+  type Screen,
+} from "@/lib/portfolio-projects";
+
+const focusClass = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background";
 
 export const Route = createFileRoute("/projects/$slug")({
-  head: ({ params }) => {
-    const project = DESIGN_PROJECTS.find((p) => p.slug === params.slug);
-    return {
-      meta: [
-        { title: `${project ? project.title : "Project"} — Nico Centeno` },
-        {
-          name: "description",
-          content: project ? project.summary : "UI/UX Case Study by Nico Centeno",
-        },
-      ],
-    };
+  loader: ({ params }) => {
+    const project = findProject(params.slug);
+    if (!project) throw notFound();
+    return { project, study: getCaseStudy(project) };
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      { title: `${loaderData?.project.title ?? "Project"} | Nico Centeno` },
+      { name: "description", content: loaderData?.project.summary ?? "Design project by Nico Centeno." },
+    ],
+  }),
+  notFoundComponent: ProjectNotFound,
   component: ProjectDetail,
 });
 
 function ProjectDetail() {
-  const { slug } = Route.useParams();
-  const navigate = useNavigate();
+  const { project, study } = Route.useLoaderData();
+  if (!study) return <OngoingPreview project={project} />;
+  return <ProjectContent key={project.slug} project={project} study={study} />;
+}
 
-  const project = DESIGN_PROJECTS.find((p) => p.slug === slug);
+function ProjectContent({ project, study }: { project: Project; study: CaseStudy }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const screens: readonly Screen[] = project.screens.length
+    ? project.screens
+    : [{ label: "Project Preview", src: project.cover }];
+  const activeScreen = screens[activeIndex] ?? screens[0]!;
 
-  // Active selected screen index for grid / preview
-  const [activeScreenIndex, setActiveScreenIndex] = useState<number>(0);
+  function openImage(index: number) {
+    setActiveIndex(index);
+    dialogRef.current?.showModal();
+  }
 
-  // Full-screen high-res lightbox state
-  const [lightboxOpen, setLightboxOpen] = useState<boolean>(false);
-  const [lightboxIndex, setLightboxIndex] = useState<number>(0);
-
-  // Fallback redirect if slug is invalid
-  useEffect(() => {
-    if (!project) {
-      navigate({ to: "/projects" });
-    }
-  }, [project, navigate]);
-
-  const openLightbox = (index: number) => {
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = useCallback(() => {
-    setLightboxOpen(false);
-  }, []);
-
-  const nextLightboxImage = useCallback(() => {
-    if (!project) return;
-    setLightboxIndex((prev) => (prev + 1) % project.screens.length);
-  }, [project]);
-
-  const prevLightboxImage = useCallback(() => {
-    if (!project) return;
-    setLightboxIndex((prev) => (prev - 1 + project.screens.length) % project.screens.length);
-  }, [project]);
-
-  // Keyboard navigation for full-screen lightbox
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!lightboxOpen) return;
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowRight") nextLightboxImage();
-      if (e.key === "ArrowLeft") prevLightboxImage();
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxOpen, closeLightbox, nextLightboxImage, prevLightboxImage]);
-
-  if (!project) return null;
-
-  const currentActiveScreen = project.screens[activeScreenIndex] || project.screens[0];
-  const currentLightboxScreen = project.screens[lightboxIndex] || project.screens[0];
+  function changeImage(direction: number) {
+    setActiveIndex((current) => (current + direction + screens.length) % screens.length);
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
-
-      {/* ── HEADER & PROJECT METADATA ── */}
-      <section className="relative overflow-hidden pt-24 pb-12">
-        <Ambient />
-        <div className="relative mx-auto max-w-7xl px-6">
-          <Reveal>
-            <div className="mb-6">
-              <BackButton />
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="text-mono text-xs uppercase tracking-[0.2em] text-accent bg-accent/10 px-3 py-1 rounded border border-accent/20">
-                {project.tag}
-              </span>
-              <span className="text-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                {project.screens.length} {project.screens.length === 1 ? "Artifact Screen" : "High-Res Screens"}
-              </span>
-            </div>
-
-            <h1 className="text-display text-4xl font-medium sm:text-6xl text-foreground mb-6">
-              {project.title}
-            </h1>
-
-            <p className="max-w-3xl text-sm sm:text-base leading-relaxed text-muted-foreground mb-8">
-              {project.summary}
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── FEATURED PREVIEW CANVAS & SCREEN SELECTOR ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-4">
+      <main className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-20">
         <Reveal>
-          <div className="glass-card rounded-2xl border border-white/10 p-4 sm:p-6 overflow-hidden">
-            {/* Top Bar Label & Action */}
-            <div className="flex items-center justify-between mb-4 px-2">
-              <div className="flex items-center gap-2">
-                <span className="pulse-dot size-1.5 rounded-full bg-accent" />
-                <span className="text-mono text-xs uppercase tracking-widest text-muted-foreground">
-                  Active Screen: <strong className="text-foreground">{currentActiveScreen.label}</strong>
-                </span>
-              </div>
-              <button
-                onClick={() => openLightbox(activeScreenIndex)}
-                className="text-mono text-xs uppercase tracking-widest text-accent hover:underline flex items-center gap-1.5"
-              >
-                🔍 Expand Fullscreen Mode
-              </button>
-            </div>
+          <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-md text-sm text-muted-foreground hover:text-accent ${focusClass}`}>
+            <ArrowLeft aria-hidden="true" className="size-4" /> All Projects
+          </Link>
+          <div className="mt-8 flex flex-wrap gap-3 text-xs font-medium">
+            <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-2 text-accent">{project.tag}</span>
+            <span className="rounded-full border border-white/10 px-3 py-2 text-muted-foreground">Case study draft</span>
+          </div>
+          <h1 className="text-display mt-6 max-w-4xl text-4xl font-medium leading-tight sm:text-6xl">{project.title}</h1>
+          <p className="mt-6 max-w-3xl text-base leading-8 text-muted-foreground">{project.summary}</p>
+          <dl className="mt-8 grid gap-6 border-y border-white/10 py-6 sm:grid-cols-2">
+            <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-2 text-sm font-medium">{study.role}</dd></div>
+            <div><dt className="text-xs text-muted-foreground">Current Status</dt><dd className="mt-2 text-sm font-medium">{study.status}</dd></div>
+          </dl>
+          <p className="mt-5 text-sm leading-7 text-muted-foreground">The role and project status are confirmed. Sections marked Placeholder contain details that will be added to complete the case study.</p>
+        </Reveal>
 
-            {/* Main Interactive Screen Showcase */}
-            <div
-              onClick={() => openLightbox(activeScreenIndex)}
-              className="relative aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden rounded-xl bg-black/80 cursor-zoom-in group border border-white/10"
-            >
-              <img
-                src={currentActiveScreen.src}
-                alt={currentActiveScreen.label}
-                className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-              />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <span className="text-mono text-xs uppercase tracking-widest text-background bg-accent px-4 py-2 rounded-md font-semibold shadow-lg">
-                  Click for Full-Screen View
-                </span>
-              </div>
-            </div>
+        {project.previewNote && <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-muted-foreground">{project.previewNote}</p>}
 
-            {/* Thumbnail Navigation Strip */}
-            {project.screens.length > 1 && (
-              <div className="mt-6">
-                <span className="text-mono text-[10px] uppercase tracking-widest text-muted-foreground block mb-3 px-1">
-                  Select Screen Artifact ({activeScreenIndex + 1} of {project.screens.length})
-                </span>
-                <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-3">
-                  {project.screens.map((screen, idx) => {
-                    const isSelected = activeScreenIndex === idx;
-                    return (
-                      <button
-                        key={`${screen.label}-${idx}`}
-                        onClick={() => setActiveScreenIndex(idx)}
-                        className={`relative aspect-[4/3] overflow-hidden rounded-lg border transition-all text-left ${isSelected
-                            ? "border-accent ring-2 ring-accent/30 shadow-lg scale-105 z-10"
-                            : "border-white/10 opacity-60 hover:opacity-100 hover:border-white/30"
-                          }`}
-                      >
-                        <img
-                          src={screen.src}
-                          alt={screen.label}
-                          className="h-full w-full object-cover object-top"
-                        />
-                        <div className="absolute inset-x-0 bottom-0 bg-black/80 px-1.5 py-0.5 truncate text-[8px] text-mono text-white/80">
-                          {screen.label}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
+        <div className="mt-10">
+          <Reveal>
+            <button type="button" onClick={() => openImage(activeIndex)} aria-label={`Expand ${activeScreen.label}`} className={`group block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-3 sm:p-5 ${focusClass}`}>
+              <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[65vh] w-full rounded-lg object-contain" />
+              <span className="mt-4 flex items-center justify-between gap-3 text-left text-sm"><span>{activeScreen.label}</span><span className="inline-flex items-center gap-2 text-accent"><Maximize2 aria-hidden="true" className="size-4" /> Expand</span></span>
+            </button>
+            {screens.length > 1 && (
+              <div aria-label="Choose project preview" className="mt-4 flex flex-wrap gap-2">
+                {screens.map((screen, index) => (
+                  <button key={`${screen.label}-${index}`} type="button" aria-pressed={activeIndex === index} onClick={() => setActiveIndex(index)} className={`min-h-11 rounded-lg border px-3 py-2 text-xs ${focusClass} ${activeIndex === index ? "border-accent/40 bg-accent/10 text-accent" : "border-white/10 text-muted-foreground hover:text-foreground"}`}>{screen.label}</button>
+                ))}
               </div>
             )}
-          </div>
-        </Reveal>
-      </section>
+          </Reveal>
+        </div>
 
-      {/* ── ALL SCREEN ARTIFACTS GALLERY GRID ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-16">
-        <Reveal>
-          <div className="text-mono mb-2 text-xs uppercase tracking-[0.25em] text-accent">
-            / 02 — Screen Artifacts
-          </div>
-          <h2 className="text-display text-2xl sm:text-3xl font-medium text-foreground mb-8">
-            Complete Screen Showcase ({project.screens.length})
-          </h2>
-        </Reveal>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {project.screens.map((screen, idx) => (
-            <Reveal key={`${screen.label}-grid-${idx}`} delay={idx * 50}>
-              <div
-                onClick={() => openLightbox(idx)}
-                className="glass-card glass-card-hover group cursor-pointer overflow-hidden rounded-xl border border-white/10 flex flex-col justify-between"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden bg-black/60">
-                  <img
-                    src={screen.src}
-                    alt={screen.label}
-                    loading="lazy"
-                    className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <span className="text-mono text-[10px] uppercase tracking-widest text-accent bg-background/90 border border-accent/30 px-3 py-1.5 rounded backdrop-blur">
-                      Expand Lightbox 🔍
-                    </span>
+        <div className="mt-16 lg:grid lg:grid-cols-12 lg:gap-12">
+          <aside className="mb-8 lg:col-span-3">
+            <nav aria-label="Case study sections" className="lg:sticky lg:top-24">
+              <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">Inside the Case Study</p>
+              <ol className="flex flex-wrap gap-2 lg:flex-col">
+                {study.sections.map((section, index) => (
+                  <li key={section.title}><a href={`#case-section-${index}`} className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-muted-foreground hover:bg-white/5 hover:text-accent ${focusClass}`}>{String(index + 1).padStart(2, "0")} · {section.title}</a></li>
+                ))}
+              </ol>
+            </nav>
+          </aside>
+          <div className="space-y-6 lg:col-span-9">
+            {study.sections.map((section, index) => (
+              <section key={section.title} id={`case-section-${index}`} aria-labelledby={`case-heading-${index}`} className="scroll-mt-24 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+                <Reveal>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
+                    <h2 id={`case-heading-${index}`} className="text-display text-2xl font-medium">{section.title}</h2>
+                    {section.draft && <span className="rounded-full border border-white/15 px-2.5 py-1 text-xs text-muted-foreground">Placeholder</span>}
                   </div>
-                </div>
-
-                <div className="p-4 flex items-center justify-between border-t border-white/5 bg-black/40">
-                  <span className="text-mono text-xs text-foreground font-medium truncate">
-                    {screen.label}
-                  </span>
-                  <span className="text-mono text-[10px] text-accent">
-                    0{idx + 1}
-                  </span>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── NAVIGATION FOOTER ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-12 mb-12">
-        <Reveal>
-          <div className="glass-card rounded-xl border border-white/10 p-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-            <div>
-              <span className="text-mono text-xs uppercase tracking-widest text-accent block mb-1">
-                Explore More Works
-              </span>
-              <h3 className="text-display text-xl font-bold text-foreground">
-                Looking for another case study or custom design system?
-              </h3>
-            </div>
-            <div className="flex items-center gap-4">
-              <Link
-                to="/projects"
-                className="text-mono inline-flex h-11 items-center rounded-md border border-white/20 bg-transparent px-5 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:border-accent/40"
-              >
-                All Projects
-              </Link>
-              <Link
-                to="/contact"
-                className="text-mono inline-flex h-11 items-center rounded-md bg-accent px-5 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-transform hover:-translate-y-0.5"
-              >
-                Hire Nico
-              </Link>
-            </div>
+                  <p className="mt-5 text-base leading-8 text-muted-foreground">{section.body}</p>
+                  {section.items && <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-7 text-muted-foreground">{section.items.map((item) => <li key={item}>{item}</li>)}</ul>}
+                  {section.title === "Deliverables" && <ul className="mt-5 flex flex-wrap gap-2">{screens.map((screen, screenIndex) => <li key={`${screen.label}-${screenIndex}`}><button type="button" onClick={() => openImage(screenIndex)} className={`min-h-11 rounded-lg border border-white/10 px-3 py-2 text-sm text-accent hover:bg-white/5 ${focusClass}`}>{screen.label} ↗</button></li>)}</ul>}
+                </Reveal>
+              </section>
+            ))}
           </div>
-        </Reveal>
-      </section>
-
-      {/* ── FULL-SCREEN HIGH-RES LIGHTBOX MODAL ── */}
-      {lightboxOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-md p-4 sm:p-8 animate-fade-in">
-          {/* Close button */}
-          <button
-            onClick={closeLightbox}
-            aria-label="Close Lightbox"
-            className="absolute top-6 right-6 z-50 text-white/70 hover:text-accent text-sm text-mono bg-white/10 border border-white/20 px-4 py-2 rounded-lg transition-colors"
-          >
-            ✕ ESC
-          </button>
-
-          {/* Navigation Prev Button */}
-          {project.screens.length > 1 && (
-            <button
-              onClick={prevLightboxImage}
-              aria-label="Previous Image"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-50 text-white/70 hover:text-accent text-2xl bg-black/60 border border-white/10 p-3 rounded-full transition-all hover:scale-110"
-            >
-              ←
-            </button>
-          )}
-
-          {/* Lightbox High-Res Container */}
-          <div className="relative max-w-6xl max-h-[85vh] flex flex-col items-center justify-center">
-            <img
-              src={currentLightboxScreen.src}
-              alt={currentLightboxScreen.label}
-              className="max-h-[75vh] w-auto object-contain rounded-lg border border-white/20 shadow-2xl"
-            />
-
-            {/* Screen Caption Bar */}
-            <div className="mt-4 flex items-center justify-between gap-6 w-full max-w-2xl px-4 py-2 rounded-lg bg-black/60 border border-white/10 text-mono text-xs">
-              <span className="text-accent font-semibold">
-                {currentLightboxScreen.label}
-              </span>
-              <span className="text-white/60">
-                {lightboxIndex + 1} of {project.screens.length}
-              </span>
-            </div>
-          </div>
-
-          {/* Navigation Next Button */}
-          {project.screens.length > 1 && (
-            <button
-              onClick={nextLightboxImage}
-              aria-label="Next Image"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-50 text-white/70 hover:text-accent text-2xl bg-black/60 border border-white/10 p-3 rounded-full transition-all hover:scale-110"
-            >
-              →
-            </button>
-          )}
         </div>
-      )}
 
+        <section aria-labelledby="gallery-heading" className="mt-16">
+          <h2 id="gallery-heading" className="text-display text-3xl font-medium">Project Gallery</h2>
+          <p className="mt-3 text-sm text-muted-foreground">Select a preview to view it at a larger size.</p>
+          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {screens.map((screen, index) => (
+              <Reveal key={`${screen.label}-gallery-${index}`} delay={(index % 3) * 60}>
+                <button type="button" onClick={() => openImage(index)} className={`project-card group block h-full w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] text-left ${focusClass}`}>
+                  <div className="overflow-hidden p-3"><img src={screen.src} alt={`${project.title} — ${screen.label}`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-md object-contain" /></div>
+                  <span className="flex items-center justify-between gap-3 border-t border-white/10 p-4 text-sm"><span>{screen.label}</span><Maximize2 aria-hidden="true" className="size-4 shrink-0 text-accent" /></span>
+                </button>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-5 border-t border-white/10 pt-8">
+          <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
+          <Link to="/" hash="contact" className={`inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-background ${focusClass}`}>Let’s Talk <ArrowUpRight aria-hidden="true" className="size-4" /></Link>
+        </div>
+      </main>
+      <Footer />
+
+      {/* Native dialog provides Escape handling, focus containment and restoration. */}
+      <dialog ref={dialogRef} aria-label={`${project.title} image viewer`} onKeyDown={(event) => {
+        if (event.key === "ArrowRight") { event.preventDefault(); changeImage(1); }
+        if (event.key === "ArrowLeft") { event.preventDefault(); changeImage(-1); }
+      }} className="fixed inset-0 m-auto max-h-[94dvh] w-[calc(100%-2rem)] max-w-6xl overflow-auto rounded-2xl border border-white/20 bg-background p-4 text-foreground shadow-2xl backdrop:bg-black/90 sm:p-6">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <p className="text-sm font-medium">{activeScreen.label}</p>
+          <button type="button" autoFocus onClick={() => dialogRef.current?.close()} aria-label="Close image viewer" className={`flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/15 ${focusClass}`}><X aria-hidden="true" className="size-5" /></button>
+        </div>
+        <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[70dvh] w-full object-contain" />
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(-1)} aria-label="Previous image" className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /></button>
+          <p aria-live="polite" className="text-xs text-muted-foreground">{activeIndex + 1} of {screens.length}</p>
+          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(1)} aria-label="Next image" className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}><ArrowRight aria-hidden="true" className="size-4" /></button>
+        </div>
+      </dialog>
+    </div>
+  );
+}
+
+function ProjectNotFound() {
+  return <div className="min-h-screen bg-background text-foreground"><Nav /><main className="mx-auto max-w-3xl px-6 py-24 text-center"><h1 className="text-display text-3xl">Project not found.</h1><Link to="/projects" className={`mt-6 inline-flex min-h-11 items-center rounded-lg px-4 text-accent ${focusClass}`}>View All Projects</Link></main><Footer /></div>;
+}
+
+function OngoingPreview({ project }: { project: Project }) {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <Nav />
+      <main className="mx-auto max-w-5xl px-5 py-16 sm:px-6">
+        <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-lg text-sm text-accent ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
+        <p className="mt-8 text-sm text-accent">Ongoing</p>
+        <h1 className="text-display mt-4 text-4xl font-medium">{project.title}</h1>
+        <img src={project.cover} alt={`${project.title} design preview`} className="mt-8 h-auto w-full rounded-2xl border border-white/10" />
+        <p className="mt-6 text-sm text-muted-foreground">This project is ongoing. A full case study will be added later.</p>
+      </main>
       <Footer />
     </div>
   );

@@ -1,165 +1,86 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
-import { Ambient } from "@/components/site/Ambient";
 import { Reveal } from "@/components/site/Reveal";
-import { DESIGN_PROJECTS } from "@/lib/site-data";
+import { PORTFOLIO_PROJECTS } from "@/lib/portfolio-projects";
+
+const focusClass = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background";
 
 export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
-      { title: "Projects — Nico Centeno" },
-      {
-        name: "description",
-        content: "Archive of UI/UX design case studies and digital product architecture by Nico Centeno.",
-      },
-    ],
+      { title: "Projects | Nico Centeno" },
+      { name: "description", content: "UI/UX design and project management work, featuring Lodging Technologies and Everest Energy Solutions." },
+    ]
   }),
-  component: ProjectsIndex,
+  component: ProjectsPage,
 });
 
-function ProjectsIndex() {
-  const featuredProject = DESIGN_PROJECTS[0];
-  const gridProjects = DESIGN_PROJECTS.slice(1);
-
+function ProjectsPage() {
+  const featuredProjects = PORTFOLIO_PROJECTS.filter((project) => project.hasCaseStudy);
+  const ongoingProjects = PORTFOLIO_PROJECTS.filter((project) => !project.hasCaseStudy);
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
-
-      {/* ── HEADER SECTION ── */}
-      <section className="relative overflow-hidden pt-24 pb-16">
-        <Ambient />
-        <div className="relative mx-auto max-w-7xl px-6">
-          <Reveal>
-            <div className="text-mono mb-4 text-xs uppercase tracking-[0.25em] text-accent flex items-center gap-2">
-              <span className="pulse-dot size-1.5 rounded-full bg-accent" />
-              / 03 — Artifacts &amp; Case Studies
-            </div>
-            <h1 className="text-display text-4xl font-medium leading-tight sm:text-6xl lg:text-7xl">
-              Selected <span className="neon-text text-accent">Projects.</span>
-            </h1>
-            <p className="mt-4 max-w-xl text-sm sm:text-base leading-relaxed text-muted-foreground">
-              A comprehensive showcase of high-precision UI/UX systems, web application interfaces, mobile app concepts, and design system registries engineered in Figma.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── FEATURED WIDE PROJECT SHOWCASE (EES) ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto max-w-7xl px-5 py-16 sm:px-6 sm:py-24">
         <Reveal>
-          <div className="text-mono mb-6 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            Featured Case Study
-          </div>
-          <Link
-            to="/projects/$slug"
-            params={{ slug: featuredProject.slug }}
-            className="glass-card glass-card-hover group block overflow-hidden rounded-2xl border border-white/10"
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-              <div className="lg:col-span-8 relative aspect-[16/9] lg:aspect-auto overflow-hidden bg-black/60">
-                <img
-                  src={featuredProject.cover}
-                  alt={featuredProject.title}
-                  loading="eager"
-                  className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent lg:hidden" />
-              </div>
-              <div className="lg:col-span-4 p-8 sm:p-10 flex flex-col justify-between">
-                <div>
-                  <span className="text-mono text-[10px] uppercase tracking-[0.2em] text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20 block w-fit mb-4">
-                    {featuredProject.tag}
-                  </span>
-                  <h2 className="text-display text-2xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
-                    {featuredProject.title}
-                  </h2>
-                  <p className="text-xs text-muted-foreground leading-relaxed mb-6">
-                    {featuredProject.summary}
-                  </p>
-                </div>
-
-                <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-mono text-[11px] text-accent font-semibold flex items-center gap-2">
-                    Explore Case Study &amp; 9 Screen Artifacts →
-                  </span>
-                  <span className="text-mono text-[10px] text-muted-foreground">Complete</span>
-                </div>
-              </div>
-            </div>
-          </Link>
+          <p className="text-xs uppercase tracking-widest text-accent">Selected Work</p>
+          <h1 className="text-display mt-4 text-4xl font-medium sm:text-6xl">Projects & Case Studies</h1>
+          <p className="mb-10 mt-5 max-w-2xl text-base leading-8 text-muted-foreground">UI/UX design and project management across phased implementations and completed digital experiences.</p>
         </Reveal>
-      </section>
-
-      {/* ── PROJECT ARCHIVE GRID ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-16">
-        <Reveal>
-          <div className="text-mono mb-8 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-            A · UI/UX &amp; Active Projects
-          </div>
-        </Reveal>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {gridProjects.map((project, idx) => (
-            <Reveal key={project.slug} delay={idx * 80}>
-              <Link
-                to="/projects/$slug"
-                params={{ slug: project.slug }}
-                className="glass-card glass-card-hover group block overflow-hidden rounded-xl border border-white/10 h-full flex flex-col justify-between"
-              >
-                <div>
-                  <div className="relative aspect-[4/3] overflow-hidden bg-black/50">
-                    <img
-                      src={project.cover}
-                      alt={project.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute left-3 top-3 rounded bg-background/80 px-2.5 py-1 text-mono text-[9px] uppercase tracking-wider text-foreground backdrop-blur border border-white/10">
-                      {project.tag}
-                    </div>
+        <div className="space-y-6">
+          {featuredProjects.map((project, index) => (
+            <Reveal key={project.slug} delay={index * 80}>
+              <article className="project-card group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+                <div className="grid lg:grid-cols-5">
+                  <div className="flex min-w-0 items-center overflow-hidden bg-white/[0.03] p-3 sm:p-5 lg:col-span-3">
+                    {project.cover ? (
+                      <img src={project.cover} alt={`${project.title} — ${project.previewNote ? "temporary design preview" : "website preview"}`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                    ) : (
+                      <p className="flex aspect-[16/10] w-full items-center justify-center p-8 text-center text-sm text-muted-foreground">Project screenshots coming soon.</p>
+                    )}
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-display text-lg font-medium text-foreground group-hover:text-accent transition-colors mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
-                      {project.summary}
-                    </p>
+                  <div className="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2">
+                    <p className="text-xs font-medium uppercase tracking-widest text-accent">{index === 0 ? "01 / Lead Project" : "02 / Completed Project"}</p>
+                    <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">{project.title}</h3>
+                    <p className="mt-4 text-sm leading-7 text-muted-foreground">{project.summary}</p>
+                    <dl className="mt-6 space-y-4 border-t border-white/10 pt-5">
+                      <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-1 text-sm font-medium">{project.role}</dd></div>
+                      <div><dt className="text-xs text-muted-foreground">Status</dt><dd className="mt-1 text-sm text-accent">{project.status}</dd></div>
+                    </dl>
+                    <Link to="/projects/$slug" params={{ slug: project.slug }} className={`mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-lg text-sm font-medium text-accent ${focusClass}`}>
+                      View Case Study <ArrowUpRight aria-hidden="true" className="project-arrow size-4" />
+                    </Link>
                   </div>
                 </div>
-
-                <div className="px-6 pb-6 pt-2">
-                  <span className="text-mono text-[10px] text-accent uppercase tracking-widest group-hover:underline flex items-center gap-1">
-                    View Project Screens →
-                  </span>
-                </div>
-              </Link>
+                {project.previewNote && <p className="border-t border-white/10 px-6 py-4 text-xs leading-6 text-muted-foreground">{project.previewNote}</p>}
+              </article>
             </Reveal>
           ))}
         </div>
-      </section>
 
-      {/* ── FOOTER CALLOUT ── */}
-      <section className="relative mx-auto max-w-7xl px-6 py-16 mb-12">
-        <Reveal>
-          <div className="glass-card rounded-xl border border-white/10 p-8 sm:p-12 text-center">
-            <div className="text-mono mb-2 text-xs uppercase tracking-[0.25em] text-accent">
-              / 04 — Need a custom design system?
-            </div>
-            <h2 className="text-display text-2xl sm:text-3xl font-medium text-foreground mb-4">
-              Let's turn your product ideas into production-ready interfaces.
-            </h2>
-            <Link
-              to="/contact"
-              className="text-mono inline-flex h-11 items-center rounded-md bg-accent px-6 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-transform hover:-translate-y-0.5"
-            >
-              Start a Conversation →
-            </Link>
+        <div className="mt-12">
+          <h3 className="text-display text-2xl font-medium">More Work in Progress</h3>
+          <p className="mt-3 text-sm leading-7 text-muted-foreground">A preview of ongoing design projects. Full case studies will follow.</p>
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {ongoingProjects.map((project, index) => (
+              <Reveal key={project.slug} delay={index * 70} className="h-full">
+                <article className="project-card group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+                  <div className="overflow-hidden bg-white/[0.03] p-3">
+                    <img src={project.cover} alt={`${project.title} design preview`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 p-5">
+                    <h4 className="text-base font-medium">{project.title}</h4>
+                    <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs text-accent">Ongoing</span>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
           </div>
-        </Reveal>
-      </section>
-
+        </div>
+      </main>
       <Footer />
     </div>
   );

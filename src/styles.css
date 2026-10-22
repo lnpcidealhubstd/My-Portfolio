@@ -645,3 +645,57 @@
     transform: none;
   }
 }
+
+/* Featured project interactions */
+
+.project-card {
+  transition:
+    transform 280ms ease,
+    border-color 280ms ease,
+    box-shadow 280ms ease;
+}
+
+.project-preview {
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-arrow {
+  transition: transform 250ms ease;
+}
+
+/* Keyboard focus */
+.project-card:focus-visible {
+  border-color: var(--accent);
+}
+
+.project-card:focus-visible .project-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Hover effects for devices with a mouse */
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover {
+    transform: translateY(-4px);
+    border-color: oklch(0.82 0.18 195 / 40%);
+    box-shadow: 0 16px 40px -24px oklch(0.82 0.18 195 / 25%);
+  }
+
+  .project-card:hover .project-preview {
+    transform: scale(1.025);
+  }
+
+  .project-card:hover .project-arrow {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .project-card,
+  .project-preview,
+  .project-arrow {
+    transition: none !important;
+    transform: none !important;
+  }
+}
