@@ -12,7 +12,8 @@ import {
   type Screen,
 } from "@/lib/portfolio-projects";
 
-const focusClass = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background";
+const focusClass =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background";
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
@@ -23,7 +24,10 @@ export const Route = createFileRoute("/projects/$slug")({
   head: ({ loaderData }) => ({
     meta: [
       { title: `${loaderData?.project.title ?? "Project"} | Nico Centeno` },
-      { name: "description", content: loaderData?.project.summary ?? "Design project by Nico Centeno." },
+      {
+        name: "description",
+        content: loaderData?.project.summary ?? "Design project by Nico Centeno.",
+      },
     ],
   }),
   notFoundComponent: ProjectNotFound,
@@ -58,34 +62,80 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
       <Nav />
       <main className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-20">
         <Reveal>
-          <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-md text-sm text-muted-foreground hover:text-accent ${focusClass}`}>
+          <Link
+            to="/projects"
+            className={`inline-flex min-h-11 items-center gap-2 rounded-md text-sm text-muted-foreground hover:text-accent ${focusClass}`}
+          >
             <ArrowLeft aria-hidden="true" className="size-4" /> All Projects
           </Link>
           <div className="mt-8 flex flex-wrap gap-3 text-xs font-medium">
-            <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-2 text-accent">{project.tag}</span>
-            <span className="rounded-full border border-white/10 px-3 py-2 text-muted-foreground">Case study draft</span>
+            <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-2 text-accent">
+              {project.tag}
+            </span>
+            <span className="rounded-full border border-white/10 px-3 py-2 text-muted-foreground">
+              Case study draft
+            </span>
           </div>
-          <h1 className="text-display mt-6 max-w-4xl text-4xl font-medium leading-tight sm:text-6xl">{project.title}</h1>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-muted-foreground">{project.summary}</p>
+          <h1 className="text-display mt-6 max-w-4xl text-4xl font-medium leading-tight sm:text-6xl">
+            {project.title}
+          </h1>
+          <p className="mt-6 max-w-3xl text-base leading-8 text-muted-foreground">
+            {project.summary}
+          </p>
           <dl className="mt-8 grid gap-6 border-y border-white/10 py-6 sm:grid-cols-2">
-            <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-2 text-sm font-medium">{study.role}</dd></div>
-            <div><dt className="text-xs text-muted-foreground">Current Status</dt><dd className="mt-2 text-sm font-medium">{study.status}</dd></div>
+            <div>
+              <dt className="text-xs text-muted-foreground">My Role</dt>
+              <dd className="mt-2 text-sm font-medium">{study.role}</dd>
+            </div>
+            <div>
+              <dt className="text-xs text-muted-foreground">Current Status</dt>
+              <dd className="mt-2 text-sm font-medium">{study.status}</dd>
+            </div>
           </dl>
-          <p className="mt-5 text-sm leading-7 text-muted-foreground">The role and project status are confirmed. Sections marked Placeholder contain details that will be added to complete the case study.</p>
+          <p className="mt-5 text-sm leading-7 text-muted-foreground">
+            The role and project status are confirmed. Sections marked Placeholder contain details
+            that will be added to complete the case study.
+          </p>
         </Reveal>
 
-        {project.previewNote && <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-muted-foreground">{project.previewNote}</p>}
+        {project.previewNote && (
+          <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-muted-foreground">
+            {project.previewNote}
+          </p>
+        )}
 
         <div className="mt-10">
           <Reveal>
-            <button type="button" onClick={() => openImage(activeIndex)} aria-label={`Expand ${activeScreen.label}`} className={`group block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-3 sm:p-5 ${focusClass}`}>
-              <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[65vh] w-full rounded-lg object-contain" />
-              <span className="mt-4 flex items-center justify-between gap-3 text-left text-sm"><span>{activeScreen.label}</span><span className="inline-flex items-center gap-2 text-accent"><Maximize2 aria-hidden="true" className="size-4" /> Expand</span></span>
+            <button
+              type="button"
+              onClick={() => openImage(activeIndex)}
+              aria-label={`Expand ${activeScreen.label}`}
+              className={`group block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-3 sm:p-5 ${focusClass}`}
+            >
+              <img
+                src={activeScreen.src}
+                alt={`${project.title} — ${activeScreen.label}`}
+                className="max-h-[65vh] w-full rounded-lg object-contain"
+              />
+              <span className="mt-4 flex items-center justify-between gap-3 text-left text-sm">
+                <span>{activeScreen.label}</span>
+                <span className="inline-flex items-center gap-2 text-accent">
+                  <Maximize2 aria-hidden="true" className="size-4" /> Expand
+                </span>
+              </span>
             </button>
             {screens.length > 1 && (
               <div aria-label="Choose project preview" className="mt-4 flex flex-wrap gap-2">
                 {screens.map((screen, index) => (
-                  <button key={`${screen.label}-${index}`} type="button" aria-pressed={activeIndex === index} onClick={() => setActiveIndex(index)} className={`min-h-11 rounded-lg border px-3 py-2 text-xs ${focusClass} ${activeIndex === index ? "border-accent/40 bg-accent/10 text-accent" : "border-white/10 text-muted-foreground hover:text-foreground"}`}>{screen.label}</button>
+                  <button
+                    key={`${screen.label}-${index}`}
+                    type="button"
+                    aria-pressed={activeIndex === index}
+                    onClick={() => setActiveIndex(index)}
+                    className={`min-h-11 rounded-lg border px-3 py-2 text-xs ${focusClass} ${activeIndex === index ? "border-accent/40 bg-accent/10 text-accent" : "border-white/10 text-muted-foreground hover:text-foreground"}`}
+                  >
+                    {screen.label}
+                  </button>
                 ))}
               </div>
             )}
@@ -95,26 +145,68 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
         <div className="mt-16 lg:grid lg:grid-cols-12 lg:gap-12">
           <aside className="mb-8 lg:col-span-3">
             <nav aria-label="Case study sections" className="lg:sticky lg:top-24">
-              <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">Inside the Case Study</p>
+              <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">
+                Inside the Case Study
+              </p>
               <ol className="flex flex-wrap gap-2 lg:flex-col">
                 {study.sections.map((section, index) => (
-                  <li key={section.title}><a href={`#case-section-${index}`} className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-muted-foreground hover:bg-white/5 hover:text-accent ${focusClass}`}>{String(index + 1).padStart(2, "0")} · {section.title}</a></li>
+                  <li key={section.title}>
+                    <a
+                      href={`#case-section-${index}`}
+                      className={`inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-muted-foreground hover:bg-white/5 hover:text-accent ${focusClass}`}
+                    >
+                      {String(index + 1).padStart(2, "0")} · {section.title}
+                    </a>
+                  </li>
                 ))}
               </ol>
             </nav>
           </aside>
           <div className="space-y-6 lg:col-span-9">
             {study.sections.map((section, index) => (
-              <section key={section.title} id={`case-section-${index}`} aria-labelledby={`case-heading-${index}`} className="scroll-mt-24 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+              <section
+                key={section.title}
+                id={`case-section-${index}`}
+                aria-labelledby={`case-heading-${index}`}
+                className="scroll-mt-24 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8"
+              >
                 <Reveal>
                   <div className="flex flex-wrap items-center gap-3">
-                    <span className="text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
-                    <h2 id={`case-heading-${index}`} className="text-display text-2xl font-medium">{section.title}</h2>
-                    {section.draft && <span className="rounded-full border border-white/15 px-2.5 py-1 text-xs text-muted-foreground">Placeholder</span>}
+                    <span className="text-xs text-accent">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <h2 id={`case-heading-${index}`} className="text-display text-2xl font-medium">
+                      {section.title}
+                    </h2>
+                    {section.draft && (
+                      <span className="rounded-full border border-white/15 px-2.5 py-1 text-xs text-muted-foreground">
+                        Placeholder
+                      </span>
+                    )}
                   </div>
                   <p className="mt-5 text-base leading-8 text-muted-foreground">{section.body}</p>
-                  {section.items && <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-7 text-muted-foreground">{section.items.map((item) => <li key={item}>{item}</li>)}</ul>}
-                  {section.title === "Deliverables" && <ul className="mt-5 flex flex-wrap gap-2">{screens.map((screen, screenIndex) => <li key={`${screen.label}-${screenIndex}`}><button type="button" onClick={() => openImage(screenIndex)} className={`min-h-11 rounded-lg border border-white/10 px-3 py-2 text-sm text-accent hover:bg-white/5 ${focusClass}`}>{screen.label} ↗</button></li>)}</ul>}
+                  {section.items && (
+                    <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-7 text-muted-foreground">
+                      {section.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {section.title === "Deliverables" && (
+                    <ul className="mt-5 flex flex-wrap gap-2">
+                      {screens.map((screen, screenIndex) => (
+                        <li key={`${screen.label}-${screenIndex}`}>
+                          <button
+                            type="button"
+                            onClick={() => openImage(screenIndex)}
+                            className={`min-h-11 rounded-lg border border-white/10 px-3 py-2 text-sm text-accent hover:bg-white/5 ${focusClass}`}
+                          >
+                            {screen.label} ↗
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </Reveal>
               </section>
             ))}
@@ -122,14 +214,32 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
         </div>
 
         <section aria-labelledby="gallery-heading" className="mt-16">
-          <h2 id="gallery-heading" className="text-display text-3xl font-medium">Project Gallery</h2>
-          <p className="mt-3 text-sm text-muted-foreground">Select a preview to view it at a larger size.</p>
+          <h2 id="gallery-heading" className="text-display text-3xl font-medium">
+            Project Gallery
+          </h2>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Select a preview to view it at a larger size.
+          </p>
           <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {screens.map((screen, index) => (
               <Reveal key={`${screen.label}-gallery-${index}`} delay={(index % 3) * 60}>
-                <button type="button" onClick={() => openImage(index)} className={`project-card group block h-full w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] text-left ${focusClass}`}>
-                  <div className="overflow-hidden p-3"><img src={screen.src} alt={`${project.title} — ${screen.label}`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-md object-contain" /></div>
-                  <span className="flex items-center justify-between gap-3 border-t border-white/10 p-4 text-sm"><span>{screen.label}</span><Maximize2 aria-hidden="true" className="size-4 shrink-0 text-accent" /></span>
+                <button
+                  type="button"
+                  onClick={() => openImage(index)}
+                  className={`project-card group block h-full w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] text-left ${focusClass}`}
+                >
+                  <div className="overflow-hidden p-3">
+                    <img
+                      src={screen.src}
+                      alt={`${project.title} — ${screen.label}`}
+                      loading="lazy"
+                      className="project-preview aspect-[16/10] w-full rounded-md object-contain"
+                    />
+                  </div>
+                  <span className="flex items-center justify-between gap-3 border-t border-white/10 p-4 text-sm">
+                    <span>{screen.label}</span>
+                    <Maximize2 aria-hidden="true" className="size-4 shrink-0 text-accent" />
+                  </span>
                 </button>
               </Reveal>
             ))}
@@ -137,26 +247,78 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
         </section>
 
         <div className="mt-16 flex flex-wrap items-center justify-between gap-5 border-t border-white/10 pt-8">
-          <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
-          <Link to="/" hash="contact" className={`inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-background ${focusClass}`}>Let’s Talk <ArrowUpRight aria-hidden="true" className="size-4" /></Link>
+          <Link
+            to="/projects"
+            className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm ${focusClass}`}
+          >
+            <ArrowLeft aria-hidden="true" className="size-4" /> All Projects
+          </Link>
+          <Link
+            to="/"
+            hash="contact"
+            className={`inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-background ${focusClass}`}
+          >
+            Let’s Talk <ArrowUpRight aria-hidden="true" className="size-4" />
+          </Link>
         </div>
       </main>
       <Footer />
 
       {/* Native dialog provides Escape handling, focus containment and restoration. */}
-      <dialog ref={dialogRef} aria-label={`${project.title} image viewer`} onKeyDown={(event) => {
-        if (event.key === "ArrowRight") { event.preventDefault(); changeImage(1); }
-        if (event.key === "ArrowLeft") { event.preventDefault(); changeImage(-1); }
-      }} className="fixed inset-0 m-auto max-h-[94dvh] w-[calc(100%-2rem)] max-w-6xl overflow-auto rounded-2xl border border-white/20 bg-background p-4 text-foreground shadow-2xl backdrop:bg-black/90 sm:p-6">
+      <dialog
+        ref={dialogRef}
+        aria-label={`${project.title} image viewer`}
+        onKeyDown={(event) => {
+          if (event.key === "ArrowRight") {
+            event.preventDefault();
+            changeImage(1);
+          }
+          if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            changeImage(-1);
+          }
+        }}
+        className="fixed inset-0 m-auto max-h-[94dvh] w-[calc(100%-2rem)] max-w-6xl overflow-auto rounded-2xl border border-white/20 bg-background p-4 text-foreground shadow-2xl backdrop:bg-black/90 sm:p-6"
+      >
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-sm font-medium">{activeScreen.label}</p>
-          <button type="button" autoFocus onClick={() => dialogRef.current?.close()} aria-label="Close image viewer" className={`flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/15 ${focusClass}`}><X aria-hidden="true" className="size-5" /></button>
+          <button
+            type="button"
+            autoFocus
+            onClick={() => dialogRef.current?.close()}
+            aria-label="Close image viewer"
+            className={`flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/15 ${focusClass}`}
+          >
+            <X aria-hidden="true" className="size-5" />
+          </button>
         </div>
-        <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[70dvh] w-full object-contain" />
+        <img
+          src={activeScreen.src}
+          alt={`${project.title} — ${activeScreen.label}`}
+          className="max-h-[70dvh] w-full object-contain"
+        />
         <div className="mt-4 flex items-center justify-between gap-3">
-          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(-1)} aria-label="Previous image" className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /></button>
-          <p aria-live="polite" className="text-xs text-muted-foreground">{activeIndex + 1} of {screens.length}</p>
-          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(1)} aria-label="Next image" className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}><ArrowRight aria-hidden="true" className="size-4" /></button>
+          <button
+            type="button"
+            disabled={screens.length < 2}
+            onClick={() => changeImage(-1)}
+            aria-label="Previous image"
+            className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}
+          >
+            <ArrowLeft aria-hidden="true" className="size-4" />
+          </button>
+          <p aria-live="polite" className="text-xs text-muted-foreground">
+            {activeIndex + 1} of {screens.length}
+          </p>
+          <button
+            type="button"
+            disabled={screens.length < 2}
+            onClick={() => changeImage(1)}
+            aria-label="Next image"
+            className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}
+          >
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </button>
         </div>
       </dialog>
     </div>
@@ -164,7 +326,21 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
 }
 
 function ProjectNotFound() {
-  return <div className="min-h-screen bg-background text-foreground"><Nav /><main className="mx-auto max-w-3xl px-6 py-24 text-center"><h1 className="text-display text-3xl">Project not found.</h1><Link to="/projects" className={`mt-6 inline-flex min-h-11 items-center rounded-lg px-4 text-accent ${focusClass}`}>View All Projects</Link></main><Footer /></div>;
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <Nav />
+      <main className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <h1 className="text-display text-3xl">Project not found.</h1>
+        <Link
+          to="/projects"
+          className={`mt-6 inline-flex min-h-11 items-center rounded-lg px-4 text-accent ${focusClass}`}
+        >
+          View All Projects
+        </Link>
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
 function OngoingPreview({ project }: { project: Project }) {
@@ -172,11 +348,22 @@ function OngoingPreview({ project }: { project: Project }) {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <main className="mx-auto max-w-5xl px-5 py-16 sm:px-6">
-        <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-lg text-sm text-accent ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
+        <Link
+          to="/projects"
+          className={`inline-flex min-h-11 items-center gap-2 rounded-lg text-sm text-accent ${focusClass}`}
+        >
+          <ArrowLeft aria-hidden="true" className="size-4" /> All Projects
+        </Link>
         <p className="mt-8 text-sm text-accent">Ongoing</p>
         <h1 className="text-display mt-4 text-4xl font-medium">{project.title}</h1>
-        <img src={project.cover} alt={`${project.title} design preview`} className="mt-8 h-auto w-full rounded-2xl border border-white/10" />
-        <p className="mt-6 text-sm text-muted-foreground">This project is ongoing. A full case study will be added later.</p>
+        <img
+          src={project.cover}
+          alt={`${project.title} design preview`}
+          className="mt-8 h-auto w-full rounded-2xl border border-white/10"
+        />
+        <p className="mt-6 text-sm text-muted-foreground">
+          This project is ongoing. A full case study will be added later.
+        </p>
       </main>
       <Footer />
     </div>

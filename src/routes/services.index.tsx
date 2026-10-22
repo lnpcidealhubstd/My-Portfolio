@@ -8,7 +8,11 @@ export const Route = createFileRoute("/services/")({
   head: () => ({
     meta: [
       { title: "Services — Lorenzo Nicholas Centeno" },
-      { name: "description", content: "High-velocity UI/UX, AI-native product architecture, and technical operations consulting." },
+      {
+        name: "description",
+        content:
+          "High-velocity UI/UX, AI-native product architecture, and technical operations consulting.",
+      },
     ],
   }),
   component: ServicesPage,
@@ -20,12 +24,15 @@ function ServicesPage() {
       <Nav />
       <section className="mx-auto max-w-7xl px-6 pt-28 pb-16">
         <Reveal>
-          <div className="text-mono mb-6 text-xs uppercase tracking-[0.25em] text-accent">Services</div>
+          <div className="text-mono mb-6 text-xs uppercase tracking-[0.25em] text-accent">
+            Services
+          </div>
           <h1 className="text-display max-w-4xl text-5xl font-medium leading-[1.02] sm:text-7xl">
             Three practices, one operating system.
           </h1>
           <p className="mt-8 max-w-2xl text-lg text-muted-foreground">
-            Each engagement is scoped around a clear deliverable and an explicit velocity target. No retainer fluff.
+            Each engagement is scoped around a clear deliverable and an explicit velocity target. No
+            retainer fluff.
           </p>
         </Reveal>
       </section>
@@ -49,7 +56,9 @@ function ServicesPage() {
                   <p className="mt-3 max-w-2xl text-sm text-muted-foreground">{svc.short}</p>
                 </div>
                 <div className="text-mono col-span-3 text-right text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                  <span className="inline-block transition-transform group-hover:translate-x-2">View →</span>
+                  <span className="inline-block transition-transform group-hover:translate-x-2">
+                    View →
+                  </span>
                 </div>
               </Link>
             </Reveal>

@@ -31,40 +31,40 @@ You are a specialized coding assistant for the **Nico Centeno portfolio** — a 
 
 ### Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | React 18 + TanStack Router (file-based routing) |
-| Language | TypeScript |
-| Styling | Tailwind CSS with custom design tokens |
-| Build | Vite |
-| Runtime / Package Manager | Bun |
-| Deployment | Vercel |
+| Layer                     | Technology                                      |
+| ------------------------- | ----------------------------------------------- |
+| Framework                 | React 18 + TanStack Router (file-based routing) |
+| Language                  | TypeScript                                      |
+| Styling                   | Tailwind CSS with custom design tokens          |
+| Build                     | Vite                                            |
+| Runtime / Package Manager | Bun                                             |
+| Deployment                | Vercel                                          |
 
 ---
 
 ### Owner Identity
 
-| Field | Value |
-|---|---|
-| Full Name | Lorenzo Nicholas Centeno |
-| Display Name | Nico Centeno |
-| Title | UI UX Designer |
-| Email | centeno.lorenzo.nicholas@gmail.com |
+| Field        | Value                                   |
+| ------------ | --------------------------------------- |
+| Full Name    | Lorenzo Nicholas Centeno                |
+| Display Name | Nico Centeno                            |
+| Title        | UI UX Designer                          |
+| Email        | centeno.lorenzo.nicholas@gmail.com      |
 | Availability | Available for select engagements · 2026 |
 
 ---
 
 ### Routes
 
-| Route | File | Purpose |
-|---|---|---|
-| `/` | `src/routes/index.tsx` | Hero, Intelligence Stack (3 service cards), Featured Projects (1 wide + 3 grid), Contact teaser, About teaser |
-| `/about` | `src/routes/about.tsx` | Biography with profile photo, competencies grid, experience timeline, inline contact form |
-| `/projects` | `src/routes/projects.index.tsx` | Full project archive — `A · UI/UX & Design` grid |
-| `/projects/$slug` | `src/routes/projects.$slug.tsx` | Individual project case study with full screen gallery |
-| `/services` | `src/routes/services.index.tsx` | Services listing — index + short description rows |
-| `/services/$slug` | `src/routes/services.$slug.tsx` | Individual service detail page |
-| `/contact` | `src/routes/contact.tsx` | Standalone contact form |
+| Route             | File                            | Purpose                                                                                                       |
+| ----------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `/`               | `src/routes/index.tsx`          | Hero, Intelligence Stack (3 service cards), Featured Projects (1 wide + 3 grid), Contact teaser, About teaser |
+| `/about`          | `src/routes/about.tsx`          | Biography with profile photo, competencies grid, experience timeline, inline contact form                     |
+| `/projects`       | `src/routes/projects.index.tsx` | Full project archive — `A · UI/UX & Design` grid                                                              |
+| `/projects/$slug` | `src/routes/projects.$slug.tsx` | Individual project case study with full screen gallery                                                        |
+| `/services`       | `src/routes/services.index.tsx` | Services listing — index + short description rows                                                             |
+| `/services/$slug` | `src/routes/services.$slug.tsx` | Individual service detail page                                                                                |
+| `/contact`        | `src/routes/contact.tsx`        | Standalone contact form                                                                                       |
 
 ---
 
@@ -74,37 +74,42 @@ This is the **single source of truth** for all content. Never hardcode project o
 
 #### `CORE_SERVICES` — Intelligence Stack cards (homepage)
 
-| index | slug | kicker | title | chips |
-|---|---|---|---|---|
-| 01 | `design-architecture` | Visual Architecture | UI/UX Systems | Figma, Canva, Blender |
-| 02 | `ai-native-architecture` | AI Orchestration | AI-Native Products | Prompt Engineering, Agent Workflows, UX Auditing |
-| 03 | `production-deployment` | Production & Deployment | Edge Delivery | GitHub, Vercel, VS Code |
+| index | slug                     | kicker                  | title              | chips                                            |
+| ----- | ------------------------ | ----------------------- | ------------------ | ------------------------------------------------ |
+| 01    | `design-architecture`    | Visual Architecture     | UI/UX Systems      | Figma, Canva, Blender                            |
+| 02    | `ai-native-architecture` | AI Orchestration        | AI-Native Products | Prompt Engineering, Agent Workflows, UX Auditing |
+| 03    | `production-deployment`  | Production & Deployment | Edge Delivery      | GitHub, Vercel, VS Code                          |
 
 #### `SERVICES` — Services listing page
 
-| index | slug | title |
-|---|---|---|
-| 01 | `ui-ux-prototyping` | High-Velocity UI/UX & Rapid Prototyping |
-| 02 | `ai-native-architecture` | AI-Native Product Architecture |
+| index | slug                     | title                                   |
+| ----- | ------------------------ | --------------------------------------- |
+| 01    | `ui-ux-prototyping`      | High-Velocity UI/UX & Rapid Prototyping |
+| 02    | `ai-native-architecture` | AI-Native Product Architecture          |
 
 #### `DESIGN_PROJECTS` — Projects archive
 
-| slug | title | tag | status |
-|---|---|---|---|
+| slug                       | title                    | tag                          | status               |
+| -------------------------- | ------------------------ | ---------------------------- | -------------------- |
 | `everest-energy-solutions` | Everest Energy Solutions | Figma · Web App & Mobile App | Complete — 9 screens |
-| `saudi-project` | Saudi Project | Figma · Ongoing | Active — 1 screen |
-| `healthcare-project` | Healthcare Project | Figma · Ongoing | Active — 1 screen |
-| `aquabuild-project` | Aquabuild Project | Figma · Ongoing | Active — 1 screen |
+| `saudi-project`            | Saudi Project            | Figma · Ongoing              | Active — 1 screen    |
+| `healthcare-project`       | Healthcare Project       | Figma · Ongoing              | Active — 1 screen    |
+| `aquabuild-project`        | Aquabuild Project        | Figma · Ongoing              | Active — 1 screen    |
 
 Each project shape:
+
 ```ts
 {
   slug: string;
   title: string;
   tag: string;
   summary: string;
-  cover: string;           // imported asset, NOT a public path
-  screens: { label: string; src: string }[];
+  cover: string; // imported asset, NOT a public path
+  screens: {
+    label: string;
+    src: string;
+  }
+  [];
 }
 ```
 
@@ -116,27 +121,28 @@ EES screens in order: Web App → Mobile App → Dashboard → Design System →
 
 All images are **imported directly** into components. Never reference `/public/`.
 
-| File | Used In |
-|---|---|
-| `nicolas.png` | Hero profile flip card (front face) + About page biography |
-| `stackbg.png` | Intelligence Stack section full-bleed background |
-| `figmacard.png` | Intelligence Stack card 01 image |
-| `aicard.png` | Intelligence Stack card 02 image |
-| `gitcard.png` | Intelligence Stack card 03 image |
-| `EES Web App.png` | EES cover + screen 1 |
-| `EES Mobile App.png` | EES screen 2 |
-| `EES Dashboard.png` | EES screen 3 |
-| `Design System.png` | EES screen 4 |
-| `UI Components.png` | EES screen 5 |
-| `Sitemap.png` | EES screen 6 |
-| `User Flow - Public User.png` | EES screen 7 |
-| `User Flow - Client Portal.png` | EES screen 8 |
-| `User Flow.png` | EES screen 9 |
-| `Saudi.png` | Saudi Project cover + screen 1 |
-| `Healthcare.png` | Healthcare Project cover + screen 1 |
-| `Aquabuild.png` | Aquabuild Project cover + screen 1 |
+| File                            | Used In                                                    |
+| ------------------------------- | ---------------------------------------------------------- |
+| `nicolas.png`                   | Hero profile flip card (front face) + About page biography |
+| `stackbg.png`                   | Intelligence Stack section full-bleed background           |
+| `figmacard.png`                 | Intelligence Stack card 01 image                           |
+| `aicard.png`                    | Intelligence Stack card 02 image                           |
+| `gitcard.png`                   | Intelligence Stack card 03 image                           |
+| `EES Web App.png`               | EES cover + screen 1                                       |
+| `EES Mobile App.png`            | EES screen 2                                               |
+| `EES Dashboard.png`             | EES screen 3                                               |
+| `Design System.png`             | EES screen 4                                               |
+| `UI Components.png`             | EES screen 5                                               |
+| `Sitemap.png`                   | EES screen 6                                               |
+| `User Flow - Public User.png`   | EES screen 7                                               |
+| `User Flow - Client Portal.png` | EES screen 8                                               |
+| `User Flow.png`                 | EES screen 9                                               |
+| `Saudi.png`                     | Saudi Project cover + screen 1                             |
+| `Healthcare.png`                | Healthcare Project cover + screen 1                        |
+| `Aquabuild.png`                 | Aquabuild Project cover + screen 1                         |
 
 Import pattern:
+
 ```ts
 import myImage from "@/assets/filename.png";
 ```
@@ -145,49 +151,49 @@ import myImage from "@/assets/filename.png";
 
 ### Design System
 
-| Token | Value | Usage |
-|---|---|---|
-| Background | `oklch(0.10 0.008 240)` | Near-black dark blue — `bg-background` |
-| Accent | `oklch(0.82 0.18 195)` | Cyan/teal glow — `text-accent`, `border-accent`, `bg-accent` |
-| Surface | `oklch(0.13 0.009 240)` | Card backgrounds |
-| `text-display` | Space Grotesk | All headings and titles |
-| `text-mono` | JetBrains Mono | All labels, kickers, badges, tags |
+| Token          | Value                   | Usage                                                        |
+| -------------- | ----------------------- | ------------------------------------------------------------ |
+| Background     | `oklch(0.10 0.008 240)` | Near-black dark blue — `bg-background`                       |
+| Accent         | `oklch(0.82 0.18 195)`  | Cyan/teal glow — `text-accent`, `border-accent`, `bg-accent` |
+| Surface        | `oklch(0.13 0.009 240)` | Card backgrounds                                             |
+| `text-display` | Space Grotesk           | All headings and titles                                      |
+| `text-mono`    | JetBrains Mono          | All labels, kickers, badges, tags                            |
 
 **Utility classes (defined in `src/styles.css`):**
 
-| Class | Purpose |
-|---|---|
-| `glass-card` | Transparent glass card background |
-| `glass-card-hover` | Hover state for glass cards |
-| `hairline` | 1px subtle border |
-| `neon-text` | Cyan glow text effect |
-| `pulse-dot` | Animated status dot |
+| Class              | Purpose                           |
+| ------------------ | --------------------------------- |
+| `glass-card`       | Transparent glass card background |
+| `glass-card-hover` | Hover state for glass cards       |
+| `hairline`         | 1px subtle border                 |
+| `neon-text`        | Cyan glow text effect             |
+| `pulse-dot`        | Animated status dot               |
 
 ---
 
 ### Components
 
-| File | Purpose |
-|---|---|
-| `src/components/site/Nav.tsx` | Site navigation bar |
-| `src/components/site/Footer.tsx` | Site footer |
-| `src/components/site/Reveal.tsx` | Scroll-reveal animation wrapper — accepts optional `delay` (ms) prop |
-| `src/components/site/Ambient.tsx` | Hero section background ambient grid effect |
-| `src/components/site/ChipIcon.tsx` | Icon renderer for service/tool chip badges |
-| `src/components/site/BackButton.tsx` | Back navigation button for detail pages |
-| `src/components/site/social-icons.tsx` | SVG social icon components |
+| File                                   | Purpose                                                              |
+| -------------------------------------- | -------------------------------------------------------------------- |
+| `src/components/site/Nav.tsx`          | Site navigation bar                                                  |
+| `src/components/site/Footer.tsx`       | Site footer                                                          |
+| `src/components/site/Reveal.tsx`       | Scroll-reveal animation wrapper — accepts optional `delay` (ms) prop |
+| `src/components/site/Ambient.tsx`      | Hero section background ambient grid effect                          |
+| `src/components/site/ChipIcon.tsx`     | Icon renderer for service/tool chip badges                           |
+| `src/components/site/BackButton.tsx`   | Back navigation button for detail pages                              |
+| `src/components/site/social-icons.tsx` | SVG social icon components                                           |
 
 ---
 
 ### Homepage Sections
 
-| Section | Kicker | Notes |
-|---|---|---|
-| Hero | — | Profile flip card (front: photo + spinning ring, back: Hire Me + Download CV CTAs) |
-| Intelligence Stack | `/ 01 — Intelligence Stack` | 3 `CORE_SERVICES` cards with full-bleed `stackbg.png` background |
-| Projects | `/ 03 — Projects` | EES as wide `21/9` card, remaining 3 as `4/3` grid |
-| Contact Teaser | `/ 04 — Contact` | Glass card with CTA + social links grid |
-| About Teaser | `/ 05 — About` | Floating UI mockup cards + profile photo + skill chips + heading/copy |
+| Section            | Kicker                      | Notes                                                                              |
+| ------------------ | --------------------------- | ---------------------------------------------------------------------------------- |
+| Hero               | —                           | Profile flip card (front: photo + spinning ring, back: Hire Me + Download CV CTAs) |
+| Intelligence Stack | `/ 01 — Intelligence Stack` | 3 `CORE_SERVICES` cards with full-bleed `stackbg.png` background                   |
+| Projects           | `/ 03 — Projects`           | EES as wide `21/9` card, remaining 3 as `4/3` grid                                 |
+| Contact Teaser     | `/ 04 — Contact`            | Glass card with CTA + social links grid                                            |
+| About Teaser       | `/ 05 — About`              | Floating UI mockup cards + profile photo + skill chips + heading/copy              |
 
 ---
 
@@ -212,10 +218,13 @@ import myImage from "@/assets/filename.png";
 ### Adding a New Project
 
 1. Add the import to `src/lib/site-data.ts`:
+
 ```ts
 import newCover from "@/assets/new-cover.png";
 ```
+
 2. Add the entry to `DESIGN_PROJECTS`:
+
 ```ts
 {
   slug: "new-project",
@@ -226,6 +235,7 @@ import newCover from "@/assets/new-cover.png";
   screens: [{ label: "Preview", src: newCover }],
 }
 ```
+
 3. Drop the image into `src/assets/`
 4. Done — the projects archive and detail page render automatically.
 
