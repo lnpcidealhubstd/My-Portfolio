@@ -1,25 +1,160 @@
+import type { ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  FaFacebook,
+  FaFigma,
+  FaGithub,
+  FaLinkedin,
+} from "react-icons/fa";
+import {
+  ArrowDown,
+  ArrowUpRight,
+  BriefcaseBusiness,
+  Check,
+  Code2,
+  Layers3,
+  Network,
+  Sparkles,
+  Terminal,
+  Triangle,
+  Workflow,
+} from "lucide-react";
+
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { Ambient } from "@/components/site/Ambient";
 import { Reveal } from "@/components/site/Reveal";
-import { CORE_SERVICES, DESIGN_PROJECTS } from "@/lib/site-data";
-import { Process } from "@/site/Process";
-import { DesignPlayground } from "@/site/DesignPlayground";
-import { ChipIcon } from "@/components/site/ChipIcon";
+import { DESIGN_PROJECTS } from "@/lib/site-data";
 import nicolasAsset from "@/assets/nicolas.png";
-import intelBg from "@/assets/stackbg.png";
-import visualArch from "@/assets/figmacard.png";
-import aiCard from "@/assets/aicard.png";
-import gitCard from "@/assets/gitcard.png";
+
+/*
+ * CONTACT AND RESUME CONFIGURATION
+ *
+ * Add your real GitHub and Facebook profile URLs below.
+ *
+ * For the resume:
+ * 1. Put your PDF inside the project's public folder.
+ * 2. Set resume to its public path, for example:
+ *    "/Nico-Centeno-Resume.pdf"
+ *
+ * Leave missing values empty until the actual asset or URL is available.
+ */
+const PROFILE = {
+  email: "lorenz.centeno@gmail.com",
+  linkedin:
+    "https://www.linkedin.com/in/lorenzo-nicholas-centeno-b07a52106/",
+  github: "https://github.com/lnpcidealhubstd",
+  facebook:
+    "https://www.facebook.com/lorenznicholas.centeno/directory_links",
+  resume: "/Nico-Centeno-Resume.pdf",
+};
+
+const SOCIALS = [
+  { label: "LinkedIn", href: PROFILE.linkedin, Icon: FaLinkedin },
+  { label: "GitHub", href: PROFILE.github, Icon: FaGithub },
+  { label: "Facebook", href: PROFILE.facebook, Icon: FaFacebook },
+];
+
+const TECHNOLOGIES = [
+  {
+    title: "Design & Prototyping",
+    tools: [
+      { label: "Figma", Icon: FaFigma },
+      { label: "FigJam", Icon: Network },
+      { label: "Design Systems & Tokens", Icon: Layers3 },
+    ],
+  },
+  {
+    title: "AI-Assisted Prototyping",
+    tools: [
+      { label: "Lovable", Icon: Sparkles },
+      { label: "Claude", Icon: Sparkles },
+    ],
+  },
+  {
+    title: "Development & Handoff",
+    tools: [
+      { label: "Visual Studio Code", Icon: Code2 },
+      { label: "GitHub", Icon: FaGithub },
+      { label: "Vercel", Icon: Triangle },
+    ],
+  },
+];
+
+const SKILLS = [
+  {
+    title: "UI/UX Design",
+    Icon: Layers3,
+    description: "Turning requirements into clear, usable experiences.",
+    items: [
+      "Requirements discovery",
+      "User flows & information architecture",
+      "Wireframing",
+      "Interface design",
+      "Interactive prototyping",
+      "Responsive design",
+      "Design systems",
+      "Developer handoff",
+    ],
+  },
+  {
+    title: "Project Management",
+    Icon: BriefcaseBusiness,
+    description: "Keeping people, priorities, and delivery aligned.",
+    items: [
+      "Project scoping",
+      "Requirements documentation",
+      "Task prioritization",
+      "Milestone planning",
+      "Stakeholder communication",
+      "Design & development coordination",
+      "Feedback management",
+      "Delivery tracking",
+    ],
+  },
+  {
+    title: "Supporting Capabilities",
+    Icon: Workflow,
+    description: "Making ideas tangible for feedback and implementation.",
+    items: [
+      "AI-assisted rapid prototyping",
+      "GitHub collaboration",
+      "Frontend implementation support",
+      "Vercel deployment workflows",
+    ],
+  },
+];
+
+const focusClass =
+  "focus-visible:outline-none focus-visible:ring-2 " +
+  "focus-visible:ring-accent focus-visible:ring-offset-4 " +
+  "focus-visible:ring-offset-background";
+
+const primaryButton =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg " +
+  "bg-accent px-6 py-3 text-sm font-semibold text-background " +
+  "transition-colors hover:bg-accent/90 " +
+  focusClass;
+
+const secondaryButton =
+  "inline-flex min-h-12 items-center justify-center gap-2 rounded-lg " +
+  "border border-white/20 px-6 py-3 text-sm font-medium " +
+  "transition-colors hover:border-accent/60 hover:text-accent " +
+  focusClass;
+
+const panelClass =
+  "rounded-2xl border border-white/10 bg-white/[0.02]";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nico Centeno — UI UX Designer" },
+      { title: "Nico Centeno | UI/UX Designer & Project Manager" },
       {
         name: "description",
-        content: "Portfolio of Nico Centeno — AI-Native UI/UX Designer & Prototyper.",
+        content:
+          "Portfolio of Nico Centeno, UI/UX Designer, Project Manager, " +
+          "and Co-Founder of Ideahub Studio. Explore interface design, " +
+          "interactive prototypes, and collaborative project delivery.",
       },
     ],
   }),
@@ -27,607 +162,523 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const featuredProject = DESIGN_PROJECTS[0];
-  const gridProjects = DESIGN_PROJECTS.slice(1);
+  const [featuredProject, ...gridProjects] = DESIGN_PROJECTS;
+
+  const hasLodgingProject = DESIGN_PROJECTS.some((project) =>
+    /lodging/i.test(`${project.slug} ${project.title}`),
+  );
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground">
+      <a
+        href="#main-content"
+        className="sr-only fixed left-4 top-4 z-[100] rounded-lg bg-accent px-5 py-3 font-medium text-background focus:not-sr-only"
+      >
+        Skip to content
+      </a>
+
       <Nav />
 
-      {/* ── HERO SECTION ── */}
-      <section className="relative overflow-hidden">
-        <Ambient />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 pt-20 pb-20 sm:pt-32 sm:pb-36">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
-            {/* LEFT — Copy & Actions */}
-            <div className="lg:col-span-7">
+      <main id="main-content" tabIndex={-1}>
+        {/* HERO */}
+        <section
+          aria-labelledby="hero-heading"
+          className="relative isolate overflow-hidden"
+        >
+          <Ambient />
+
+          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:gap-12">
+            <div className="min-w-0 lg:col-span-7">
               <Reveal>
-                <div className="text-mono mb-6 sm:mb-8 inline-flex items-center gap-2.5 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                  <span className="pulse-dot size-1.5 rounded-full bg-accent flex-shrink-0" />
-                  <span>Available for select engagements · 2026</span>
-                </div>
-              </Reveal>
-
-              <Reveal delay={80}>
-                <h1 className="text-display text-4xl sm:text-7xl lg:text-8xl xl:text-[6.8rem] font-medium leading-[0.95] tracking-tight break-words">
-                  Nico{" "}
-                  <span className="neon-text text-accent">Centeno</span>
-                </h1>
-                <div className="mt-3 sm:mt-4 text-mono text-xs sm:text-base uppercase tracking-[0.25em] sm:tracking-[0.35em] text-accent/80 font-semibold">
-                  UI UX Designer &amp; AI Prototyper
-                </div>
-                <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-5">
-                  <a
-                    href="https://www.linkedin.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="text-muted-foreground transition-colors hover:text-accent p-1"
-                  >
-                    <LinkedInIcon className="size-5" />
-                  </a>
-                  <a
-                    href="https://www.facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Facebook"
-                    className="text-muted-foreground transition-colors hover:text-accent p-1"
-                  >
-                    <FacebookIcon className="size-5" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram"
-                    className="text-muted-foreground transition-colors hover:text-accent p-1"
-                  >
-                    <InstagramIcon className="size-5" />
-                  </a>
-                  <a
-                    href="https://www.tiktok.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="TikTok"
-                    className="text-muted-foreground transition-colors hover:text-accent p-1"
-                  >
-                    <TikTokIcon className="size-5" />
-                  </a>
-                  <a
-                    href="https://www.github.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                    className="text-muted-foreground transition-colors hover:text-accent p-1"
-                  >
-                    <GitHubIcon className="size-5" />
-                  </a>
-                  <a
-                    href="mailto:centeno.lorenzo.nicholas@gmail.com"
-                    aria-label="Gmail"
-                    className="text-muted-foreground transition-colors hover:text-accent p-1"
-                  >
-                    <MailIcon className="size-5" />
-                  </a>
-                </div>
-              </Reveal>
-
-              <Reveal delay={180}>
-                <p className="mt-6 sm:mt-8 max-w-xl border-l-2 border-accent/40 pl-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
-                  Crafting visual architecture in Figma Auto-Layout 5.0 and utilizing AI prototyping workflows (Lovable &amp; Claude) to ship production-ready interfaces on Vercel.
+                <p className="text-sm font-medium tracking-wide text-accent">
+                  UI/UX Designer & Project Manager
                 </p>
-              </Reveal>
 
-              {/* RESTORED & BALANCED HERO BUTTONS */}
-              <Reveal delay={260}>
-                <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row flex-wrap gap-4">
-                  <div className="motion-btn-container motion-btn-primary-stroke">
-                    <Link
-                      to="/contact"
-                      className="text-mono inline-flex h-12 min-w-[220px] sm:min-w-[240px] items-center justify-center rounded-[calc(0.5rem-1px)] bg-foreground px-8 text-xs uppercase tracking-[0.25em] text-background font-bold transition-all duration-300 hover:bg-white hover:shadow-[0_0_25px_rgba(255,255,255,0.4)]"
-                    >
-                      Hire Me
-                    </Link>
-                  </div>
+                <h1
+                  id="hero-heading"
+                  className="text-display mt-5 text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl"
+                >
+                  Nico <span className="text-accent">Centeno</span>
+                </h1>
 
-                  <div className="motion-btn-container motion-btn-secondary-stroke">
-                    <Link
-                      to="/projects"
-                      className="text-mono group inline-flex h-12 min-w-[220px] sm:min-w-[240px] items-center justify-center gap-2 rounded-[calc(0.5rem-1px)] bg-background/90 px-8 text-xs uppercase tracking-[0.25em] text-foreground font-semibold transition-all duration-300 hover:bg-surface/80 hover:text-accent"
+                <p className="text-display mt-7 max-w-xl text-2xl font-medium leading-snug sm:text-3xl">
+                  Thoughtful design. Clear direction. Meaningful digital
+                  experiences.
+                </p>
+
+                <p className="mt-6 max-w-xl text-base leading-8 text-muted-foreground">
+                  I turn complex requirements into intuitive digital experiences
+                  and guide projects from discovery to delivery. My work
+                  combines user-centered design, collaborative planning, and
+                  rapid prototyping to connect business goals with user needs.
+                </p>
+
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <a href="#projects" className={primaryButton}>
+                    View Projects
+                    <ArrowDown aria-hidden="true" className="size-4" />
+                  </a>
+
+                  {PROFILE.resume ? (
+                    <a
+                      href={PROFILE.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={secondaryButton}
                     >
-                      <span>Explore Artifacts</span>
-                      <span className="transition-transform group-hover:translate-x-1">→</span>
-                    </Link>
-                  </div>
+                      View Resume
+                      <ArrowUpRight aria-hidden="true" className="size-4" />
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      title="Resume will be available soon"
+                      className={`${secondaryButton} cursor-not-allowed opacity-50`}
+                    >
+                      View Resume
+                    </button>
+                  )}
+                </div>
+
+                <div className="mt-7">
+                  <SocialLinks />
                 </div>
               </Reveal>
             </div>
 
-            {/* RIGHT — Portrait flip card */}
-            <div className="lg:col-span-5 flex justify-center w-full">
-              <Reveal delay={140}>
-                <ProfileFlipCard src={nicolasAsset} />
+            <div className="min-w-0 lg:col-span-5">
+              <Reveal delay={120}>
+                <figure className="mx-auto w-full max-w-sm">
+                  <div className="overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-b from-accent/10 to-white/[0.02]">
+                    <img
+                      src={nicolasAsset}
+                      alt="Portrait of Nico Centeno"
+                      fetchPriority="high"
+                      className="aspect-[4/5] w-full origin-bottom scale-100 object-contain object-bottom" />
+                  </div>
+
+                  <figcaption className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
+                    <span>Design with purpose.</span>
+                    <span className="text-accent">
+                      Deliver with direction.
+                    </span>
+                  </figcaption>
+                </figure>
               </Reveal>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── 01 / CAPABILITIES (INTELLIGENCE STACK) ── */}
-      <section className="relative w-full overflow-hidden">
-        <img
-          src={intelBg}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover object-top opacity-30 pointer-events-none"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/80 to-background" />
+        {/* ABOUT */}
+        <Section id="about" label="01 / Introduction" title="About Me">
+          <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
+            <h3 className="text-display text-2xl font-medium leading-snug sm:text-3xl lg:col-span-5">
+              Bringing design clarity and project direction together.
+            </h3>
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
-          <Reveal>
-            <div className="mb-3 sm:mb-4 text-mono text-xs uppercase tracking-[0.25em] text-accent">
-              / 01 — Capabilities
+            <div className="space-y-5 text-base leading-8 text-muted-foreground lg:col-span-7">
+              <p>
+                I’m Lorenzo Nicholas “Nico” Centeno, a UI/UX Designer and
+                Project Manager, and Co-Founder of Ideahub Studio. I help
+                transform ideas into clear, usable digital products through
+                discovery, user flows, interface design, and collaborative
+                delivery.
+              </p>
+              <p>
+                My approach connects user needs with business objectives. I
+                work across design and project coordination to clarify
+                requirements, align stakeholders, organize priorities, and
+                support a smooth transition from concept to implementation.
+              </p>
+              <p>
+                I also use AI-assisted prototyping to explore ideas quickly,
+                communicate design decisions, and create interactive concepts
+                for feedback.
+              </p>
             </div>
-            <h2 className="text-display text-3xl sm:text-5xl font-medium leading-tight">
-              Design. AI. <span className="neon-text text-accent">Deploy.</span>
-            </h2>
-            <p className="mt-3 sm:mt-4 max-w-lg text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Visual architecture, AI orchestration, and production edge delivery — producing production-grade software at speed.
-            </p>
-          </Reveal>
+          </div>
+        </Section>
 
-          <div className="mt-10 sm:mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {CORE_SERVICES.map((svc, i) => (
-              <Reveal key={svc.slug} delay={i * 80}>
-                <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.85)] backdrop-blur-md">
-                  {svc.index === "01" && (
-                    <div className="aspect-[16/10] sm:h-[280px] flex items-center justify-center p-4 sm:p-6 bg-black/40 overflow-hidden">
-                      <img src={visualArch} alt="Visual Architecture" className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  )}
-                  {svc.index === "02" && (
-                    <div className="aspect-[16/10] sm:h-[280px] flex items-center justify-center p-4 sm:p-6 bg-black/40 overflow-hidden">
-                      <img src={aiCard} alt="AI Orchestration" className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  )}
-                  {svc.index === "03" && (
-                    <div className="aspect-[16/10] sm:h-[280px] flex items-center justify-center p-4 sm:p-6 bg-black/40 overflow-hidden">
-                      <img src={gitCard} alt="Edge Delivery" className="h-full w-full object-contain group-hover:scale-105 transition-transform duration-500" />
-                    </div>
-                  )}
+        {/* TECHNOLOGIES */}
+        <Section
+          id="technologies"
+          label="02 / My Toolkit"
+          title="Technologies I Work With"
+          description="Tools that support design exploration, collaboration, and implementation."
+        >
+          <div className="grid gap-5 md:grid-cols-3">
+            {TECHNOLOGIES.map((group) => (
+              <article
+                key={group.title}
+                className={`${panelClass} p-6 sm:p-7`}
+              >
+                <h3 className="text-lg font-medium">{group.title}</h3>
 
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <div className="text-mono mb-3 flex items-center justify-between text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                      <span>{svc.index} / {svc.kicker}</span>
-                      <span className="pulse-dot size-1.5 rounded-full bg-accent" />
-                    </div>
-                    <h3 className="text-display text-lg sm:text-xl font-medium leading-tight text-foreground group-hover:text-accent transition-colors">
-                      {svc.title}
-                    </h3>
-                    <p className="mt-2 flex-1 text-xs leading-relaxed text-muted-foreground">
-                      {svc.description}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {svc.chips.map((chip) => (
-                        <span
-                          key={chip.label}
-                          className="inline-flex items-center gap-1.5 rounded-md border hairline bg-surface/60 px-2.5 py-1 text-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground"
-                        >
-                          <ChipIcon name={chip.icon} className="size-3 text-accent flex-shrink-0" />
-                          {chip.label}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-              </Reveal>
+                <ul className="mt-5 space-y-3">
+                  {group.tools.map(({ label, Icon }) => (
+                    <li
+                      key={label}
+                      className="flex items-center gap-3 text-sm leading-6 text-muted-foreground"
+                    >
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-accent">
+                        <Icon aria-hidden="true" className="size-4" />
+                      </span>
+                      {label}
+                    </li>
+                  ))}
+                </ul>
+              </article>
             ))}
           </div>
-        </div>
-      </section>
+        </Section>
 
-      {/* ── 02 / WORK PROCESS ── */}
-      <Process />
-
-      {/* ── 03 / DESIGN SYSTEMS & RESOURCE HUB ── */}
-      <DesignPlayground />
-
-      {/* ── 04 / FEATURED WORK ── */}
-      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
-        <Reveal>
-          <div className="mb-8 sm:mb-12 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
-                / 04 — Featured Work
-              </div>
-              <h2 className="text-display text-3xl sm:text-5xl font-medium leading-tight">
-                Featured Product <span className="neon-text text-accent">Case Studies.</span>
-              </h2>
-            </div>
-            <Link
-              to="/projects"
-              className="text-mono text-xs uppercase tracking-[0.2em] text-muted-foreground hover:text-accent inline-flex items-center gap-1"
+        {/* AFFILIATIONS */}
+        <Section
+          id="affiliations"
+          label="03 / Community & Collaboration"
+          title="Affiliations & Organizations"
+        >
+          <div className="grid gap-5 md:grid-cols-2">
+            <a
+              href="https://www.codebility.tech/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${panelClass} p-7 transition-colors hover:border-accent/40 ${focusClass}`}
             >
-              All projects archive →
-            </Link>
-          </div>
-        </Reveal>
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-display text-2xl font-medium">
+                  Codebility
+                </h3>
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="size-5 shrink-0 text-accent"
+                />
+              </div>
+              <p className="mt-4 text-sm text-muted-foreground">
+                Visit Codebility
+              </p>
+            </a>
 
-        {/* Featured Wide Showcase Hero (Everest Energy Solutions) */}
-        <div className="mb-8 sm:mb-10">
-          <Reveal>
+            <article className={`${panelClass} p-7`}>
+              <h3 className="text-display text-2xl font-medium">
+                Ideahub Studio
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-accent">
+                Co-Founder · UI/UX Designer & Project Manager
+              </p>
+              <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                Connecting product design, client collaboration, and project
+                delivery.
+              </p>
+            </article>
+          </div>
+        </Section>
+
+        {/* PROJECTS */}
+        <Section
+          id="projects"
+          label="04 / Selected Work"
+          title="Featured Projects"
+          description="A selection of interface design, digital experiences, and projects guided from discovery toward delivery."
+        >
+          {featuredProject && (
             <Link
               to="/projects/$slug"
               params={{ slug: featuredProject.slug }}
-              className="glass-card glass-card-hover group block overflow-hidden rounded-2xl border border-white/10"
+              className={`group mb-6 grid overflow-hidden ${panelClass} transition-colors hover:border-accent/40 lg:grid-cols-5 ${focusClass}`}
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12">
-                <div className="lg:col-span-8 relative aspect-[16/10] sm:aspect-[16/9] lg:aspect-auto overflow-hidden bg-black/60 min-h-[220px] sm:min-h-[320px]">
-                  <img
-                    src={featuredProject.cover}
-                    alt={featuredProject.title}
-                    loading="eager"
-                    className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent lg:hidden" />
-                </div>
-                <div className="lg:col-span-4 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
-                  <div>
-                    <span className="text-mono text-[10px] uppercase tracking-[0.2em] text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20 block w-fit mb-3 sm:mb-4">
-                      {featuredProject.tag}
-                    </span>
-                    <h3 className="text-display text-xl sm:text-2xl font-bold text-foreground mb-2 sm:mb-3 group-hover:text-accent transition-colors">
-                      {featuredProject.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed mb-6">
-                      {featuredProject.summary}
-                    </p>
-                  </div>
+              <div className="min-w-0 bg-white/[0.03] lg:col-span-3">
+                <img
+                  src={featuredProject.cover}
+                  alt={`${featuredProject.title} interface preview`}
+                  loading="lazy"
+                  className="aspect-[16/10] w-full object-contain object-top"
+                />
+              </div>
 
-                  <div className="pt-4 sm:pt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-mono text-[11px] text-accent font-semibold flex items-center gap-1.5">
-                      View 9 Screen Artifacts →
-                    </span>
-                    <span className="text-mono text-[10px] text-muted-foreground uppercase">Complete</span>
-                  </div>
-                </div>
+              <div className="flex flex-col justify-center p-6 sm:p-9 lg:col-span-2">
+                <p className="text-xs font-medium uppercase tracking-widest text-accent">
+                  {featuredProject.tag}
+                </p>
+                <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">
+                  {featuredProject.title}
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                  {featuredProject.summary}
+                </p>
+                <span className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent">
+                  View Project
+                  <ArrowUpRight aria-hidden="true" className="size-4" />
+                </span>
               </div>
             </Link>
-          </Reveal>
-        </div>
+          )}
 
-        {/* 3-Column Image Grid Projects */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {gridProjects.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 80}>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {gridProjects.map((project) => (
               <Link
+                key={project.slug}
                 to="/projects/$slug"
-                params={{ slug: p.slug }}
-                className="glass-card glass-card-hover group block overflow-hidden rounded-xl border border-white/10 h-full flex flex-col justify-between"
+                params={{ slug: project.slug }}
+                className={`group flex h-full flex-col overflow-hidden ${panelClass} transition-colors hover:border-accent/40 ${focusClass}`}
               >
-                <div>
-                  <div className="relative aspect-[16/10] sm:aspect-[4/3] overflow-hidden bg-black/50">
-                    <img
-                      src={p.cover}
-                      alt={p.title}
-                      loading="lazy"
-                      className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute left-3 top-3 rounded bg-background/80 px-2.5 py-1 text-mono text-[9px] uppercase tracking-wider text-foreground backdrop-blur border border-white/10">
-                      {p.tag}
-                    </div>
-                  </div>
-                  <div className="p-5 sm:p-6">
-                    <h3 className="text-display text-base sm:text-lg font-medium text-foreground group-hover:text-accent transition-colors mb-2">
-                      {p.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                      {p.summary}
-                    </p>
-                  </div>
+                <div className="bg-white/[0.03]">
+                  <img
+                    src={project.cover}
+                    alt={`${project.title} interface preview`}
+                    loading="lazy"
+                    className="aspect-[16/10] w-full object-contain object-top"
+                  />
                 </div>
 
-                <div className="px-5 sm:px-6 pb-5 sm:pb-6">
-                  <span className="text-mono text-[10px] text-accent uppercase tracking-widest group-hover:underline">
-                    View Case Study →
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="text-xs text-accent">{project.tag}</p>
+                  <h3 className="text-display mt-3 text-xl font-medium">
+                    {project.title}
+                  </h3>
+                  <p className="mt-3 flex-1 text-sm leading-7 text-muted-foreground">
+                    {project.summary}
+                  </p>
+                  <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent">
+                    View Project
+                    <ArrowUpRight aria-hidden="true" className="size-4" />
                   </span>
                 </div>
               </Link>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+            ))}
 
-      {/* ── 05 / ABOUT TEASER ── */}
-      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24 overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute left-8 top-16 size-3 rounded-full bg-accent opacity-70 blur-[1px]" />
-        <div aria-hidden className="pointer-events-none absolute left-1/2 bottom-32 size-2.5 rounded-full bg-accent opacity-50 blur-[1px]" />
-        <div aria-hidden className="pointer-events-none absolute right-6 top-24 size-3.5 rounded-full bg-accent opacity-60 blur-[1px]" />
-
-        <div className="relative mb-12 sm:mb-16 grid grid-cols-1 items-center gap-8 lg:grid-cols-12">
-          {/* LEFT — Floating UI mockup cards (Desktop only) */}
-          <div className="relative hidden h-[280px] lg:col-span-5 lg:block">
-            <div className="absolute left-0 top-0 w-[200px] rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.9)] p-4 shadow-xl">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="size-2.5 rounded-full bg-red-500/80" />
-                <div className="size-2.5 rounded-full bg-yellow-500/80" />
-                <div className="size-2.5 rounded-full bg-green-500/80" />
-              </div>
-              <div className="space-y-2">
-                {["Figma AI", "React Tokens"].map((l) => (
-                  <div key={l} className="flex items-center gap-2">
-                    <div className="h-6 w-16 rounded bg-white/5 border border-white/10 flex items-center justify-center">
-                      <span className="text-[8px] text-muted-foreground">{l}</span>
-                    </div>
-                    <div className="h-px w-6 bg-accent/40" />
-                    <div className="h-6 w-16 rounded bg-white/5 border border-white/10 flex items-center justify-center">
-                      <span className="text-[8px] text-muted-foreground">Module</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="absolute left-[160px] top-4 w-[200px] rounded-xl border border-white/10 bg-[oklch(0.15_0.009_240/0.95)] p-4 shadow-xl">
-              <div className="mb-3 flex items-center gap-2">
-                <div className="size-2.5 rounded-full bg-red-500/80" />
-                <div className="size-2.5 rounded-full bg-yellow-500/80" />
-                <div className="size-2.5 rounded-full bg-green-500/80" />
-              </div>
-              <div className="flex items-center justify-center gap-3 py-2">
-                <div className="size-8 rounded-full bg-cyan-500" />
-                <div className="size-8 rounded-full bg-purple-500" />
-                <div className="size-8 rounded-full bg-emerald-500" />
-              </div>
-            </div>
-            <div className="absolute bottom-0 left-12 w-[220px] rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.9)] p-4 shadow-xl">
-              <div className="mb-2 flex items-center gap-2">
-                <div className="size-2 rounded-full bg-red-500/80" />
-                <div className="size-2 rounded-full bg-yellow-500/80" />
-                <div className="size-2 rounded-full bg-green-500/80" />
-              </div>
-              <div className="grid grid-cols-2 gap-1.5">
-                {[1, 2, 3, 4].map((n) => (
-                  <div key={n} className="h-10 rounded-md border border-white/10 bg-white/5 flex items-center justify-center">
-                    <div className="size-4 rounded border border-white/20" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* CENTER — Profile photo */}
-          <div className="flex justify-center lg:col-span-3">
-            <div className="relative my-4">
-              <div aria-hidden className="absolute inset-0 rounded-2xl" style={{ boxShadow: "0 0 60px oklch(0.82 0.18 195 / 20%), 0 0 120px oklch(0.82 0.18 195 / 10%)" }} />
-              <div aria-hidden className="absolute -inset-3 rounded-3xl border border-accent/10" />
-              <div aria-hidden className="absolute -inset-6 rounded-3xl border border-accent/5" />
-              <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[oklch(0.13_0.009_240)] w-[180px] sm:w-[200px] h-[240px] sm:h-[260px]">
-                <img
-                  src={nicolasAsset}
-                  alt="Nico Centeno"
-                  className="h-full w-full object-cover object-top"
+            {!hasLodgingProject && (
+              <article className="flex h-full flex-col rounded-2xl border border-accent/20 bg-accent/[0.04] p-6 sm:p-8">
+                <BriefcaseBusiness
+                  aria-hidden="true"
+                  className="size-7 text-accent"
                 />
-              </div>
-              <Link to="/about" className="absolute -bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-white/10 bg-[oklch(0.13_0.009_240/0.95)] px-4 py-1.5 text-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground backdrop-blur hover:text-accent">
-                Read Full Profile →
-              </Link>
-            </div>
+                <p className="mt-6 text-xs font-medium uppercase tracking-widest text-accent">
+                  Design & Project Management
+                </p>
+                <h3 className="text-display mt-4 text-2xl font-medium">
+                  Lodging Technologies
+                </h3>
+                <p className="mt-4 flex-1 text-sm leading-7 text-muted-foreground">
+                  Discovery, requirements alignment, interface planning, and
+                  delivery coordination across a phased implementation.
+                </p>
+                <div className="mt-6 space-y-3 border-t border-white/10 pt-5 text-sm leading-6">
+                  <p>UI/UX Designer & Project Manager</p>
+                  <p className="text-muted-foreground">
+                    Phase 1 completed; Phase 2 CRM implementation ongoing.
+                  </p>
+                </div>
+              </article>
+            )}
           </div>
 
-          {/* RIGHT — Skill chips */}
-          <div className="flex flex-col gap-2.5 sm:gap-3 lg:col-span-4 w-full">
-            {[
-              { icon: "⚡", label: "Rapid Prototyping (AI)" },
-              { icon: "🎨", label: "Interactive Wireframing (Figma)" },
-              { icon: "🧩", label: "Design Systems & Tokens" },
-              { icon: "💻", label: "VS Code + AI Prompt Tuning" },
-              { icon: "📐", label: "Figma Auto-Layout 5.0" },
-            ].map((s) => (
-              <div key={s.label} className="flex items-center justify-between rounded-xl border border-white/10 bg-[oklch(0.13_0.009_240/0.8)] px-3.5 sm:px-4 py-2.5 sm:py-3 backdrop-blur">
-                <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                  <span className="text-base flex-shrink-0">{s.icon}</span>
-                  <span className="text-xs sm:text-sm text-foreground truncate">{s.label}</span>
-                </div>
-                <div className="size-4 sm:size-5 rounded border border-white/10 bg-white/5 flex-shrink-0" />
-              </div>
+          <div className="mt-8">
+            <Link to="/projects" className={secondaryButton}>
+              All Projects
+              <ArrowUpRight aria-hidden="true" className="size-4" />
+            </Link>
+          </div>
+        </Section>
+
+        {/* SKILLS */}
+        <Section
+          id="skills"
+          label="05 / What I Bring"
+          title="Skills"
+          description="Design thinking, project coordination, and practical implementation support."
+        >
+          <div className="grid gap-6 lg:grid-cols-3">
+            {SKILLS.map(({ title, Icon, description, items }) => (
+              <article
+                key={title}
+                className={`${panelClass} p-6 sm:p-8`}
+              >
+                <Icon aria-hidden="true" className="size-7 text-accent" />
+                <h3 className="text-display mt-6 text-xl font-medium">
+                  {title}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                  {description}
+                </p>
+                <ul className="mt-6 space-y-3">
+                  {items.map((item) => (
+                    <li key={item} className="flex gap-3 text-sm leading-6">
+                      <Check
+                        aria-hidden="true"
+                        className="mt-1 size-4 shrink-0 text-accent"
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
             ))}
           </div>
-        </div>
+        </Section>
 
-        {/* BOTTOM ROW — Heading | Description + CTA */}
-        <Reveal>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-            <div className="md:col-span-5">
-              <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
-                / 05 — About
-              </div>
-              <h2 className="text-display text-3xl sm:text-4xl font-medium leading-tight">
-                Operational discipline, applied to software.
-              </h2>
-            </div>
-            <div className="md:col-span-7 md:col-start-6">
-              <p className="text-sm sm:text-lg leading-relaxed text-muted-foreground">
-                Years of computer science fundamentals, design system creation, and prompt-assisted development inject strict engineering discipline, robust documentation, and rapid execution into every digital product I build.
+        {/* EXPERIENCE */}
+        <Section
+          id="experience"
+          label="06 / Professional Background"
+          title="Experience"
+        >
+          <div className="divide-y divide-white/10 border-y border-white/10">
+            <ExperienceItem
+              company="Ideahub Studio"
+              role="Co-Founder · UI/UX Designer & Project Manager"
+            >
+              Leading discovery, interface design, and client collaboration.
+              Aligning project scope, organizing priorities, and coordinating
+              design and development through delivery.
+            </ExperienceItem>
+
+            <ExperienceItem
+              company="Invictus Energy Solutions"
+              role="UI/UX Designer"
+            >
+              Working on UI/UX design for digital experiences.
+            </ExperienceItem>
+          </div>
+        </Section>
+
+        {/* CONTACT */}
+        <section
+          id="contact"
+          aria-labelledby="contact-heading"
+          className="scroll-mt-24 px-5 py-16 sm:px-6 sm:py-24"
+        >
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/[0.08] to-transparent p-7 sm:p-12 lg:p-16">
+            <Reveal>
+              <p className="text-xs font-medium uppercase tracking-widest text-accent">
+                07 / Get in Touch
               </p>
-              <Link
-                to="/about"
-                className="text-mono mt-6 sm:mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-foreground transition-colors hover:text-accent"
+
+              <h2
+                id="contact-heading"
+                className="text-display mt-5 max-w-3xl text-4xl font-medium leading-tight tracking-tight sm:text-5xl lg:text-6xl"
               >
-                Read the full profile →
-              </Link>
-            </div>
-          </div>
-        </Reveal>
-      </section>
+                Let’s build something together.
+              </h2>
 
-      {/* ── 06 / CONTACT TEASER ── */}
-      <section className="relative mx-auto max-w-7xl px-4 sm:px-6 py-16 sm:py-24">
-        <Reveal>
-          <div className="glass-card rounded-2xl p-6 sm:p-10 lg:p-12 border border-white/10">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-12 items-center">
-              <div className="md:col-span-6">
-                <div className="text-mono mb-3 text-xs uppercase tracking-[0.25em] text-accent">
-                  / 06 — Contact
-                </div>
-                <h2 className="text-display text-2xl sm:text-4xl font-medium leading-tight text-foreground">
-                  Ready to accelerate your product development?
-                </h2>
-                <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                  Available for full design system engineering, rapid AI prototyping, or UI/UX consultation.
-                </p>
-                <Link
-                  to="/contact"
-                  className="text-mono mt-6 sm:mt-8 inline-flex h-11 items-center justify-center rounded-md bg-foreground px-6 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-transform hover:-translate-y-0.5"
+              <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground">
+                Have a product idea, a website to improve, or a project that
+                needs clear design and direction? Let’s talk about how we can
+                bring it to life.
+              </p>
+
+              <div className="mt-8 flex flex-col items-start gap-7 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+                <a
+                  href={`mailto:${PROFILE.email}`}
+                  className={primaryButton}
                 >
-                  Initiate Discussion →
-                </Link>
+                  Let’s Talk
+                  <ArrowUpRight aria-hidden="true" className="size-4" />
+                </a>
+                <SocialLinks />
               </div>
-
-              <div className="md:col-span-6">
-                <div className="grid grid-cols-1 gap-2.5 sm:gap-3 xs:grid-cols-2">
-                  <SocialCard href="https://www.linkedin.com" label="LinkedIn" icon={<LinkedInIcon className="size-4" />} />
-                  <SocialCard href="https://www.facebook.com" label="Facebook" icon={<FacebookIcon className="size-4" />} />
-                  <SocialCard href="https://www.instagram.com" label="Instagram" icon={<InstagramIcon className="size-4" />} />
-                  <SocialCard href="https://www.tiktok.com" label="TikTok" icon={<TikTokIcon className="size-4" />} />
-                  <SocialCard href="https://www.github.com" label="GitHub" icon={<GitHubIcon className="size-4" />} />
-                  <SocialCard href="mailto:centeno.lorenzo.nicholas@gmail.com" label="Gmail" icon={<MailIcon className="size-4" />} />
-                </div>
-              </div>
-            </div>
+            </Reveal>
           </div>
-        </Reveal>
-      </section>
+        </section>
+      </main>
 
       <Footer />
     </div>
   );
 }
 
-/* ── Profile Flip Card ── */
-function ProfileFlipCard({ src }: { src: string }) {
+function Section({
+  id,
+  label,
+  title,
+  description,
+  children,
+}: {
+  id: string;
+  label: string;
+  title: string;
+  description?: string;
+  children: ReactNode;
+}) {
   return (
-    <div className="profile-flip-scene mx-auto">
-      <div className="profile-flip-card">
-        {/* FRONT */}
-        <div className="profile-flip-face profile-flip-front">
-          <div className="profile-gradient-ring">
-            <div className="profile-circle">
-              <img
-                src={src}
-                alt="Portrait of Nico Centeno"
-                className="profile-img"
-                loading="eager"
-              />
-            </div>
-          </div>
-          <div className="mt-6 text-mono text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-            <span className="text-accent">◆</span> LNC · Operator
-          </div>
-        </div>
-
-        {/* BACK */}
-        <div className="profile-flip-face profile-flip-back">
-          <div className="profile-back-ring" aria-hidden />
-          <div className="flex flex-col items-center gap-5 px-8">
-            <p className="text-mono text-center text-[10px] uppercase tracking-[0.3em] text-accent">
-              ◆ LNC · Operator
+    <section
+      id={id}
+      aria-labelledby={`${id}-heading`}
+      className="mx-auto max-w-7xl scroll-mt-24 px-5 py-16 sm:px-6 sm:py-24"
+    >
+      <Reveal>
+        <div className="mb-9 sm:mb-12">
+          <p className="text-xs font-medium uppercase tracking-widest text-accent">
+            {label}
+          </p>
+          <h2
+            id={`${id}-heading`}
+            className="text-display mt-4 max-w-4xl text-3xl font-medium leading-tight tracking-tight sm:text-4xl lg:text-5xl"
+          >
+            {title}
+          </h2>
+          {description && (
+            <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
+              {description}
             </p>
-            <h3 className="text-display text-center text-xl font-medium text-foreground">
-              Let’s build something
-              <br />
-              <span className="neon-text text-accent">remarkable.</span>
-            </h3>
-            <div className="mt-2 flex flex-col gap-3 w-full">
-              <Link
-                to="/contact"
-                className="text-mono inline-flex h-11 w-full items-center justify-center rounded-md bg-accent px-6 text-xs uppercase tracking-[0.2em] text-background font-semibold transition-all duration-300 hover:brightness-110 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(0,255,255,0.4)]"
-              >
-                Hire Me
-              </Link>
-              <a
-                href="mailto:centeno.lorenzo.nicholas@gmail.com"
-                className="text-mono inline-flex h-11 w-full items-center justify-center rounded-md border border-accent/50 bg-transparent px-6 text-xs uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:bg-accent/10 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_0_20px_rgba(0,255,255,0.2)]"
-              >
-                Email Me
-              </a>
-            </div>
-          </div>
+          )}
         </div>
+        {children}
+      </Reveal>
+    </section>
+  );
+}
+
+function SocialLinks() {
+  return (
+    <ul aria-label="Social profiles" className="flex flex-wrap gap-2">
+      {SOCIALS.map(({ label, href, Icon }) => (
+        <li key={label}>
+          {href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${label} profile (opens in a new tab)`}
+              className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-accent ${focusClass}`}
+            >
+              <Icon aria-hidden="true" className="size-4" />
+              {label}
+            </a>
+          ) : (
+            <span
+              title={`${label} profile is not available yet`}
+              className="inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm text-muted-foreground opacity-50"
+            >
+              <Icon aria-hidden="true" className="size-4" />
+              {label}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ExperienceItem({
+  company,
+  role,
+  children,
+}: {
+  company: string;
+  role: string;
+  children: ReactNode;
+}) {
+  return (
+    <article className="grid gap-5 py-8 sm:py-10 md:grid-cols-12 md:gap-12">
+      <div className="md:col-span-5">
+        <h3 className="text-display text-2xl font-medium">{company}</h3>
+        <p className="mt-3 text-sm leading-6 text-accent">{role}</p>
       </div>
-    </div>
-  );
-}
-
-function SocialCard({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="group flex items-center gap-3 rounded-md border hairline bg-surface/40 px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm text-muted-foreground transition-all hover:border-accent/30 hover:bg-surface hover:text-foreground"
-    >
-      <span className="text-accent/70 transition-colors group-hover:text-accent flex-shrink-0">{icon}</span>
-      <span className="text-mono text-xs uppercase tracking-[0.2em] truncate">{label}</span>
-      <span className="ml-auto text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-accent flex-shrink-0">
-        →
-      </span>
-    </a>
-  );
-}
-
-/* ── SVG Icons ── */
-function GitHubIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-    </svg>
-  );
-}
-
-function LinkedInIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 012.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  );
-}
-
-function FacebookIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-    </svg>
-  );
-}
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 100-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.882 0 1.441 1.441 0 012.882 0z" />
-    </svg>
-  );
-}
-
-function TikTokIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
-    </svg>
-  );
-}
-
-function MailIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect width="20" height="16" x="2" y="4" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
+      <p className="text-base leading-8 text-muted-foreground md:col-span-7">
+        {children}
+      </p>
+    </article>
   );
 }

@@ -1,120 +1,147 @@
 "use client";
-import { Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+
+import { Link, useLocation } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 const links = [
-  { to: "/", label: "Home" },
-  { to: "/services", label: "Services" },
-  { to: "/projects", label: "Projects" },
-  { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  { id: "about", label: "About" },
+  { id: "projects", label: "Projects" },
+  { id: "skills", label: "Skills" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
 ] as const;
+
+const focusClass =
+  "focus-visible:outline-none focus-visible:ring-2 " +
+  "focus-visible:ring-accent focus-visible:ring-offset-4 " +
+  "focus-visible:ring-offset-background";
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
+
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname, hash]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+
+    const desktopQuery = window.matchMedia("(min-width: 768px)");
+    const onBreakpointChange = () => {
+      if (desktopQuery.matches) setMenuOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    desktopQuery.addEventListener("change", onBreakpointChange);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      desktopQuery.removeEventListener("change", onBreakpointChange);
+    };
+  }, [menuOpen]);
+
   return (
     <header
-      className="sticky top-0 z-50 transition-all duration-500"
-      style={{
-        background: scrolled
-          ? "oklch(0.10 0.008 240 / 85%)"
-          : "oklch(0.10 0.008 240 / 40%)",
-        backdropFilter: "blur(24px) saturate(180%)",
-        borderBottom: scrolled
-          ? "1px solid oklch(1 0 0 / 8%)"
-          : "1px solid transparent",
-        boxShadow: scrolled
-          ? "0 1px 0 oklch(0.82 0.18 195 / 5%), 0 8px 32px -8px oklch(0 0 0 / 40%)"
-          : "none",
-      }}
+      className={[
+        "sticky top-0 z-50 border-b backdrop-blur-xl",
+        "transition-colors duration-300 motion-reduce:transition-none",
+        scrolled || menuOpen
+          ? "border-white/10 bg-background/95"
+          : "border-transparent bg-background/80",
+      ].join(" ")}
     >
-      {/* Top accent line */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, oklch(0.82 0.18 195 / 60%) 30%, oklch(0.82 0.18 195 / 80%) 50%, oklch(0.82 0.18 195 / 60%) 70%, transparent 100%)",
-          opacity: scrolled ? 1 : 0,
-          transition: "opacity 500ms ease",
-        }}
-      />
-
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        {/* Logo */}
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-6">
         <Link
           to="/"
-          className="group relative text-mono text-sm uppercase tracking-[0.25em] text-foreground transition-all duration-300"
+          aria-label="Nico Centeno — Home"
+          onClick={() => setMenuOpen(false)}
+          className={`rounded-md py-2 text-sm font-semibold uppercase tracking-[0.25em] ${focusClass}`}
         >
-          <span className="relative z-10">
-            LNC
-            <span
-              className="text-accent transition-all duration-300 group-hover:text-shadow-[0_0_20px_oklch(0.82_0.18_195)]"
-              style={{ textShadow: "0 0 12px oklch(0.82 0.18 195 / 60%)" }}
-            >
-              .
-            </span>
-          </span>
-          {/* Hover glow */}
-          <span
-            aria-hidden
-            className="absolute -inset-2 rounded-md opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{ background: "radial-gradient(ellipse at center, oklch(0.82 0.18 195 / 8%), transparent 70%)" }}
-          />
+          LNC<span className="text-accent">.</span>
         </Link>
 
-        {/* Nav links */}
-        <nav className="flex items-center gap-1">
-          {links.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              activeOptions={{ exact: l.to === "/" }}
-              className="relative rounded-md px-3 py-1.5 text-sm transition-all duration-300"
-              activeProps={{
-                className:
-                  "relative rounded-md px-3 py-1.5 text-sm text-foreground transition-all duration-300",
-                style: { color: "oklch(0.97 0.005 240)" },
-              }}
-              inactiveProps={{
-                className:
-                  "relative rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-all duration-300",
-              }}
-            >
-              {({ isActive }: { isActive: boolean }) => (
-                <>
-                  {l.label}
-                  {/* Active underline */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-3 -bottom-px h-px transition-all duration-500"
-                    style={{
-                      background: isActive
-                        ? "linear-gradient(90deg, transparent, oklch(0.82 0.18 195), transparent)"
-                        : "transparent",
-                      boxShadow: isActive ? "0 0 8px oklch(0.82 0.18 195 / 80%)" : "none",
-                      opacity: isActive ? 1 : 0,
-                    }}
-                  />
-                  {/* Hover bg */}
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 rounded-md opacity-0 transition-opacity duration-300 hover:opacity-100"
-                    style={{ background: "oklch(1 0 0 / 4%)" }}
-                  />
-                </>
-              )}
-            </Link>
-          ))}
+        <nav aria-label="Main navigation" className="hidden md:block">
+          <ul className="flex items-center gap-1">
+            {links.map(({ id, label }) => (
+              <li key={id}>
+                <Link
+                  to="/"
+                  hash={id}
+                  hashScrollIntoView={{
+                    behavior: "instant",
+                    block: "start",
+                  }}
+                  className={`inline-flex min-h-11 items-center rounded-lg px-4 text-sm text-muted-foreground transition-colors hover:bg-white/5 hover:text-accent ${focusClass}`}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
+
+        <button
+          ref={toggleRef}
+          type="button"
+          aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+          className={`inline-flex size-11 items-center justify-center rounded-lg border border-white/10 text-foreground hover:bg-white/5 md:hidden ${focusClass}`}
+        >
+          {menuOpen ? (
+            <X aria-hidden="true" className="size-5" />
+          ) : (
+            <Menu aria-hidden="true" className="size-5" />
+          )}
+        </button>
       </div>
+
+      <nav
+        id="mobile-navigation"
+        aria-label="Mobile navigation"
+        hidden={!menuOpen}
+        className="border-t border-white/10 bg-background px-5 py-3 md:hidden"
+      >
+        <ul className="mx-auto max-w-7xl space-y-1">
+          {links.map(({ id, label }) => (
+            <li key={id}>
+              <Link
+                to="/"
+                hash={id}
+                hashScrollIntoView={{
+                  behavior: "instant",
+                  block: "start",
+                }}
+                onClick={() => setMenuOpen(false)}
+                className={`flex min-h-12 items-center rounded-lg px-4 text-base text-muted-foreground transition-colors hover:bg-white/5 hover:text-accent ${focusClass}`}
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }

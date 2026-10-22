@@ -1,61 +1,109 @@
-import { useEffect, useRef, useState, type ElementType, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  type ElementType,
+  type ReactNode,
+} from "react";
 
-export function Reveal({
-  children,
-  delay = 0,
-  className = "",
-  as: Tag = "div",
-  hero = false,
-}: {
+type RevealProps = {
   children: ReactNode;
   delay?: number;
   className?: string;
   as?: ElementType;
   hero?: boolean;
-}) {
+};
+
+export function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  as: Component = "div",
+  hero = false,
+}: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setVisible(true);
-            io.disconnect();
-          }
-        });
-      },
-      { threshold: 0.05, rootMargin: "0px 0px -20px 0px" },
-    );
-    io.observe(node);
-    return () => io.disconnect();
-  }, []);
 
-  const Component = Tag;
-  const duration = hero ? 900 : 600;
-  const easing = hero
-    ? "cubic-bezier(0.16, 1, 0.3, 1)"
-    : "cubic-bezier(0.22, 1, 0.36, 1)";
-  const translateY = hero ? "36px" : "22px";
-  const scale = hero ? (visible ? "scale(1)" : "scale(0.97)") : "";
+    if (!node) return;
+
+    const motionPreference = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+
+    if (
+      motionPreference.matches ||
+      !("IntersectionObserver" in window) ||
+      typeof node.animate !== "function"
+    ) {
+      return;
+    }
+
+    let animation: Animation | undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+
+        observer.disconnect();
+
+        // Keep focused links and controls visible immediately.
+        if (
+          motionPreference.matches ||
+          node.contains(document.activeElement)
+        ) {
+          return;
+        }
+
+        animation = node.animate(
+          [
+            {
+              opacity: 0,
+              transform: hero
+                ? "translateY(24px) scale(0.99)"
+                : "translateY(16px)",
+            },
+            {
+              opacity: 1,
+              transform: "translateY(0) scale(1)",
+            },
+          ],
+          {
+            duration: hero ? 700 : 450,
+            delay: Math.max(0, delay),
+            easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+            fill: "backwards",
+          },
+        );
+      },
+      { threshold: 0 },
+    );
+
+    const showImmediately = () => {
+      animation?.cancel();
+    };
+
+    const onMotionChange = () => {
+      if (motionPreference.matches) {
+        observer.disconnect();
+        showImmediately();
+      }
+    };
+
+    observer.observe(node);
+    node.addEventListener("focusin", showImmediately);
+    motionPreference.addEventListener("change", onMotionChange);
+
+    return () => {
+      observer.disconnect();
+      animation?.cancel();
+      node.removeEventListener("focusin", showImmediately);
+      motionPreference.removeEventListener("change", onMotionChange);
+    };
+  }, [delay, hero, Component]);
 
   return (
-    <Component
-      ref={ref as any}
-      style={{
-        transition: `opacity ${duration}ms ${easing}, transform ${duration}ms ${easing}`,
-        transitionDelay: `${delay}ms`,
-        opacity: visible ? 1 : 0,
-        transform: visible
-          ? "translateY(0) scale(1)"
-          : `translateY(${translateY}) ${scale}`,
-        willChange: "opacity, transform",
-      }}
-      className={className}
-    >
+    <Component ref={ref} className={className}>
       {children}
     </Component>
   );

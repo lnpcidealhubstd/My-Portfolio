@@ -572,3 +572,76 @@
   right: -60px;
   pointer-events: none;
 }
+
+/* Portfolio refinements */
+
+:root {
+  --muted-foreground: oklch(0.72 0.012 240);
+  --hairline: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 10%);
+}
+
+@layer base {
+  body {
+    margin: 0;
+    min-width: 320px;
+    line-height: 1.6;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+}
+
+/* Keep legacy portrait cards within smaller screens. */
+.profile-flip-scene {
+  width: min(100%, 420px);
+  height: auto;
+  aspect-ratio: 7 / 10;
+}
+
+.profile-gradient-ring {
+  width: calc(100% - 36px);
+  height: calc(100% - 36px);
+}
+
+/* More restrained glow for any existing pages using this class. */
+.neon-text {
+  text-shadow: 0 0 24px oklch(0.82 0.18 195 / 20%);
+}
+
+/* Respect the visitor's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .glass-card-hover:hover,
+  .tracer-line:hover {
+    transform: none;
+  }
+}
