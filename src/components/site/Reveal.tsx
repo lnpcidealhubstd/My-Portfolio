@@ -1,9 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  type ElementType,
-  type ReactNode,
-} from "react";
+import { useEffect, useRef, type ElementType, type ReactNode } from "react";
 
 type RevealProps = {
   children: ReactNode;
@@ -27,9 +22,7 @@ export function Reveal({
 
     if (!node) return;
 
-    const motionPreference = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     if (
       motionPreference.matches ||
@@ -48,10 +41,7 @@ export function Reveal({
         observer.disconnect();
 
         // Keep focused links and controls visible immediately.
-        if (
-          motionPreference.matches ||
-          node.contains(document.activeElement)
-        ) {
+        if (motionPreference.matches || node.contains(document.activeElement)) {
           return;
         }
 
@@ -59,9 +49,7 @@ export function Reveal({
           [
             {
               opacity: 0,
-              transform: hero
-                ? "translateY(24px) scale(0.99)"
-                : "translateY(16px)",
+              transform: hero ? "translateY(24px) scale(0.99)" : "translateY(16px)",
             },
             {
               opacity: 1,

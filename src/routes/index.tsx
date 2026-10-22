@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  FaFacebook,
-  FaFigma,
-  FaGithub,
-  FaLinkedin,
-} from "react-icons/fa";
+import { FaFacebook, FaFigma, FaGithub, FaLinkedin } from "react-icons/fa";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -41,11 +36,9 @@ import nicoLogo from "@/assets/nico-logo.png";
  */
 const PROFILE = {
   email: "lorenz.centeno@gmail.com",
-  linkedin:
-    "https://www.linkedin.com/in/lorenzo-nicholas-centeno-b07a52106/",
+  linkedin: "https://www.linkedin.com/in/lorenzo-nicholas-centeno-b07a52106/",
   github: "https://github.com/lnpcidealhubstd",
-  facebook:
-    "https://www.facebook.com/lorenznicholas.centeno/directory_links",
+  facebook: "https://www.facebook.com/lorenznicholas.centeno/directory_links",
   resume: "/Nico-Centeno-Resume.pdf",
 };
 
@@ -59,8 +52,7 @@ const TECHNOLOGIES = [
   {
     number: "01",
     title: "Design & Prototyping",
-    description:
-      "Planning user journeys and turning ideas into clear, consistent interfaces.",
+    description: "Planning user journeys and turning ideas into clear, consistent interfaces.",
     tools: [
       {
         label: "Figma",
@@ -87,8 +79,7 @@ const TECHNOLOGIES = [
   {
     number: "02",
     title: "AI-Assisted Prototyping",
-    description:
-      "Using AI to explore concepts, clarify ideas, and support prototype development.",
+    description: "Using AI to explore concepts, clarify ideas, and support prototype development.",
     tools: [
       {
         label: "Lovable",
@@ -110,8 +101,7 @@ const TECHNOLOGIES = [
   {
     number: "03",
     title: "Development & Handoff",
-    description:
-      "Connecting design decisions with implementation, collaboration, and delivery.",
+    description: "Connecting design decisions with implementation, collaboration, and delivery.",
     tools: [
       {
         label: "Visual Studio Code",
@@ -193,8 +183,7 @@ const secondaryButton =
   "transition-colors hover:border-accent/60 hover:text-accent " +
   focusClass;
 
-const panelClass =
-  "rounded-2xl border border-white/10 bg-white/[0.02]";
+const panelClass = "rounded-2xl border border-white/10 bg-white/[0.02]";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -285,15 +274,13 @@ function Home() {
                 </h1>
 
                 <p className="text-display mt-7 max-w-xl text-2xl font-medium leading-snug sm:text-3xl">
-                  Thoughtful design. Clear direction. Meaningful digital
-                  experiences.
+                  Thoughtful design. Clear direction. Meaningful digital experiences.
                 </p>
 
                 <p className="mt-6 max-w-xl text-base leading-8 text-muted-foreground">
-                  I turn complex requirements into intuitive digital experiences
-                  and guide projects from discovery to delivery. My work
-                  combines user-centered design, collaborative planning, and
-                  rapid prototyping to connect business goals with user needs.
+                  I turn complex requirements into intuitive digital experiences and guide projects
+                  from discovery to delivery. My work combines user-centered design, collaborative
+                  planning, and rapid prototyping to connect business goals with user needs.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -338,14 +325,13 @@ function Home() {
                       src={nicolasAsset}
                       alt="Portrait of Nico Centeno"
                       fetchPriority="high"
-                      className="aspect-[4/5] w-full origin-bottom scale-100 object-contain object-bottom" />
+                      className="aspect-[4/5] w-full origin-bottom scale-100 object-contain object-bottom"
+                    />
                   </div>
 
                   <figcaption className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
                     <span>Design with purpose.</span>
-                    <span className="text-accent">
-                      Deliver with direction.
-                    </span>
+                    <span className="text-accent">Deliver with direction.</span>
                   </figcaption>
                 </figure>
               </Reveal>
@@ -362,22 +348,19 @@ function Home() {
 
             <div className="space-y-5 text-base leading-8 text-muted-foreground lg:col-span-7">
               <p>
-                I’m Lorenzo Nicholas “Nico” Centeno, a UI/UX Designer and
-                Project Manager, and Co-Founder of Ideahub Studio. I help
-                transform ideas into clear, usable digital products through
-                discovery, user flows, interface design, and collaborative
+                I’m Lorenzo Nicholas “Nico” Centeno, a UI/UX Designer and Project Manager, and
+                Co-Founder of Ideahub Studio. I help transform ideas into clear, usable digital
+                products through discovery, user flows, interface design, and collaborative
                 delivery.
               </p>
               <p>
-                My approach connects user needs with business objectives. I
-                work across design and project coordination to clarify
-                requirements, align stakeholders, organize priorities, and
-                support a smooth transition from concept to implementation.
+                My approach connects user needs with business objectives. I work across design and
+                project coordination to clarify requirements, align stakeholders, organize
+                priorities, and support a smooth transition from concept to implementation.
               </p>
               <p>
-                I also use AI-assisted prototyping to explore ideas quickly,
-                communicate design decisions, and create interactive concepts
-                for feedback.
+                I also use AI-assisted prototyping to explore ideas quickly, communicate design
+                decisions, and create interactive concepts for feedback.
               </p>
             </div>
           </div>
@@ -417,9 +400,7 @@ function Home() {
                   {group.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                  {group.description}
-                </p>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">{group.description}</p>
 
                 <ul className="mt-6 space-y-2 border-t border-white/10 pt-5">
                   {group.tools.map(({ label, detail, Icon }) => (
@@ -428,19 +409,12 @@ function Home() {
                       className="flex items-center gap-3 rounded-xl border border-transparent bg-white/[0.02] p-3"
                     >
                       <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent">
-                        <Icon
-                          aria-hidden="true"
-                          className="size-5"
-                        />
+                        <Icon aria-hidden="true" className="size-5" />
                       </span>
 
                       <div className="min-w-0">
-                        <p className="text-sm font-medium leading-6 text-foreground">
-                          {label}
-                        </p>
-                        <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
-                          {detail}
-                        </p>
+                        <p className="text-sm font-medium leading-6 text-foreground">{label}</p>
+                        <p className="mt-0.5 text-xs leading-5 text-muted-foreground">{detail}</p>
                       </div>
                     </li>
                   ))}
@@ -464,29 +438,19 @@ function Home() {
               className={`${panelClass} p-7 transition-colors hover:border-accent/40 ${focusClass}`}
             >
               <div className="flex items-center justify-between gap-4">
-                <h3 className="text-display text-2xl font-medium">
-                  Codebility
-                </h3>
-                <ArrowUpRight
-                  aria-hidden="true"
-                  className="size-5 shrink-0 text-accent"
-                />
+                <h3 className="text-display text-2xl font-medium">Codebility</h3>
+                <ArrowUpRight aria-hidden="true" className="size-5 shrink-0 text-accent" />
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">
-                Visit Codebility
-              </p>
+              <p className="mt-4 text-sm text-muted-foreground">Visit Codebility</p>
             </a>
 
             <article className={`${panelClass} p-7`}>
-              <h3 className="text-display text-2xl font-medium">
-                Ideahub Studio
-              </h3>
+              <h3 className="text-display text-2xl font-medium">Ideahub Studio</h3>
               <p className="mt-3 text-sm leading-6 text-accent">
                 Co-Founder · UI/UX Designer & Project Manager
               </p>
               <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                Connecting product design, client collaboration, and project
-                delivery.
+                Connecting product design, client collaboration, and project delivery.
               </p>
             </article>
           </div>
@@ -512,8 +476,8 @@ function Home() {
               </h2>
 
               <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
-                A selection of interface design, digital experiences, and
-                projects guided from discovery toward delivery.
+                A selection of interface design, digital experiences, and projects guided from
+                discovery toward delivery.
               </p>
             </div>
           </Reveal>
@@ -525,25 +489,53 @@ function Home() {
                   <div className="grid lg:grid-cols-5">
                     <div className="flex min-w-0 items-center overflow-hidden bg-white/[0.03] p-3 sm:p-5 lg:col-span-3">
                       {project.cover ? (
-                        <img src={project.cover} alt={`${project.title} — ${project.previewNote ? "temporary design preview" : "website preview"}`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                        <img
+                          src={project.cover}
+                          alt={`${project.title} — ${project.previewNote ? "temporary design preview" : "website preview"}`}
+                          loading="lazy"
+                          className="project-preview aspect-[16/10] w-full rounded-lg object-contain"
+                        />
                       ) : (
-                        <p className="flex aspect-[16/10] w-full items-center justify-center p-8 text-center text-sm text-muted-foreground">Project screenshots coming soon.</p>
+                        <p className="flex aspect-[16/10] w-full items-center justify-center p-8 text-center text-sm text-muted-foreground">
+                          Project screenshots coming soon.
+                        </p>
                       )}
                     </div>
                     <div className="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2">
-                      <p className="text-xs font-medium uppercase tracking-widest text-accent">{index === 0 ? "01 / Lead Project" : "02 / Completed Project"}</p>
-                      <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">{project.title}</h3>
-                      <p className="mt-4 text-sm leading-7 text-muted-foreground">{project.summary}</p>
+                      <p className="text-xs font-medium uppercase tracking-widest text-accent">
+                        {index === 0 ? "01 / Lead Project" : "02 / Completed Project"}
+                      </p>
+                      <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">
+                        {project.title}
+                      </h3>
+                      <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                        {project.summary}
+                      </p>
                       <dl className="mt-6 space-y-4 border-t border-white/10 pt-5">
-                        <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-1 text-sm font-medium">{project.role}</dd></div>
-                        <div><dt className="text-xs text-muted-foreground">Status</dt><dd className="mt-1 text-sm text-accent">{project.status}</dd></div>
+                        <div>
+                          <dt className="text-xs text-muted-foreground">My Role</dt>
+                          <dd className="mt-1 text-sm font-medium">{project.role}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-xs text-muted-foreground">Status</dt>
+                          <dd className="mt-1 text-sm text-accent">{project.status}</dd>
+                        </div>
                       </dl>
-                      <Link to="/projects/$slug" params={{ slug: project.slug }} className={`mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-lg text-sm font-medium text-accent ${focusClass}`}>
-                        View Case Study <ArrowUpRight aria-hidden="true" className="project-arrow size-4" />
+                      <Link
+                        to="/projects/$slug"
+                        params={{ slug: project.slug }}
+                        className={`mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-lg text-sm font-medium text-accent ${focusClass}`}
+                      >
+                        View Case Study{" "}
+                        <ArrowUpRight aria-hidden="true" className="project-arrow size-4" />
                       </Link>
                     </div>
                   </div>
-                  {project.previewNote && <p className="border-t border-white/10 px-6 py-4 text-xs leading-6 text-muted-foreground">{project.previewNote}</p>}
+                  {project.previewNote && (
+                    <p className="border-t border-white/10 px-6 py-4 text-xs leading-6 text-muted-foreground">
+                      {project.previewNote}
+                    </p>
+                  )}
                 </article>
               </Reveal>
             ))}
@@ -551,17 +543,26 @@ function Home() {
 
           <div className="mt-12">
             <h3 className="text-display text-2xl font-medium">More Work in Progress</h3>
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">A preview of ongoing design projects. Full case studies will follow.</p>
+            <p className="mt-3 text-sm leading-7 text-muted-foreground">
+              A preview of ongoing design projects. Full case studies will follow.
+            </p>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {ongoingProjects.map((project, index) => (
                 <Reveal key={project.slug} delay={index * 70} className="h-full">
                   <article className="project-card group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
                     <div className="overflow-hidden bg-white/[0.03] p-3">
-                      <img src={project.cover} alt={`${project.title} design preview`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                      <img
+                        src={project.cover}
+                        alt={`${project.title} design preview`}
+                        loading="lazy"
+                        className="project-preview aspect-[16/10] w-full rounded-lg object-contain"
+                      />
                     </div>
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 p-5">
                       <h4 className="text-base font-medium">{project.title}</h4>
-                      <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs text-accent">Ongoing</span>
+                      <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs text-accent">
+                        Ongoing
+                      </span>
                     </div>
                   </article>
                 </Reveal>
@@ -586,24 +587,14 @@ function Home() {
         >
           <div className="grid gap-6 lg:grid-cols-3">
             {SKILLS.map(({ title, Icon, description, items }) => (
-              <article
-                key={title}
-                className={`${panelClass} p-6 sm:p-8`}
-              >
+              <article key={title} className={`${panelClass} p-6 sm:p-8`}>
                 <Icon aria-hidden="true" className="size-7 text-accent" />
-                <h3 className="text-display mt-6 text-xl font-medium">
-                  {title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                  {description}
-                </p>
+                <h3 className="text-display mt-6 text-xl font-medium">{title}</h3>
+                <p className="mt-3 text-sm leading-7 text-muted-foreground">{description}</p>
                 <ul className="mt-6 space-y-3">
                   {items.map((item) => (
                     <li key={item} className="flex gap-3 text-sm leading-6">
-                      <Check
-                        aria-hidden="true"
-                        className="mt-1 size-4 shrink-0 text-accent"
-                      />
+                      <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-accent" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -614,25 +605,17 @@ function Home() {
         </Section>
 
         {/* EXPERIENCE */}
-        <Section
-          id="experience"
-          label="06 / Professional Background"
-          title="Experience"
-        >
+        <Section id="experience" label="06 / Professional Background" title="Experience">
           <div className="divide-y divide-white/10 border-y border-white/10">
             <ExperienceItem
               company="Ideahub Studio"
               role="Co-Founder · UI/UX Designer & Project Manager"
             >
-              Leading discovery, interface design, and client collaboration.
-              Aligning project scope, organizing priorities, and coordinating
-              design and development through delivery.
+              Leading discovery, interface design, and client collaboration. Aligning project scope,
+              organizing priorities, and coordinating design and development through delivery.
             </ExperienceItem>
 
-            <ExperienceItem
-              company="Invictus Energy Solutions"
-              role="UI/UX Designer"
-            >
+            <ExperienceItem company="Invictus Energy Solutions" role="UI/UX Designer">
               Working on UI/UX design for digital experiences.
             </ExperienceItem>
           </div>
@@ -658,16 +641,12 @@ function Home() {
               </h2>
 
               <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground">
-                Have a product idea, a website to improve, or a project that
-                needs clear design and direction? Let’s talk about how we can
-                bring it to life.
+                Have a product idea, a website to improve, or a project that needs clear design and
+                direction? Let’s talk about how we can bring it to life.
               </p>
 
               <div className="mt-8 flex flex-col items-start gap-7 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-                <a
-                  href={`mailto:${PROFILE.email}`}
-                  className={primaryButton}
-                >
+                <a href={`mailto:${PROFILE.email}`} className={primaryButton}>
                   Let’s Talk
                   <ArrowUpRight aria-hidden="true" className="size-4" />
                 </a>
@@ -704,9 +683,7 @@ function Section({
     >
       <Reveal>
         <div className="mb-9 sm:mb-12">
-          <p className="text-xs font-medium uppercase tracking-widest text-accent">
-            {label}
-          </p>
+          <p className="text-xs font-medium uppercase tracking-widest text-accent">{label}</p>
           <h2
             id={`${id}-heading`}
             className="text-display mt-4 max-w-4xl text-3xl font-medium leading-tight tracking-tight sm:text-4xl lg:text-5xl"
@@ -771,9 +748,7 @@ function ExperienceItem({
         <h3 className="text-display text-2xl font-medium">{company}</h3>
         <p className="mt-3 text-sm leading-6 text-accent">{role}</p>
       </div>
-      <p className="text-base leading-8 text-muted-foreground md:col-span-7">
-        {children}
-      </p>
+      <p className="text-base leading-8 text-muted-foreground md:col-span-7">{children}</p>
     </article>
   );
 }
