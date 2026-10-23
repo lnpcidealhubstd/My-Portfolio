@@ -26,6 +26,8 @@ import { Reveal } from "@/components/site/Reveal";
 import { PORTFOLIO_PROJECTS } from "@/lib/portfolio-projects";
 import nicolasAsset from "@/assets/nicolas.png";
 import nicoLogo from "@/assets/nico-logo.png";
+import { usePortfolioMotion } from "@/hooks/usePortfolioMotion";
+import "@/portfolio-motion.css";
 
 /*
  * CONTACT AND RESUME CONFIGURATION
@@ -213,6 +215,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const motionRef = usePortfolioMotion();
+
   const heroRef = useRef<HTMLElement | null>(null);
   const [heroVisible, setHeroVisible] = useState(true);
 
@@ -239,15 +243,15 @@ function Home() {
       {/* Fixed decorative logo: stronger blur while the hero is visible. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10 flex items-center justify-center overflow-hidden select-none"
+        className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden select-none"
       >
         <img
           src={nicoLogo}
           alt=""
           className="w-[85vw] max-w-[800px] transition-[filter,opacity] duration-700 ease-out motion-reduce:transition-none sm:w-[65vw]"
           style={{
-            filter: heroVisible ? "blur(56px)" : "blur(18px)",
-            opacity: heroVisible ? 0.045 : 0.08,
+            filter: heroVisible ? "blur(24px)" : "blur(6px)",
+            opacity: heroVisible ? 0.07 : 0.1,
           }}
         />
       </div>
@@ -261,8 +265,13 @@ function Home() {
 
       <Nav />
 
-      <main id="main-content" tabIndex={-1}>
-        {/* HERO */}
+      <main
+        ref={motionRef}
+        id="main-content"
+        tabIndex={-1}
+        className="relative z-10"
+      >
+        {/* HERO: keep the observer ref on this section. */}
         <section
           ref={heroRef}
           aria-labelledby="hero-heading"
@@ -272,83 +281,81 @@ function Home() {
 
           <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:gap-12">
             <div className="min-w-0 lg:col-span-7">
-              <Reveal>
-                <p className="text-sm font-medium tracking-wide text-accent">
-                  UI/UX Designer & Project Manager
-                </p>
+              <p className="hero-enter hero-step-1 text-sm font-medium tracking-wide text-accent">
+                UI/UX Designer & Project Manager
+              </p>
 
-                <h1
-                  id="hero-heading"
-                  className="text-display mt-5 text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl"
+              <h1
+                id="hero-heading"
+                className="hero-enter hero-step-2 text-display mt-5 text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl"
+              >
+                Nico{" "}
+                <span className="hero-name-accent text-accent">
+                  Centeno
+                </span>
+              </h1>
+
+              <p className="hero-enter hero-step-3 text-display mt-7 max-w-xl text-2xl font-medium leading-snug sm:text-3xl">
+                Thoughtful design. Clear direction. Meaningful digital
+                experiences.
+              </p>
+
+              <p className="hero-enter hero-step-4 mt-6 max-w-xl text-base leading-8 text-muted-foreground">
+                I turn complex requirements into intuitive digital experiences
+                and guide projects from discovery to delivery. My work combines
+                user-centered design, collaborative planning, and rapid
+                prototyping to connect business goals with user needs.
+              </p>
+
+              <div className="hero-enter hero-step-5 mt-8 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href="#projects"
+                  className={`${primaryButton} hero-action`}
                 >
-                  Nico <span className="text-accent">Centeno</span>
-                </h1>
+                  View Projects
+                  <ArrowDown
+                    aria-hidden="true"
+                    className="hero-action-arrow size-4"
+                  />
+                </a>
 
-                <p className="text-display mt-7 max-w-xl text-2xl font-medium leading-snug sm:text-3xl">
-                  Thoughtful design. Clear direction. Meaningful digital
-                  experiences.
-                </p>
+                <a
+                  href={PROFILE.resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${secondaryButton} hero-action`}
+                >
+                  View Resume
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="hero-action-arrow size-4"
+                  />
+                </a>
+              </div>
 
-                <p className="mt-6 max-w-xl text-base leading-8 text-muted-foreground">
-                  I turn complex requirements into intuitive digital experiences
-                  and guide projects from discovery to delivery. My work
-                  combines user-centered design, collaborative planning, and
-                  rapid prototyping to connect business goals with user needs.
-                </p>
-
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <a href="#projects" className={primaryButton}>
-                    View Projects
-                    <ArrowDown aria-hidden="true" className="size-4" />
-                  </a>
-
-                  {PROFILE.resume ? (
-                    <a
-                      href={PROFILE.resume}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={secondaryButton}
-                    >
-                      View Resume
-                      <ArrowUpRight aria-hidden="true" className="size-4" />
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      disabled
-                      title="Resume will be available soon"
-                      className={`${secondaryButton} cursor-not-allowed opacity-50`}
-                    >
-                      View Resume
-                    </button>
-                  )}
-                </div>
-
-                <div className="mt-7">
-                  <SocialLinks />
-                </div>
-              </Reveal>
+              <div className="hero-enter hero-step-6 mt-7">
+                <SocialLinks />
+              </div>
             </div>
 
             <div className="min-w-0 lg:col-span-5">
-              <Reveal delay={120}>
-                <figure className="mx-auto w-full max-w-sm">
-                  <div className="overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-b from-accent/10 to-white/[0.02]">
-                    <img
-                      src={nicolasAsset}
-                      alt="Portrait of Nico Centeno"
-                      fetchPriority="high"
-                      className="aspect-[4/5] w-full origin-bottom scale-100 object-contain object-bottom" />
-                  </div>
+              <figure className="hero-portrait-enter mx-auto w-full max-w-sm">
+                <div className="hero-portrait-frame overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-b from-accent/10 to-white/[0.02]">
+                  <img
+                    src={nicolasAsset}
+                    alt="Portrait of Nico Centeno"
+                    fetchPriority="high"
+                    className="aspect-[4/5] w-full origin-bottom scale-95 object-contain object-bottom"
+                  />
+                </div>
 
-                  <figcaption className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
-                    <span>Design with purpose.</span>
-                    <span className="text-accent">
-                      Deliver with direction.
-                    </span>
-                  </figcaption>
-                </figure>
-              </Reveal>
+                <figcaption className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
+                  <span>Design with purpose.</span>
+                  <span className="text-accent">
+                    Deliver with direction.
+                  </span>
+                </figcaption>
+              </figure>
             </div>
           </div>
         </section>
@@ -678,7 +685,9 @@ function Home() {
         </section>
       </main>
 
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </div>
   );
 }

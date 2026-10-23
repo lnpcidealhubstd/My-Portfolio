@@ -1,0 +1,243 @@
+/* =========================================
+   PORTFOLIO MOTION
+   Works with usePortfolioMotion.ts
+   ========================================= */
+
+/* Scroll-driven image depth.
+   Individual translate preserves existing scale effects. */
+#main-content[data-portfolio-motion] #projects .project-preview,
+#main-content[data-portfolio-motion] .hero-portrait-frame img {
+    translate: 0 var(--section-parallax, 0px);
+}
+
+/* Section separators */
+#main-content[data-portfolio-motion]>section:not(:first-child) {
+    position: relative;
+}
+
+#main-content[data-portfolio-motion]>section:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    width: 40%;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent,
+            var(--accent),
+            transparent);
+    opacity: 0.22;
+    pointer-events: none;
+}
+
+#main-content[data-portfolio-motion]>section:nth-child(even)::before {
+    left: auto;
+    right: 8%;
+}
+
+/* =========================================
+   SHARED 3D TILT
+   ========================================= */
+
+#main-content[data-portfolio-motion] [data-motion-tilt] {
+    position: relative;
+    isolation: isolate;
+
+    transform:
+        perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+
+    transition:
+        transform 180ms ease-out,
+        border-color 300ms ease,
+        box-shadow 300ms ease;
+}
+
+/* Cursor-following light */
+#main-content[data-portfolio-motion] [data-motion-tilt]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+
+    background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 50%),
+            rgb(0 213 216 / 15%),
+            transparent 60%);
+
+    opacity: 0;
+    transition: opacity 250ms ease;
+}
+
+#main-content[data-portfolio-motion] [data-motion-tilt][data-pointer-active]::after {
+    opacity: 1;
+}
+
+/* =========================================
+   HERO — PORTRAIT DEPTH
+   ========================================= */
+
+#main-content[data-portfolio-motion] .hero-portrait-frame[data-pointer-active] {
+    border-color: rgb(0 213 216 / 65%);
+
+    box-shadow:
+        0 25px 65px -35px rgb(0 213 216 / 45%),
+        inset 0 1px 0 rgb(255 255 255 / 10%);
+}
+
+/* =========================================
+   TOOLKIT — ILLUMINATED SURFACES
+   ========================================= */
+
+#main-content[data-portfolio-motion] #technologies article[data-pointer-active] {
+    border-color: rgb(0 213 216 / 45%);
+
+    box-shadow:
+        inset 0 1px 0 rgb(0 213 216 / 20%),
+        0 20px 50px -30px rgb(0 213 216 / 35%);
+}
+
+#main-content[data-portfolio-motion] #technologies li>span {
+    transition:
+        transform 250ms ease,
+        background-color 250ms ease,
+        border-color 250ms ease;
+}
+
+/* =========================================
+   AFFILIATIONS — OFFSET OUTLINE
+   ========================================= */
+
+#main-content[data-portfolio-motion] #affiliations [data-motion-tilt][data-pointer-active] {
+    border-color: rgb(0 213 216 / 50%);
+
+    box-shadow:
+        6px 6px 0 -1px var(--background),
+        6px 6px 0 0 rgb(0 213 216 / 30%);
+}
+
+/* =========================================
+   PROJECTS — IMAGE DEPTH & SHADOW
+   ========================================= */
+
+#main-content[data-portfolio-motion] #projects .project-preview {
+    transition: transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#main-content[data-portfolio-motion] #projects .project-card[data-pointer-active] {
+    border-color: rgb(0 213 216 / 50%);
+
+    box-shadow:
+        0 28px 70px -35px rgb(0 213 216 / 40%),
+        inset 0 1px 0 rgb(255 255 255 / 6%);
+}
+
+#main-content[data-portfolio-motion] #projects .project-card[data-pointer-active] .project-preview {
+    transform: scale(1.035);
+}
+
+#main-content[data-portfolio-motion] #projects .project-arrow {
+    transition: transform 250ms ease;
+}
+
+#main-content[data-portfolio-motion] #projects .project-card[data-pointer-active] .project-arrow {
+    transform: translate(3px, -3px);
+}
+
+/* =========================================
+   SKILLS — ACCENT EDGE
+   ========================================= */
+
+#main-content[data-portfolio-motion] #skills article[data-pointer-active] {
+    border-color: rgb(0 213 216 / 40%);
+
+    box-shadow:
+        inset 3px 0 0 rgb(0 213 216 / 70%),
+        0 20px 50px -35px rgb(0 213 216 / 30%);
+}
+
+/* =========================================
+   EXPERIENCE — ROW HIGHLIGHT
+   ========================================= */
+
+#main-content[data-portfolio-motion] #experience article {
+    transition:
+        background-color 250ms ease,
+        box-shadow 250ms ease;
+}
+
+/* =========================================
+   CONTACT — PANEL GLOW
+   ========================================= */
+
+#main-content[data-portfolio-motion] #contact>div {
+    transition:
+        border-color 300ms ease,
+        box-shadow 300ms ease;
+}
+
+#main-content[data-portfolio-motion] #contact>div:focus-within {
+    border-color: rgb(0 213 216 / 50%);
+    box-shadow: 0 0 65px -30px rgb(0 213 216 / 35%);
+}
+
+/* Mouse-only refinements */
+@media (hover: hover) and (pointer: fine) {
+    #main-content[data-portfolio-motion] #technologies li:hover>span {
+        transform: translateY(-2px);
+        background-color: rgb(0 213 216 / 12%);
+        border-color: rgb(0 213 216 / 40%);
+    }
+
+    #main-content[data-portfolio-motion] #experience article:hover {
+        background-color: rgb(0 213 216 / 4%);
+        box-shadow: inset 3px 0 0 rgb(0 213 216 / 50%);
+    }
+
+    #main-content[data-portfolio-motion] #contact>div:hover {
+        border-color: rgb(0 213 216 / 50%);
+        box-shadow: 0 0 65px -30px rgb(0 213 216 / 35%);
+    }
+}
+
+/* Keep keyboard navigation stable. */
+#main-content[data-portfolio-motion] [data-motion-tilt]:focus-within {
+    transform: none;
+}
+
+#main-content[data-portfolio-motion] [data-motion-tilt]:focus-within::after {
+    opacity: 0;
+}
+
+/* Smaller screens: keep the images stationary. */
+@media (max-width: 767px) {
+
+    #main-content[data-portfolio-motion] #projects .project-preview,
+    #main-content[data-portfolio-motion] .hero-portrait-frame img {
+        translate: none;
+    }
+}
+
+/* Accessibility: disable this layer's movement.
+   Existing hero CSS has its own reduced-motion rules. */
+@media (prefers-reduced-motion: reduce) {
+
+    #main-content[data-portfolio-motion] [data-motion-tilt],
+    #main-content[data-portfolio-motion] .project-preview,
+    #main-content[data-portfolio-motion] .hero-portrait-frame img,
+    #main-content[data-portfolio-motion] .project-arrow,
+    #main-content[data-portfolio-motion] #technologies li>span {
+        transform: none !important;
+        translate: none !important;
+        transition: none !important;
+    }
+
+    #main-content[data-portfolio-motion] [data-motion-tilt]::after {
+        display: none;
+    }
+
+    #main-content[data-portfolio-motion] #experience article,
+    #main-content[data-portfolio-motion] #contact>div {
+        transition: none !important;
+    }
+}
