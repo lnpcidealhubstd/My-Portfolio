@@ -360,3 +360,175 @@
 .hero-universe-meteor {
     animation-duration: 24s;
 }
+
+/* Animate the border without rotating the actual content. */
+@property --nico-border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes nico-border-orbit {
+    to {
+        --nico-border-angle: 360deg;
+    }
+}
+
+/* HERO BUTTONS */
+
+.hero-action {
+    --nico-border-angle: 0deg;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    background:
+        linear-gradient(#101c22, #101c22) padding-box,
+        conic-gradient(from var(--nico-border-angle),
+            rgb(103 232 249 / 12%) 0deg,
+            rgb(103 232 249 / 12%) 220deg,
+            rgb(103 232 249 / 75%) 280deg,
+            rgb(165 180 252 / 60%) 310deg,
+            rgb(103 232 249 / 12%) 360deg) border-box;
+
+    color: #e6fcff;
+    animation: nico-border-orbit 9s linear infinite;
+
+    transition:
+        translate 250ms ease,
+        box-shadow 350ms ease,
+        color 250ms ease;
+}
+
+/* Offset the second button's border animation. */
+.hero-action+.hero-action {
+    animation-delay: -4.5s;
+}
+
+/* A soft galaxy appears inside the button on hover. */
+.hero-action:hover,
+.hero-action:focus-visible {
+    background:
+        radial-gradient(ellipse at 20% 100%,
+            rgb(34 211 238 / 24%),
+            transparent 65%) padding-box,
+        radial-gradient(ellipse at 90% 0%,
+            rgb(129 140 248 / 25%),
+            transparent 65%) padding-box,
+        linear-gradient(#12232d, #101922) padding-box,
+        conic-gradient(from var(--nico-border-angle),
+            rgb(103 232 249 / 30%),
+            #67e8f9,
+            #a5b4fc,
+            rgb(103 232 249 / 30%)) border-box;
+
+    color: #ffffff;
+    translate: 0 -3px;
+
+    box-shadow:
+        0 0 18px rgb(34 211 238 / 14%),
+        0 8px 28px rgb(99 102 241 / 12%);
+}
+
+.hero-action:focus-visible {
+    outline: 2px solid #a5f3fc;
+    outline-offset: 5px;
+}
+
+.hero-action:active {
+    translate: 0 0;
+}
+
+.hero-action-arrow {
+    transition: transform 250ms ease;
+}
+
+.hero-action:hover .hero-action-arrow,
+.hero-action:focus-visible .hero-action-arrow {
+    transform: translate(3px, -3px);
+}
+
+/* PROFILE PICTURE */
+
+.hero-portrait-frame {
+    --nico-border-angle: 0deg;
+
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+
+    /* Retains the frame's existing shape. */
+    border: 2px solid transparent;
+
+    background:
+        linear-gradient(#10171c, #10171c) padding-box,
+        conic-gradient(from var(--nico-border-angle),
+            rgb(103 232 249 / 10%) 0deg,
+            rgb(103 232 249 / 10%) 200deg,
+            rgb(34 211 238 / 80%) 265deg,
+            rgb(165 180 252 / 65%) 305deg,
+            rgb(103 232 249 / 10%) 360deg) border-box;
+
+    animation: nico-border-orbit 14s linear infinite;
+
+    box-shadow:
+        0 0 20px rgb(34 211 238 / 5%),
+        0 20px 55px rgb(0 0 0 / 25%);
+
+    transition: box-shadow 450ms ease;
+}
+
+.hero-portrait-frame:hover,
+.hero-portrait-frame:focus-within {
+    box-shadow:
+        0 0 24px rgb(34 211 238 / 17%),
+        0 0 55px rgb(129 140 248 / 12%),
+        0 24px 60px rgb(0 0 0 / 30%);
+}
+
+/* Gentle image movement; keeps the existing zoomed-out framing. */
+.hero-portrait-frame img {
+    scale: 0.95;
+    transition:
+        scale 650ms cubic-bezier(0.22, 1, 0.36, 1),
+        filter 450ms ease;
+}
+
+.hero-portrait-frame:hover img {
+    scale: 0.98;
+    filter: brightness(1.04);
+}
+
+/* Respect the visitor's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-action,
+    .hero-portrait-frame {
+        animation: none;
+        transition: none;
+    }
+
+    .hero-action,
+    .hero-action:hover,
+    .hero-action:focus-visible {
+        translate: none;
+    }
+
+    .hero-portrait-frame img,
+    .hero-action-arrow {
+        transition: none;
+    }
+
+    .hero-portrait-frame:hover img {
+        scale: 0.95;
+    }
+
+    .hero-action:hover .hero-action-arrow,
+    .hero-action:focus-visible .hero-action-arrow {
+        transform: none;
+    }
+}

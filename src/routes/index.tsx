@@ -216,6 +216,77 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+function TypewriterTagline() {
+  const message =
+    "Thoughtful design. Clear direction. Meaningful digital experiences.";
+
+  const [text, setText] = useState(message);
+  const [typing, setTyping] = useState(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    if (preference.matches) return;
+
+    let position = 0;
+    setText("");
+    setTyping(true);
+
+    const typeNext = () => {
+      position += 1;
+      setText(message.slice(0, position));
+
+      if (position < message.length) {
+        timer = setTimeout(
+          typeNext,
+          message[position - 1] === "." ? 320 : 40,
+        );
+      } else {
+        setTyping(false);
+      }
+    };
+
+    timer = setTimeout(typeNext, 700);
+
+    const onPreferenceChange = () => {
+      if (preference.matches) {
+        clearTimeout(timer);
+        setText(message);
+        setTyping(false);
+      }
+    };
+
+    preference.addEventListener("change", onPreferenceChange);
+
+    return () => {
+      clearTimeout(timer);
+      preference.removeEventListener("change", onPreferenceChange);
+    };
+  }, []);
+
+  return (
+    <span className="relative block">
+      <span className="sr-only">{message}</span>
+
+      {/* Reserve the full paragraph height while typing. */}
+      <span aria-hidden="true" className="invisible block">
+        {message}
+      </span>
+
+      <span aria-hidden="true" className="absolute inset-0">
+        {text}
+        {typing && (
+          <span className="ml-1 inline-block h-[0.8em] w-[2px] translate-y-[0.05em] bg-accent" />
+        )}
+      </span>
+    </span>
+  );
+}
+
 function Home() {
   const motionRef = usePortfolioMotion();
 
@@ -299,8 +370,7 @@ function Home() {
               </h1>
 
               <p className="hero-enter hero-step-3 text-display mt-7 max-w-xl text-2xl font-medium leading-snug sm:text-3xl">
-                Thoughtful design. Clear direction. Meaningful digital
-                experiences.
+                <TypewriterTagline />
               </p>
 
               <p className="hero-enter hero-step-4 mt-6 max-w-xl text-base leading-8 text-muted-foreground">
