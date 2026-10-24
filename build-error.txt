@@ -1,0 +1,18 @@
+
+> build
+> vite build
+
+[36mvite v7.3.6 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 162 modules transformed.
+[31m✗[39m Build failed in 705ms
+[31merror during build:
+[31m[@tailwindcss/vite:generate:build] Invalid declaration: `useEffect, useRef`[31m
+file: [36mC:/Users/Administrator/Desktop/My-Portfolio/src/hero-universe.css[31m
+    at Te (file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/tailwindcss@4.3.3/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+    at zf (file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/tailwindcss@4.3.3/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+    at fu (file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/@tailwindcss+node@4.3.3/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+    at z.generate (file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/@tailwindcss+vite@4.3.3_vit_cd9e08f54a12dbf352e03d706b370dc2/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+    at Object.handler (file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/@tailwindcss+vite@4.3.3_vit_cd9e08f54a12dbf352e03d706b370dc2/node_modules/@tailwindcss/vite/dist/index.mjs:1:4675)
+    at Object.handler (file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/vite@7.3.6_@types+node@22.2_46041a9d4deccce9f9aaf674d7cdda12/node_modules/vite/dist/node/chunks/config.js:33810:13)
+    at file:///C:/Users/Administrator/Desktop/My-Portfolio/node_modules/.pnpm/rollup@4.62.4/node_modules/rollup/dist/es/shared/node-entry.js:22787:40[39m

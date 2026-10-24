@@ -28,6 +28,8 @@ import nicolasAsset from "@/assets/nicolas.png";
 import nicoLogo from "@/assets/nico-logo.png";
 import { usePortfolioMotion } from "@/hooks/usePortfolioMotion";
 import "@/portfolio-motion.css";
+import { HeroUniverse } from "@/components/site/HeroUniverse";
+import "@/hero-universe.css";
 
 /*
  * CONTACT AND RESUME CONFIGURATION
@@ -263,6 +265,7 @@ function Home() {
         Skip to content
       </a>
 
+      <HeroUniverse />
       <Nav />
 
       <main
