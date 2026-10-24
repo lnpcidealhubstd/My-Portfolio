@@ -287,6 +287,121 @@ function TypewriterTagline() {
   );
 }
 
+// Set this to the verified public form endpoint after delivery is configured.
+// Never add private API keys or your email password here.
+const CONTACT_FORM_ENDPOINT = "";
+
+function ContactForm() {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const fieldClass = "mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-haspopup="dialog"
+        onClick={() => {
+          setStatus("idle");
+          dialogRef.current?.showModal();
+        }}
+        className={`${primaryButton} hero-action mt-8`}
+      >
+        Let’s Talk
+        <ArrowUpRight aria-hidden="true" className="hero-action-arrow size-4" />
+      </button>
+
+      <dialog
+        ref={dialogRef}
+        aria-labelledby="inquiry-title"
+        aria-describedby="inquiry-description"
+        onClose={() => triggerRef.current?.focus()}
+        className="nico-contact-dialog fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-3xl border border-accent/20 bg-[#0d151b] p-0 text-foreground shadow-2xl backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+        style={{ colorScheme: "dark" }}
+      >
+        <div className="p-6 sm:p-9">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-accent">Start a Conversation</p>
+              <h2 id="inquiry-title" className="text-display mt-3 text-3xl font-medium">Tell me about your project.</h2>
+            </div>
+            <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Close contact form" className={`inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-xl hover:bg-white/5 ${focusClass}`}>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <p id="inquiry-description" className="mt-4 text-sm leading-7 text-muted-foreground">Share what you’re working on and where you need support.</p>
+
+          {status === "success" ? (
+            <div role="status" className="py-9">
+              <Check aria-hidden="true" className="size-9 text-accent" />
+              <h3 className="mt-5 text-2xl font-medium">Thanks for reaching out.</h3>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">Your inquiry has been submitted successfully.</p>
+              <button type="button" onClick={() => dialogRef.current?.close()} className={`${secondaryButton} mt-7`}>Close</button>
+            </div>
+          ) : (
+            <form className="mt-7 space-y-5" onSubmit={async (event) => {
+              event.preventDefault();
+              if (!CONTACT_FORM_ENDPOINT || status === "sending") return;
+              const form = event.currentTarget;
+              const data = new FormData(form);
+              setStatus("sending");
+              try {
+                const response = await fetch(CONTACT_FORM_ENDPOINT, {
+                  method: "POST",
+                  body: data,
+                  headers: { Accept: "application/json" },
+                  signal: AbortSignal.timeout(20000),
+                });
+                if (!response.ok) throw new Error("Submission failed");
+                form.reset();
+                setStatus("success");
+              } catch {
+                setStatus("error");
+              }
+            }}>
+              <fieldset disabled={status === "sending"} className="space-y-5 disabled:opacity-70">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="inquiry-name" className="text-sm font-medium">Name <span className="text-accent">*</span></label>
+                    <input id="inquiry-name" name="name" type="text" autoComplete="name" maxLength={100} required className={fieldClass} />
+                  </div>
+                  <div>
+                    <label htmlFor="inquiry-email" className="text-sm font-medium">Email <span className="text-accent">*</span></label>
+                    <input id="inquiry-email" name="email" type="email" autoComplete="email" maxLength={254} required className={fieldClass} />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="inquiry-service" className="text-sm font-medium">Service needed</label>
+                  <select id="inquiry-service" name="service" defaultValue="" className={fieldClass}>
+                    <option value="">Select a service</option>
+                    <option value="UI/UX Design">UI/UX Design</option>
+                    <option value="Project Management">Project Management</option>
+                    <option value="Both">UI/UX Design & Project Management</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="inquiry-message" className="text-sm font-medium">Project details <span className="text-accent">*</span></label>
+                  <textarea id="inquiry-message" name="message" rows={5} maxLength={5000} required placeholder="What are you building or looking to improve?" className={`${fieldClass} resize-y`} />
+                </div>
+              </fieldset>
+              {status === "error" && <p role="alert" className="text-sm leading-6 text-red-300">Your inquiry couldn’t be sent. Try again or email me directly. Your message is still here.</p>}
+              {!CONTACT_FORM_ENDPOINT && <p className="text-sm leading-6 text-muted-foreground">Online submissions are being set up. For now, please <a href={`mailto:${PROFILE.email}`} className={`rounded text-accent underline underline-offset-4 ${focusClass}`}>email me directly</a>.</p>}
+              <button type="submit" disabled={!CONTACT_FORM_ENDPOINT || status === "sending"} className={`${primaryButton} w-full disabled:cursor-not-allowed disabled:opacity-40`}>
+                {status === "sending" ? "Sending…" : "Send Inquiry"}
+                <ArrowUpRight aria-hidden="true" className="size-4" />
+              </button>
+              <p role="status" className="sr-only">{status === "sending" ? "Sending your inquiry." : ""}</p>
+            </form>
+          )}
+        </div>
+      </dialog>
+    </>
+  );
+}
+
+
 function Home() {
   const motionRef = usePortfolioMotion();
 
@@ -576,72 +691,205 @@ function Home() {
         <section
           id="projects"
           aria-labelledby="projects-heading"
-          className="mx-auto max-w-7xl scroll-mt-24 px-5 py-16 sm:px-6 sm:py-24"
+          className="mx-auto max-w-7xl scroll-mt-24 px-5 py-20 sm:px-6 sm:py-28"
         >
           <Reveal>
-            <div className="mb-10 sm:mb-12">
-              <p className="text-xs font-medium uppercase tracking-widest text-accent">
-                04 / Selected Work
-              </p>
+            <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+                  04 / Selected Work
+                </p>
 
-              <h2
-                id="projects-heading"
-                className="text-display mt-4 text-3xl font-medium tracking-tight sm:text-4xl lg:text-5xl"
-              >
-                Featured Projects
-              </h2>
+                <h2
+                  id="projects-heading"
+                  className="text-display mt-4 text-4xl font-medium tracking-tight sm:text-5xl"
+                >
+                  Featured Projects
+                </h2>
+              </div>
 
-              <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
+              <p className="max-w-md text-sm leading-7 text-muted-foreground">
                 A selection of interface design, digital experiences, and
                 projects guided from discovery toward delivery.
               </p>
             </div>
           </Reveal>
 
-          <div className="space-y-6">
-            {featuredProjects.map((project, index) => (
-              <Reveal key={project.slug} delay={index * 80}>
-                <article className="project-card group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
-                  <div className="grid lg:grid-cols-5">
-                    <div className="flex min-w-0 items-center overflow-hidden bg-white/[0.03] p-3 sm:p-5 lg:col-span-3">
+          <div className="space-y-16 sm:space-y-24">
+            {featuredProjects.map((project, index) => {
+              const isLodging = project.slug === "lodging-technologies";
+              const isEverest = project.slug === "everest-energy-solutions";
+
+              const showcaseScreens = isEverest
+                ? ["Web App", "Mobile App", "Dashboard"].flatMap((label) => {
+                  const screen = project.screens.find(
+                    (item) => item.label === label,
+                  );
+                  return screen ? [screen] : [];
+                })
+                : [];
+
+              return (
+                <Reveal key={project.slug}>
+                  <article className="group">
+                    {/* Project identity */}
+                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                        {String(index + 1).padStart(2, "0")} /{" "}
+                        {isLodging
+                          ? "Design & Delivery"
+                          : "Digital Product Design"}
+                      </p>
+
+                      <span className="rounded-full border border-accent/20 bg-accent/[0.06] px-3 py-1.5 text-xs text-accent">
+                        {project.status}
+                      </span>
+                    </div>
+
+                    {/* Large, readable cover */}
+                    <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.01] p-3 sm:rounded-3xl sm:p-6">
                       {project.cover ? (
-                        <img src={project.cover} alt={`${project.title} — ${project.previewNote ? "temporary design preview" : "website preview"}`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                        <img
+                          src={project.cover}
+                          alt={`${project.title} — ${project.previewNote
+                            ? "temporary design preview"
+                            : "interface design preview"
+                            }`}
+                          loading="lazy"
+                          className="aspect-[16/10] w-full rounded-xl object-contain transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transform-none motion-reduce:transition-none"
+                        />
                       ) : (
-                        <p className="flex aspect-[16/10] w-full items-center justify-center p-8 text-center text-sm text-muted-foreground">Project screenshots coming soon.</p>
+                        <div className="flex aspect-[16/10] items-center justify-center text-sm text-muted-foreground">
+                          Project screenshots coming soon.
+                        </div>
                       )}
                     </div>
-                    <div className="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2">
-                      <p className="text-xs font-medium uppercase tracking-widest text-accent">{index === 0 ? "01 / Lead Project" : "02 / Completed Project"}</p>
-                      <h3 className="text-display mt-4 text-2xl font-medium sm:text-3xl">{project.title}</h3>
-                      <p className="mt-4 text-sm leading-7 text-muted-foreground">{project.summary}</p>
-                      <dl className="mt-6 space-y-4 border-t border-white/10 pt-5">
-                        <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-1 text-sm font-medium">{project.role}</dd></div>
-                        <div><dt className="text-xs text-muted-foreground">Status</dt><dd className="mt-1 text-sm text-accent">{project.status}</dd></div>
-                      </dl>
-                      <Link to="/projects/$slug" params={{ slug: project.slug }} className={`mt-6 inline-flex min-h-11 w-fit items-center gap-2 rounded-lg text-sm font-medium text-accent ${focusClass}`}>
-                        View Case Study <ArrowUpRight aria-hidden="true" className="project-arrow size-4" />
-                      </Link>
+
+                    {project.previewNote && (
+                      <p className="mt-3 text-xs leading-6 text-muted-foreground">
+                        {project.previewNote}
+                      </p>
+                    )}
+
+                    {/* Editorial project information */}
+                    <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-12">
+                      <div className="lg:col-span-5">
+                        <p className="text-xs font-medium uppercase tracking-[0.15em] text-accent">
+                          {project.role}
+                        </p>
+
+                        <h3 className="text-display mt-3 text-3xl font-medium tracking-tight sm:text-4xl">
+                          {project.title}
+                        </h3>
+
+                        <Link
+                          to="/projects/$slug"
+                          params={{ slug: project.slug }}
+                          className={`mt-6 inline-flex min-h-11 items-center gap-3 rounded-md text-sm font-medium text-accent transition-colors hover:text-foreground ${focusClass}`}
+                        >
+                          Explore Case Study
+                          <ArrowUpRight
+                            aria-hidden="true"
+                            className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none"
+                          />
+                        </Link>
+                      </div>
+
+                      <div className="lg:col-span-7">
+                        <p className="max-w-2xl text-base leading-8 text-muted-foreground">
+                          {project.summary}
+                        </p>
+
+                        <dl className="mt-7 grid gap-6 border-t border-white/10 pt-6 sm:grid-cols-2">
+                          <div>
+                            <dt className="text-xs uppercase tracking-widest text-foreground">
+                              Design Contribution
+                            </dt>
+                            <dd className="mt-3 text-sm leading-7 text-muted-foreground">
+                              {isLodging
+                                ? "Discovery, requirements alignment, and interface planning."
+                                : isEverest
+                                  ? "UI/UX design for the web app, mobile app, and dashboard."
+                                  : project.role}
+                            </dd>
+                          </div>
+
+                          <div>
+                            <dt className="text-xs uppercase tracking-widest text-foreground">
+                              {isLodging
+                                ? "Project Management"
+                                : "Current Status"}
+                            </dt>
+                            <dd className="mt-3 text-sm leading-7 text-muted-foreground">
+                              {isLodging
+                                ? "Client collaboration and delivery coordination. Phase 1 completed; Phase 2 CRM implementation ongoing."
+                                : project.status}
+                            </dd>
+                          </div>
+                        </dl>
+                      </div>
                     </div>
-                  </div>
-                  {project.previewNote && <p className="border-t border-white/10 px-6 py-4 text-xs leading-6 text-muted-foreground">{project.previewNote}</p>}
-                </article>
-              </Reveal>
-            ))}
+
+                    {/* Everest: show the three product surfaces */}
+                    {showcaseScreens.length > 0 && (
+                      <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                        {showcaseScreens.map((screen) => (
+                          <figure
+                            key={screen.label}
+                            className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-3"
+                          >
+                            <img
+                              src={screen.src}
+                              alt={`${project.title} — ${screen.label}`}
+                              loading="lazy"
+                              className="aspect-[4/3] w-full rounded-lg object-contain"
+                            />
+                            <figcaption className="px-1 pb-1 pt-4 text-xs text-muted-foreground">
+                              {screen.label}
+                            </figcaption>
+                          </figure>
+                        ))}
+                      </div>
+                    )}
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
 
-          <div className="mt-12">
-            <h3 className="text-display text-2xl font-medium">More Work in Progress</h3>
-            <p className="mt-3 text-sm leading-7 text-muted-foreground">A preview of ongoing design projects. Full case studies will follow.</p>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Ongoing projects: quieter supporting grid */}
+          <div className="mt-20 border-t border-white/10 pt-10 sm:mt-28">
+            <Reveal>
+              <div className="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+                <h3 className="text-display text-2xl font-medium">
+                  Work in Progress
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  A first look at ongoing design projects.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {ongoingProjects.map((project, index) => (
-                <Reveal key={project.slug} delay={index * 70} className="h-full">
-                  <article className="project-card group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
-                    <div className="overflow-hidden bg-white/[0.03] p-3">
-                      <img src={project.cover} alt={`${project.title} design preview`} loading="lazy" className="project-preview aspect-[16/10] w-full rounded-lg object-contain" />
+                <Reveal key={project.slug} delay={index * 70}>
+                  <article className="group">
+                    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-3 transition-colors duration-300 hover:border-accent/30">
+                      <img
+                        src={project.cover}
+                        alt={`${project.title} design preview`}
+                        loading="lazy"
+                        className="aspect-[16/10] w-full rounded-lg object-contain transition-transform duration-500 group-hover:scale-[1.025] motion-reduce:transform-none motion-reduce:transition-none"
+                      />
                     </div>
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 p-5">
-                      <h4 className="text-base font-medium">{project.title}</h4>
-                      <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-xs text-accent">Ongoing</span>
+
+                    <div className="mt-4 flex items-start justify-between gap-3">
+                      <h4 className="text-base font-medium">
+                        {project.title}
+                      </h4>
+                      <span className="shrink-0 text-xs leading-6 text-muted-foreground">
+                        {project.status}
+                      </span>
                     </div>
                   </article>
                 </Reveal>
@@ -649,7 +897,7 @@ function Home() {
             </div>
           </div>
 
-          <div className="mt-9 flex justify-center">
+          <div className="mt-10 flex justify-center">
             <Link to="/projects" className={secondaryButton}>
               Explore All Projects
               <ArrowUpRight aria-hidden="true" className="size-4" />
@@ -658,99 +906,275 @@ function Home() {
         </section>
 
         {/* SKILLS */}
-        <Section
+        <section
           id="skills"
-          label="05 / What I Bring"
-          title="Skills"
-          description="Design thinking, project coordination, and practical implementation support."
+          aria-labelledby="skills-heading"
+          className="mx-auto max-w-7xl scroll-mt-24 px-5 py-20 sm:px-6 sm:py-28"
         >
-          <div className="grid gap-6 lg:grid-cols-3">
-            {SKILLS.map(({ title, Icon, description, items }) => (
-              <article
-                key={title}
-                className={`${panelClass} p-6 sm:p-8`}
-              >
-                <Icon aria-hidden="true" className="size-7 text-accent" />
-                <h3 className="text-display mt-6 text-xl font-medium">
-                  {title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                  {description}
+          <Reveal>
+            <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-12">
+              <div className="lg:col-span-5">
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+                  05 / What I Bring
                 </p>
-                <ul className="mt-6 space-y-3">
-                  {items.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6">
-                      <Check
-                        aria-hidden="true"
-                        className="mt-1 size-4 shrink-0 text-accent"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
+
+                <h2
+                  id="skills-heading"
+                  className="text-display mt-4 text-4xl font-medium tracking-tight sm:text-5xl"
+                >
+                  Skills
+                </h2>
+              </div>
+
+              <p className="max-w-xl self-end text-base leading-8 text-muted-foreground lg:col-span-7">
+                Thoughtful interfaces, clear priorities, and collaborative
+                delivery—from understanding the requirements to supporting
+                implementation.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="border-t border-white/10">
+            {SKILLS.map(({ title, Icon, description, items }, index) => (
+              <Reveal key={title}>
+                <article className="group relative border-b border-white/10 py-8 sm:py-10">
+                  {/* A subtle accent appears along the top edge. */}
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-accent/70 via-accent/20 to-transparent transition-transform duration-500 group-hover:scale-x-100 motion-reduce:transition-none"
+                  />
+
+                  <div className="grid gap-7 lg:grid-cols-12 lg:gap-12">
+                    {/* Skill category */}
+                    <div className="flex items-start gap-4 lg:col-span-5">
+                      <span className="pt-1 text-xs tabular-nums text-muted-foreground">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+
+                      <div>
+                        <div className="flex items-center gap-3">
+                          <Icon
+                            aria-hidden="true"
+                            className="size-5 shrink-0 text-accent"
+                          />
+
+                          <h3 className="text-display text-xl font-medium tracking-tight sm:text-2xl">
+                            {title}
+                          </h3>
+                        </div>
+
+                        <p className="mt-3 max-w-sm text-sm leading-7 text-muted-foreground">
+                          {description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Practical capabilities */}
+                    <ul className="grid gap-x-7 gap-y-4 sm:grid-cols-2 lg:col-span-7">
+                      {items.map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-start gap-3 text-sm leading-6 text-muted-foreground transition-colors duration-300 group-hover:text-foreground motion-reduce:transition-none"
+                        >
+                          <Check
+                            aria-hidden="true"
+                            className="mt-1 size-3.5 shrink-0 text-accent/70"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
-        </Section>
+        </section>
 
         {/* EXPERIENCE */}
-        <Section
+        <section
           id="experience"
-          label="06 / Professional Background"
-          title="Experience"
+          aria-labelledby="experience-heading"
+          className="mx-auto max-w-7xl scroll-mt-24 px-5 py-20 sm:px-6 sm:py-28"
         >
-          <div className="divide-y divide-white/10 border-y border-white/10">
-            <ExperienceItem
-              company="Ideahub Studio"
-              role="Co-Founder · UI/UX Designer & Project Manager"
-            >
-              Leading discovery, interface design, and client collaboration.
-              Aligning project scope, organizing priorities, and coordinating
-              design and development through delivery.
-            </ExperienceItem>
+          <Reveal>
+            <div className="mb-12 grid gap-6 lg:grid-cols-12 lg:gap-12">
+              <div className="lg:col-span-5">
+                <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+                  06 / Professional Background
+                </p>
 
-            <ExperienceItem
-              company="Invictus Energy Solutions"
-              role="UI/UX Designer"
-            >
-              Working on UI/UX design for digital experiences.
-            </ExperienceItem>
-          </div>
-        </Section>
+                <h2
+                  id="experience-heading"
+                  className="text-display mt-4 text-4xl font-medium tracking-tight sm:text-5xl"
+                >
+                  Experience
+                </h2>
+              </div>
+
+              <p className="max-w-xl self-end text-base leading-8 text-muted-foreground lg:col-span-7">
+                Connecting interface design, client collaboration, and
+                project direction.
+              </p>
+            </div>
+          </Reveal>
+
+          <ol className="relative ml-2 border-l border-white/10">
+            <li className="relative pb-12 pl-7 sm:pb-16 sm:pl-10">
+              <span
+                aria-hidden="true"
+                className="absolute -left-[5px] top-2 size-[9px] rounded-full border-2 border-background bg-accent"
+              />
+
+              <Reveal>
+                <article className="group grid gap-6 lg:grid-cols-12 lg:gap-12">
+                  <div className="lg:col-span-5">
+                    <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                      Design & Project Leadership
+                    </p>
+
+                    <h3 className="text-display mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
+                      Ideahub Studio
+                    </h3>
+
+                    <p className="mt-3 max-w-sm text-sm leading-7 text-accent">
+                      Co-Founder · UI/UX Designer & Project Manager
+                    </p>
+                  </div>
+
+                  <div className="lg:col-span-7">
+                    <p className="max-w-2xl text-base leading-8 text-muted-foreground">
+                      Bringing product ideas into focus through discovery,
+                      interface design, and client collaboration. Connecting
+                      design decisions with clear priorities and coordinated
+                      delivery.
+                    </p>
+
+                    <ul className="mt-6 space-y-4">
+                      {[
+                        "Clarify requirements and align project scope with client objectives.",
+                        "Plan user flows and design interfaces for digital products.",
+                        "Organize priorities, communicate feedback, and coordinate design and development through delivery.",
+                      ].map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-start gap-3 text-sm leading-7 text-muted-foreground"
+                        >
+                          <Check
+                            aria-hidden="true"
+                            className="mt-1.5 size-3.5 shrink-0 text-accent/70"
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
+            </li>
+
+            <li className="relative pl-7 sm:pl-10">
+              <span
+                aria-hidden="true"
+                className="absolute -left-[5px] top-2 size-[9px] rounded-full border-2 border-background bg-muted-foreground"
+              />
+
+              <Reveal>
+                <article className="grid gap-6 lg:grid-cols-12 lg:gap-12">
+                  <div className="lg:col-span-5">
+                    <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                      Client Project Engagement
+                    </p>
+
+                    <h3 className="text-display mt-3 text-2xl font-medium tracking-tight sm:text-3xl">
+                      Lodging Technologies
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-7 text-accent">
+                      UI/UX Designer & Project Manager
+                    </p>
+                  </div>
+
+                  <div className="lg:col-span-7">
+                    <p className="max-w-2xl text-base leading-8 text-muted-foreground">
+                      Supporting the project from discovery through Phase 1
+                      delivery, combining UI/UX design with requirements
+                      alignment, client collaboration, and delivery coordination.
+                    </p>
+                    <ul className="mt-6 space-y-4">
+                      {[
+                        "Discovery, requirements alignment, and interface planning.",
+                        "Client collaboration and project delivery coordination.",
+                        "Phase 1 completed; Phase 2 CRM implementation ongoing.",
+                      ].map((item) => (
+                        <li key={item} className="flex items-start gap-3 text-sm leading-7 text-muted-foreground">
+                          <Check aria-hidden="true" className="mt-1.5 size-3.5 shrink-0 text-accent/70" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
+            </li>
+          </ol>
+        </section>
 
         {/* CONTACT */}
         <section
           id="contact"
           aria-labelledby="contact-heading"
-          className="scroll-mt-24 px-5 py-16 sm:px-6 sm:py-24"
+          className="relative scroll-mt-24 overflow-hidden px-5 py-20 sm:px-6 sm:py-28"
         >
-          <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-accent/[0.08] to-transparent p-7 sm:p-12 lg:p-16">
+          <div className="relative mx-auto max-w-7xl border-t border-white/10 pt-16 sm:pt-20">
+            {/* Restrained atmospheric lighting */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 75% 55%, rgb(34 211 238 / 0.06), transparent 65%)",
+              }}
+            />
+
             <Reveal>
-              <p className="text-xs font-medium uppercase tracking-widest text-accent">
-                07 / Get in Touch
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+                07 / Start a Conversation
               </p>
 
-              <h2
-                id="contact-heading"
-                className="text-display mt-5 max-w-3xl text-4xl font-medium leading-tight tracking-tight sm:text-5xl lg:text-6xl"
-              >
-                Let’s build something together.
-              </h2>
+              <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:gap-16">
+                <div className="lg:col-span-7">
+                  <h2
+                    id="contact-heading"
+                    className="text-display max-w-3xl text-4xl font-medium leading-[1.1] tracking-tight sm:text-6xl lg:text-7xl"
+                  >
+                    Let’s build something together.
+                  </h2>
+                </div>
 
-              <p className="mt-6 max-w-2xl text-base leading-8 text-muted-foreground">
-                Have a product idea, a website to improve, or a project that
-                needs clear design and direction? Let’s talk about how we can
-                bring it to life.
-              </p>
+                <div className="lg:col-span-5 lg:pt-2">
+                  <p className="max-w-xl text-base leading-8 text-muted-foreground">
+                    Have a product idea, a website to improve, or a project
+                    that needs clear design and direction? Let’s talk about
+                    how we can bring it to life.
+                  </p>
 
-              <div className="mt-8 flex flex-col items-start gap-7 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-                <a
-                  href={`mailto:${PROFILE.email}`}
-                  className={primaryButton}
-                >
-                  Let’s Talk
-                  <ArrowUpRight aria-hidden="true" className="size-4" />
-                </a>
+                  <ContactForm />
+
+                  <a
+                    href={`mailto:${PROFILE.email}`}
+                    className={`mt-6 block w-fit max-w-full break-all rounded-md text-sm text-muted-foreground underline decoration-white/20 underline-offset-4 transition-colors hover:text-accent hover:decoration-accent/50 ${focusClass}`}
+                  >
+                    {PROFILE.email}
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-12 flex flex-col gap-5 border-t border-white/10 pt-7 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-muted-foreground">
+                  Thoughtful design. Clear direction.
+                </p>
+
                 <SocialLinks />
               </div>
             </Reveal>
@@ -838,24 +1262,3 @@ function SocialLinks() {
   );
 }
 
-function ExperienceItem({
-  company,
-  role,
-  children,
-}: {
-  company: string;
-  role: string;
-  children: ReactNode;
-}) {
-  return (
-    <article className="grid gap-5 py-8 sm:py-10 md:grid-cols-12 md:gap-12">
-      <div className="md:col-span-5">
-        <h3 className="text-display text-2xl font-medium">{company}</h3>
-        <p className="mt-3 text-sm leading-6 text-accent">{role}</p>
-      </div>
-      <p className="text-base leading-8 text-muted-foreground md:col-span-7">
-        {children}
-      </p>
-    </article>
-  );
-}
