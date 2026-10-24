@@ -342,3 +342,21 @@
         filter: none;
     }
 }
+
+/* Cleaner universe background */
+.hero-universe-stars,
+.universe-galaxy-band {
+    display: none;
+}
+
+.universe-nebula-cyan {
+    opacity: 0.55;
+}
+
+.universe-nebula-indigo {
+    opacity: 0.35;
+}
+
+.hero-universe-meteor {
+    animation-duration: 24s;
+}
