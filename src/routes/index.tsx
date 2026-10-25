@@ -40,19 +40,8 @@ import codebilityLogo from "@/assets/codebility-logo.png";
 import ideahubLogo from "@/assets/ideahub-logo.png";
 import gmxAcademyLogo from "@/assets/gmx-academy-logo.png";
 import udemyLogo from "@/assets/udemy-logo.png";
-
-/*
- * CONTACT AND RESUME CONFIGURATION
- *
- * Add your real GitHub and Facebook profile URLs below.
- *
- * For the resume:
- * 1. Put your PDF inside the project's public folder.
- * 2. Set resume to its public path, for example:
- *    "/Nico-Centeno-Resume.pdf"
- *
- * Leave missing values empty until the actual asset or URL is available.
- */
+import { HeroPortrait } from "@/components/site/HeroPortrait";
+/* Verified profile links. Resume PDF lives in the public folder. */
 const PROFILE = {
   email: "lorenz.centeno@gmail.com",
   linkedin:
@@ -415,7 +404,181 @@ function TechEcosystem() {
   );
 }
 
+function useHeroPointerEffect() {
+  useEffect(() => {
+    const hero = document.querySelector<HTMLElement>('section[aria-labelledby="hero-heading"]');
+    if (!hero) return;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const fine = matchMedia("(hover: hover) and (pointer: fine)");
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      hero.removeAttribute("data-mouse-active");
+    };
+    const move = (event: PointerEvent) => {
+      if (reduced.matches || !fine.matches || event.pointerType !== "mouse") return;
+      x = event.clientX;
+      y = event.clientY;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const bounds = hero.getBoundingClientRect();
+        hero.style.setProperty("--hero-pointer-x", `${x - bounds.left}px`);
+        hero.style.setProperty("--hero-pointer-y", `${y - bounds.top}px`);
+        hero.setAttribute("data-mouse-active", "true");
+      });
+    };
+    hero.addEventListener("pointermove", move);
+    hero.addEventListener("pointerleave", reset);
+    hero.addEventListener("pointercancel", reset);
+    window.addEventListener("blur", reset);
+    window.addEventListener("scroll", reset, { passive: true });
+    reduced.addEventListener("change", reset);
+    fine.addEventListener("change", reset);
+    return () => {
+      reset();
+      hero.removeEventListener("pointermove", move);
+      hero.removeEventListener("pointerleave", reset);
+      hero.removeEventListener("pointercancel", reset);
+      window.removeEventListener("blur", reset);
+      window.removeEventListener("scroll", reset);
+      reduced.removeEventListener("change", reset);
+      fine.removeEventListener("change", reset);
+    };
+  }, []);
+}
+
+/* Kept in this file so the update needs no additional stylesheet. */
+const HERO_EFFECT_CSS = `
+#main-content > section[aria-labelledby="hero-heading"] .hero-pointer-spotlight {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0; transition: opacity 500ms ease;
+  background: radial-gradient(280px circle at var(--hero-pointer-x, 50%) var(--hero-pointer-y, 50%), rgb(34 211 238 / 9%), transparent 75%);
+}
+#main-content > section[data-mouse-active="true"] .hero-pointer-spotlight { opacity: 1; }
+#hero-heading { transition: text-shadow 400ms ease; }
+section[data-mouse-active="true"] #hero-heading { text-shadow: 0 0 28px rgb(34 211 238 / 10%); }
+#hero-heading .hero-name-accent, #hero-heading > span.text-accent {
+  display: inline-block;
+  background-image: linear-gradient(110deg, #55dddd 15%, #b8fbff 35%, #a5b4fc 50%, #55dddd 70%) !important;
+  background-size: 250% 100% !important;
+  background-clip: text !important; -webkit-background-clip: text !important;
+  color: transparent !important; -webkit-text-fill-color: transparent !important;
+  animation: nico-heading-shimmer 9s ease-in-out infinite !important;
+}
+@keyframes nico-heading-shimmer {
+  0%, 100% { background-position: 100% 50%; }
+  50% { background-position: 0% 50%; }
+}
+html[data-theme="light"] #hero-heading .hero-name-accent,
+html[data-theme="light"] #hero-heading > span.text-accent {
+  background-image: linear-gradient(110deg, #006d73 15%, #245982 35%, #6550a0 50%, #006d73 70%) !important;
+}
+html[data-theme="light"] #main-content > section[aria-labelledby="hero-heading"] .hero-pointer-spotlight {
+  background: radial-gradient(280px circle at var(--hero-pointer-x, 50%) var(--hero-pointer-y, 50%), rgb(0 109 115 / 6%), transparent 75%);
+}
+@media (prefers-reduced-motion: reduce) {
+  #main-content > section[aria-labelledby="hero-heading"] .hero-pointer-spotlight { display: none; }
+  #hero-heading { transition: none; text-shadow: none !important; }
+  #hero-heading .hero-name-accent, #hero-heading > span.text-accent { animation: none !important; }
+}
+`;
+
+function BackgroundMouseEcho() {
+  const layerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const layer = layerRef.current;
+    if (!layer) return;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    const fine = matchMedia("(hover: hover) and (pointer: fine)");
+    const echoes = new Set<Animation>();
+    let lastTime = 0;
+    let lastX = -1000;
+    let lastY = -1000;
+
+    const clear = () => {
+      for (const animation of Array.from(echoes)) animation.cancel();
+      echoes.clear();
+      layer.replaceChildren();
+      lastX = -1000;
+      lastY = -1000;
+    };
+    const move = (event: PointerEvent) => {
+      if (reduced.matches || !fine.matches || event.pointerType !== "mouse" || document.hidden) return;
+      const now = performance.now();
+      if (now - lastTime < 90 || Math.hypot(event.clientX - lastX, event.clientY - lastY) < 35) return;
+      lastTime = now;
+      lastX = event.clientX;
+      lastY = event.clientY;
+      if (echoes.size >= 12) return;
+      const echo = document.createElement("span");
+      echo.className = "background-mouse-echo";
+      echo.style.left = `${event.clientX}px`;
+      echo.style.top = `${event.clientY}px`;
+      layer.appendChild(echo);
+      const animation = echo.animate([
+        { opacity: 0, transform: "translate(-50%, -50%) scale(0.65)" },
+        { opacity: 0.24, offset: 0.15 },
+        { opacity: 0, transform: "translate(-50%, -50%) scale(1.5)" },
+      ], { duration: 950, easing: "ease-out", fill: "forwards" });
+      echoes.add(animation);
+      const remove = () => { echoes.delete(animation); echo.remove(); };
+      animation.onfinish = remove;
+      animation.oncancel = remove;
+    };
+    const onVisibility = () => { if (document.hidden) clear(); };
+    const onExit = (event: PointerEvent) => { if (!event.relatedTarget) clear(); };
+    window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("blur", clear);
+    window.addEventListener("scroll", clear, { passive: true });
+    document.addEventListener("pointerout", onExit);
+    document.addEventListener("visibilitychange", onVisibility);
+    reduced.addEventListener("change", clear);
+    fine.addEventListener("change", clear);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("blur", clear);
+      window.removeEventListener("scroll", clear);
+      document.removeEventListener("pointerout", onExit);
+      document.removeEventListener("visibilitychange", onVisibility);
+      reduced.removeEventListener("change", clear);
+      fine.removeEventListener("change", clear);
+      clear();
+    };
+  }, []);
+
+  return (
+    <>
+      <style>{`
+        .background-echo-layer {
+          position: fixed; inset: 0; z-index: 0;
+          overflow: hidden; pointer-events: none;
+        }
+        .background-mouse-echo {
+          position: absolute; width: 90px; height: 90px;
+          border: 1px solid #5ee5e1; border-radius: 18px;
+          box-shadow: 5px 0 0 -1px rgb(165 180 252 / 40%), 0 0 22px rgb(34 211 238 / 8%);
+          clip-path: polygon(0 0,100% 0,100% 35%,85% 35%,85% 65%,100% 65%,100% 100%,0 100%,0 65%,15% 65%,15% 35%,0 35%);
+        }
+        html[data-theme="light"] .background-mouse-echo {
+          border-color: #006d73;
+          box-shadow: 5px 0 0 -1px rgb(101 80 160 / 30%), 0 0 18px rgb(0 109 115 / 6%);
+        }
+        @media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+          .background-echo-layer { display: none; }
+        }
+      `}</style>
+      <div ref={layerRef} aria-hidden="true" className="background-echo-layer" />
+    </>
+  );
+}
+
 function Home() {
+  useHeroPointerEffect();
   const motionRef = usePortfolioMotion();
 
   const heroRef = useRef<HTMLElement | null>(null);
@@ -441,6 +604,7 @@ function Home() {
 
   return (
     <div className="relative isolate min-h-screen bg-background text-foreground">
+      <style>{HERO_EFFECT_CSS}</style>
       {/* Fixed decorative logo: stronger blur while the hero is visible. */}
       <div
         aria-hidden="true"
@@ -465,6 +629,7 @@ function Home() {
       </a>
 
       <HeroUniverse />
+      <BackgroundMouseEcho />
       <Nav />
 
       <main
@@ -480,8 +645,9 @@ function Home() {
           className="relative isolate overflow-hidden"
         >
           <Ambient />
+          <div aria-hidden="true" className="hero-pointer-spotlight" />
 
-          <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:gap-12">
+          <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-6 sm:py-24 lg:grid-cols-12 lg:gap-12">
             <div className="min-w-0 lg:col-span-7">
               <p className="hero-enter hero-step-1 text-sm font-medium tracking-wide text-accent">
                 UI/UX Designer & Project Manager
@@ -541,14 +707,7 @@ function Home() {
 
             <div className="min-w-0 lg:col-span-5">
               <figure className="hero-portrait-enter mx-auto w-full max-w-sm">
-                <div className="hero-portrait-frame overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-b from-accent/10 to-white/[0.02]">
-                  <img
-                    src={nicolasAsset}
-                    alt="Portrait of Nico Centeno"
-                    fetchPriority="high"
-                    className="aspect-[4/5] w-full origin-bottom scale-95 object-contain object-bottom"
-                  />
-                </div>
+                <HeroPortrait src={nicolasAsset} />
 
                 <figcaption className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
                   <span>Design with purpose.</span>
@@ -796,14 +955,6 @@ function Home() {
               const isLodging = project.slug === "lodging-technologies";
               const isEverest = project.slug === "everest-energy-solutions";
 
-              const showcaseScreens = isEverest
-                ? ["Web App", "Mobile App", "Dashboard"].flatMap((label) => {
-                  const screen = project.screens.find(
-                    (item) => item.label === label,
-                  );
-                  return screen ? [screen] : [];
-                })
-                : [];
 
               return (
                 <Reveal key={project.slug}>
@@ -898,7 +1049,7 @@ function Home() {
                             </dt>
                             <dd className="mt-3 text-sm leading-7 text-muted-foreground">
                               {isLodging
-                                ? "Client collaboration and delivery coordination. Phase 1 completed; Phase 2 CRM implementation ongoing."
+                                ? "Client collaboration and delivery coordination. Phase 1 completed; CRM ongoing, with scope and requirements under review and finalization."
                                 : project.status}
                             </dd>
                           </div>
@@ -906,27 +1057,6 @@ function Home() {
                       </div>
                     </div>
 
-                    {/* Everest: show the three product surfaces */}
-                    {showcaseScreens.length > 0 && (
-                      <div className="mt-10 grid gap-4 sm:grid-cols-3">
-                        {showcaseScreens.map((screen) => (
-                          <figure
-                            key={screen.label}
-                            className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-3"
-                          >
-                            <img
-                              src={screen.src}
-                              alt={`${project.title} — ${screen.label}`}
-                              loading="lazy"
-                              className="aspect-[4/3] w-full rounded-lg object-contain"
-                            />
-                            <figcaption className="px-1 pb-1 pt-4 text-xs text-muted-foreground">
-                              {screen.label}
-                            </figcaption>
-                          </figure>
-                        ))}
-                      </div>
-                    )}
                   </article>
                 </Reveal>
               );
@@ -1181,7 +1311,7 @@ function Home() {
                       {[
                         "Discovery, requirements alignment, and interface planning.",
                         "Client collaboration and project delivery coordination.",
-                        "Phase 1 completed; Phase 2 CRM implementation ongoing.",
+                        "Phase 1 completed; CRM ongoing, with scope and requirements under review and finalization.",
                       ].map((item) => (
                         <li key={item} className="flex items-start gap-3 text-sm leading-7 text-muted-foreground">
                           <Check aria-hidden="true" className="mt-1.5 size-3.5 shrink-0 text-accent/70" />
