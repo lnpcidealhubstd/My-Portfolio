@@ -328,3 +328,23 @@ html[data-theme="light"] .nico-portrait-ghost-purple {
     animation: none;
   }
 }
+
+/* Cyan + purple silhouette lighting */
+.nico-portrait-scene {
+  --portrait-edge: rgb(75 235 245 / 90%);
+  --portrait-halo: rgba(175, 95, 255, 0.212);
+}
+
+/* Deeper colors for clear edges in light mode */
+html[data-theme="light"] .nico-portrait-scene {
+  --portrait-edge: rgb(0 125 140 / 75%);
+  --portrait-halo: rgba(125, 55, 200, 0.151);
+}
+
+/* Larger portrait on desktop */
+@media (min-width: 1024px) {
+  .nico-portrait-scene {
+    width: 150%;
+    margin-inline: -12%;
+  }
+}

@@ -841,3 +841,9 @@ html[data-theme="light"] .hero-pointer-spotlight::after {
 .universe-motion-toggle {
     display: none !important;
 }
+
+@media (min-width: 1024px) and (min-height: 700px) {
+    #main-content>section[aria-labelledby="hero-heading"]>.grid {
+        transform: translateY(-20px);
+    }
+}

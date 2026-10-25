@@ -667,13 +667,6 @@ function Home() {
                 <TypewriterTagline />
               </p>
 
-              <p className="hero-enter hero-step-4 mt-6 max-w-xl text-base leading-8 text-muted-foreground">
-                I turn complex requirements into intuitive digital experiences
-                and guide projects from discovery to delivery. My work combines
-                user-centered design, collaborative planning, and rapid
-                prototyping to connect business goals with user needs.
-              </p>
-
               <div className="hero-enter hero-step-5 mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#projects"
@@ -709,12 +702,6 @@ function Home() {
               <figure className="hero-portrait-enter mx-auto w-full max-w-sm">
                 <HeroPortrait src={nicolasAsset} />
 
-                <figcaption className="mt-5 flex flex-wrap justify-between gap-2 text-xs text-muted-foreground">
-                  <span>Design with purpose.</span>
-                  <span className="text-accent">
-                    Deliver with direction.
-                  </span>
-                </figcaption>
               </figure>
             </div>
           </div>
