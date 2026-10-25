@@ -580,3 +580,45 @@
         animation: none;
     }
 }
+
+/* Toolkit — cleaner rows and clearer descriptions */
+#technologies article {
+    background: linear-gradient(160deg,
+            rgb(255 255 255 / 3%),
+            rgb(255 255 255 / 1%));
+    border-color: rgb(255 255 255 / 10%);
+}
+
+#technologies article:hover {
+    border-color: rgb(103 232 249 / 25%);
+}
+
+#technologies article ul {
+    margin-top: 1.5rem;
+}
+
+#technologies article li {
+    padding: 1rem 0;
+    border: 0;
+    border-bottom: 1px solid rgb(255 255 255 / 7%);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+#technologies article li:last-child {
+    border-bottom: 0;
+}
+
+#technologies article li:hover {
+    background: transparent;
+}
+
+#technologies article li p:first-child {
+    color: #e2eaed;
+}
+
+#technologies article li p+p {
+    color: #a4b2bb;
+    line-height: 1.7;
+}

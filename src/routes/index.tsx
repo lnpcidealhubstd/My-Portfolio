@@ -289,7 +289,7 @@ function TypewriterTagline() {
 
 // Set this to the verified public form endpoint after delivery is configured.
 // Never add private API keys or your email password here.
-const CONTACT_FORM_ENDPOINT = "";
+const CONTACT_FORM_ENDPOINT = "https://formspree.io/f/xljjgdwz";
 
 function ContactForm() {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -549,35 +549,61 @@ function Home() {
         </section>
 
         {/* ABOUT */}
-        <Section id="about" label="01 / Introduction" title="About Me">
-          <div className="grid gap-8 lg:grid-cols-12 lg:gap-16">
-            <h3 className="text-display text-2xl font-medium leading-snug sm:text-3xl lg:col-span-5">
-              Bringing design clarity and project direction together.
-            </h3>
+        <Section
+          id="about"
+          label="01 / Introduction"
+          title="About Me"
+        >
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-5">
+              <h3 className="text-display max-w-md text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
+                Bringing design clarity and project direction together.
+              </h3>
 
-            <div className="space-y-5 text-base leading-8 text-muted-foreground lg:col-span-7">
-              <p>
+              <div className="mt-8 flex flex-wrap gap-2">
+                {["UI/UX Design", "Project Management", "Prototyping"].map(
+                  (label) => (
+                    <span
+                      key={label}
+                      className="rounded-full border border-accent/15 bg-accent/[0.04] px-3 py-1.5 text-xs text-accent"
+                    >
+                      {label}
+                    </span>
+                  ),
+                )}
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <p className="text-lg leading-8 text-foreground">
                 I’m Lorenzo Nicholas “Nico” Centeno, a UI/UX Designer and
-                Project Manager, and Co-Founder of Ideahub Studio. I help
-                transform ideas into clear, usable digital products through
-                discovery, user flows, interface design, and collaborative
-                delivery.
+                Project Manager, and Co-Founder of Ideahub Studio.
               </p>
-              <p>
-                My approach connects user needs with business objectives. I
-                work across design and project coordination to clarify
-                requirements, align stakeholders, organize priorities, and
-                support a smooth transition from concept to implementation.
+
+              <p className="mt-5 text-base leading-8 text-muted-foreground">
+                I help transform ideas into clear, usable digital products
+                through discovery, user flows, interface design, and
+                collaborative delivery.
               </p>
-              <p>
-                I also use AI-assisted prototyping to explore ideas quickly,
-                communicate design decisions, and create interactive concepts
-                for feedback.
-              </p>
+
+              <div className="mt-7 space-y-5 border-l border-accent/25 pl-5 sm:pl-6">
+                <p className="text-base leading-8 text-muted-foreground">
+                  My approach connects user needs with business objectives.
+                  I work across design and project coordination to clarify
+                  requirements, align stakeholders, organize priorities,
+                  and support a smooth transition from concept to
+                  implementation.
+                </p>
+
+                <p className="text-base leading-8 text-muted-foreground">
+                  I also use AI-assisted prototyping to explore ideas
+                  quickly, communicate design decisions, and create
+                  interactive concepts for feedback.
+                </p>
+              </div>
             </div>
           </div>
         </Section>
-
         {/* TECHNOLOGIES */}
         <Section
           id="technologies"
@@ -651,38 +677,57 @@ function Home() {
           label="03 / Community & Collaboration"
           title="Affiliations & Organizations"
         >
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="divide-y divide-white/10 border-y border-white/10">
             <a
               href="https://www.codebility.tech/"
               target="_blank"
               rel="noopener noreferrer"
-              className={`${panelClass} p-7 transition-colors hover:border-accent/40 ${focusClass}`}
+              className={`group grid gap-4 rounded-sm py-7 sm:py-9 md:grid-cols-12 md:gap-10 ${focusClass}`}
             >
-              <div className="flex items-center justify-between gap-4">
-                <h3 className="text-display text-2xl font-medium">
+              <div className="flex items-center gap-4 md:col-span-5">
+                <span className="text-xs tabular-nums text-muted-foreground">
+                  01
+                </span>
+
+                <h3 className="text-display text-2xl font-medium tracking-tight transition-colors group-hover:text-accent">
                   Codebility
                 </h3>
+              </div>
+
+              <div className="flex items-center justify-between gap-5 md:col-span-7">
+                <span className="text-sm text-muted-foreground">
+                  Visit Codebility
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </span>
+
                 <ArrowUpRight
                   aria-hidden="true"
-                  className="size-5 shrink-0 text-accent"
+                  className="size-5 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none"
                 />
               </div>
-              <p className="mt-4 text-sm text-muted-foreground">
-                Visit Codebility
-              </p>
             </a>
 
-            <article className={`${panelClass} p-7`}>
-              <h3 className="text-display text-2xl font-medium">
-                Ideahub Studio
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-accent">
-                Co-Founder · UI/UX Designer & Project Manager
-              </p>
-              <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                Connecting product design, client collaboration, and project
-                delivery.
-              </p>
+            <article className="grid gap-4 py-7 sm:py-9 md:grid-cols-12 md:gap-10">
+              <div className="flex items-start gap-4 md:col-span-5">
+                <span className="pt-2 text-xs tabular-nums text-muted-foreground">
+                  02
+                </span>
+
+                <h3 className="text-display text-2xl font-medium tracking-tight">
+                  Ideahub Studio
+                </h3>
+              </div>
+
+              <div className="md:col-span-7">
+                <p className="text-sm font-medium leading-7 text-accent">
+                  Co-Founder · UI/UX Designer & Project Manager
+                </p>
+
+                <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
+                  Connecting product design, client collaboration, and
+                  project delivery.
+                </p>
+              </div>
             </article>
           </div>
         </Section>
@@ -756,7 +801,7 @@ function Home() {
                             : "interface design preview"
                             }`}
                           loading="lazy"
-                          className="aspect-[16/10] w-full rounded-xl object-contain transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transform-none motion-reduce:transition-none"
+                          className="block h-auto w-full rounded-xl object-contain transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transform-none motion-reduce:transition-none"
                         />
                       ) : (
                         <div className="flex aspect-[16/10] items-center justify-center text-sm text-muted-foreground">
@@ -1124,9 +1169,9 @@ function Home() {
         <section
           id="contact"
           aria-labelledby="contact-heading"
-          className="relative scroll-mt-24 overflow-hidden px-5 py-20 sm:px-6 sm:py-28"
+          className="relative mx-auto max-w-7xl scroll-mt-24 px-5 py-14 sm:px-6 sm:py-20"
         >
-          <div className="relative mx-auto max-w-7xl border-t border-white/10 pt-16 sm:pt-20">
+          <div className="relative isolate border-t border-white/10 pt-10 sm:pt-12">
             {/* Restrained atmospheric lighting */}
             <div
               aria-hidden="true"
@@ -1170,7 +1215,7 @@ function Home() {
                 </div>
               </div>
 
-              <div className="mt-12 flex flex-col gap-5 border-t border-white/10 pt-7 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
+              <div className="mt-10 flex flex-col gap-5 border-t border-white/10 pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between">
                 <p className="text-sm text-muted-foreground">
                   Thoughtful design. Clear direction.
                 </p>
