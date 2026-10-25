@@ -14,6 +14,11 @@ import {
 
 const focusClass = "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background";
 
+// Shared styles keep actions consistent across the case-study page.
+const actionClass = `inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-accent/30 bg-accent/[0.08] px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-accent/60 hover:bg-accent/15 motion-reduce:transition-none ${focusClass}`;
+const iconClass = `inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-foreground transition-colors hover:border-accent/50 hover:bg-accent/10 disabled:cursor-not-allowed disabled:opacity-30 motion-reduce:transition-none ${focusClass}`;
+const hasPlaceholders = (study: CaseStudy) => study.sections.some((section) => section.draft || section.body.includes("Placeholder:") || section.items?.some((item) => item.includes("Placeholder:")));
+
 export const Route = createFileRoute("/projects/$slug")({
   loader: ({ params }) => {
     const project = findProject(params.slug);
@@ -58,20 +63,32 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
       <Nav />
       <main className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-20">
         <Reveal>
-          <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-md text-sm text-muted-foreground hover:text-accent ${focusClass}`}>
+          <Link to="/projects" className={actionClass}>
             <ArrowLeft aria-hidden="true" className="size-4" /> All Projects
           </Link>
           <div className="mt-8 flex flex-wrap gap-3 text-xs font-medium">
             <span className="rounded-full border border-accent/20 bg-accent/10 px-3 py-2 text-accent">{project.tag}</span>
-            <span className="rounded-full border border-white/10 px-3 py-2 text-muted-foreground">Case study draft</span>
+            {hasPlaceholders(study) && <span className="rounded-full border border-white/10 px-3 py-2 text-muted-foreground">Case study draft</span>}
           </div>
           <h1 className="text-display mt-6 max-w-4xl text-4xl font-medium leading-tight sm:text-6xl">{project.title}</h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-muted-foreground">{project.summary}</p>
+          {project.slug === "lodging-technologies" && (
+            <a
+              href="https://lodgingtechnologies.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${actionClass} mt-6`}
+            >
+              View Live Website
+              <ArrowUpRight aria-hidden="true" className="size-4" />
+              <span className="sr-only">(opens in a new tab)</span>
+            </a>
+          )}
           <dl className="mt-8 grid gap-6 border-y border-white/10 py-6 sm:grid-cols-2">
             <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-2 text-sm font-medium">{study.role}</dd></div>
             <div><dt className="text-xs text-muted-foreground">Current Status</dt><dd className="mt-2 text-sm font-medium">{study.status}</dd></div>
           </dl>
-          <p className="mt-5 text-sm leading-7 text-muted-foreground">The role and project status are confirmed. Sections marked Placeholder contain details that will be added to complete the case study.</p>
+          {hasPlaceholders(study) && <p className="mt-5 text-sm leading-7 text-muted-foreground">Some case-study details are still being documented. Unfinished sections are marked as placeholders.</p>}
         </Reveal>
 
         {project.previewNote && <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-muted-foreground">{project.previewNote}</p>}
@@ -79,13 +96,13 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
         <div className="mt-10">
           <Reveal>
             <button type="button" onClick={() => openImage(activeIndex)} aria-label={`Expand ${activeScreen.label}`} className={`group block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-3 sm:p-5 ${focusClass}`}>
-              <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[65vh] w-full rounded-lg object-contain" />
+              <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[70vh] w-full rounded-lg object-contain" />
               <span className="mt-4 flex items-center justify-between gap-3 text-left text-sm"><span>{activeScreen.label}</span><span className="inline-flex items-center gap-2 text-accent"><Maximize2 aria-hidden="true" className="size-4" /> Expand</span></span>
             </button>
             {screens.length > 1 && (
               <div aria-label="Choose project preview" className="mt-4 flex flex-wrap gap-2">
                 {screens.map((screen, index) => (
-                  <button key={`${screen.label}-${index}`} type="button" aria-pressed={activeIndex === index} onClick={() => setActiveIndex(index)} className={`min-h-11 rounded-lg border px-3 py-2 text-xs ${focusClass} ${activeIndex === index ? "border-accent/40 bg-accent/10 text-accent" : "border-white/10 text-muted-foreground hover:text-foreground"}`}>{screen.label}</button>
+                  <button key={`${screen.label}-${index}`} type="button" aria-pressed={activeIndex === index} onClick={() => setActiveIndex(index)} className={`min-h-12 rounded-full border px-4 py-3 text-sm ${focusClass} ${activeIndex === index ? "border-accent/40 bg-accent/10 text-accent" : "border-white/10 text-muted-foreground hover:text-foreground"}`}>{screen.label}</button>
                 ))}
               </div>
             )}
@@ -103,9 +120,9 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
               </ol>
             </nav>
           </aside>
-          <div className="space-y-6 lg:col-span-9">
+          <div className="min-w-0 lg:col-span-9">
             {study.sections.map((section, index) => (
-              <section key={section.title} id={`case-section-${index}`} aria-labelledby={`case-heading-${index}`} className="scroll-mt-24 rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
+              <section key={section.title} id={`case-section-${index}`} aria-labelledby={`case-heading-${index}`} className="scroll-mt-24 border-t border-white/10 py-8 first:pt-0 first:border-t-0 sm:py-10">
                 <Reveal>
                   <div className="flex flex-wrap items-center gap-3">
                     <span className="text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
@@ -114,17 +131,17 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
                   </div>
                   <p className="mt-5 text-base leading-8 text-muted-foreground">{section.body}</p>
                   {section.items && <ul className="mt-5 list-disc space-y-2 pl-5 text-sm leading-7 text-muted-foreground">{section.items.map((item) => <li key={item}>{item}</li>)}</ul>}
-                  {section.title === "Deliverables" && <ul className="mt-5 flex flex-wrap gap-2">{screens.map((screen, screenIndex) => <li key={`${screen.label}-${screenIndex}`}><button type="button" onClick={() => openImage(screenIndex)} className={`min-h-11 rounded-lg border border-white/10 px-3 py-2 text-sm text-accent hover:bg-white/5 ${focusClass}`}>{screen.label} ↗</button></li>)}</ul>}
+                  {section.title === "Deliverables" && screens.length > 1 && <ul className="mt-5 flex flex-wrap gap-2">{screens.map((screen, screenIndex) => <li key={`${screen.label}-${screenIndex}`}><button type="button" onClick={() => openImage(screenIndex)} className={actionClass}>{screen.label} ↗</button></li>)}</ul>}
                 </Reveal>
               </section>
             ))}
           </div>
         </div>
 
-        <section aria-labelledby="gallery-heading" className="mt-16">
+        {screens.length > 1 && <section aria-labelledby="gallery-heading" className="mt-16">
           <h2 id="gallery-heading" className="text-display text-3xl font-medium">Project Gallery</h2>
           <p className="mt-3 text-sm text-muted-foreground">Select a preview to view it at a larger size.</p>
-          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={`mt-7 grid gap-5 sm:grid-cols-2 ${screens.length > 2 ? "lg:grid-cols-3" : ""}`}>
             {screens.map((screen, index) => (
               <Reveal key={`${screen.label}-gallery-${index}`} delay={(index % 3) * 60}>
                 <button type="button" onClick={() => openImage(index)} className={`project-card group block h-full w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] text-left ${focusClass}`}>
@@ -134,11 +151,11 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
               </Reveal>
             ))}
           </div>
-        </section>
+        </section>}
 
         <div className="mt-16 flex flex-wrap items-center justify-between gap-5 border-t border-white/10 pt-8">
-          <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
-          <Link to="/" hash="contact" className={`inline-flex min-h-12 items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-background ${focusClass}`}>Let’s Talk <ArrowUpRight aria-hidden="true" className="size-4" /></Link>
+          <Link to="/projects" className={actionClass}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
+          <Link to="/" hash="contact" className={actionClass}>Let’s Talk <ArrowUpRight aria-hidden="true" className="size-4" /></Link>
         </div>
       </main>
       <Footer />
@@ -150,13 +167,13 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
       }} className="fixed inset-0 m-auto max-h-[94dvh] w-[calc(100%-2rem)] max-w-6xl overflow-auto rounded-2xl border border-white/20 bg-background p-4 text-foreground shadow-2xl backdrop:bg-black/90 sm:p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
           <p className="text-sm font-medium">{activeScreen.label}</p>
-          <button type="button" autoFocus onClick={() => dialogRef.current?.close()} aria-label="Close image viewer" className={`flex size-11 shrink-0 items-center justify-center rounded-lg border border-white/15 ${focusClass}`}><X aria-hidden="true" className="size-5" /></button>
+          <button type="button" autoFocus onClick={() => dialogRef.current?.close()} aria-label="Close image viewer" className={iconClass}><X aria-hidden="true" className="size-5" /></button>
         </div>
         <img src={activeScreen.src} alt={`${project.title} — ${activeScreen.label}`} className="max-h-[70dvh] w-full object-contain" />
         <div className="mt-4 flex items-center justify-between gap-3">
-          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(-1)} aria-label="Previous image" className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /></button>
+          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(-1)} aria-label="Previous image" className={iconClass}><ArrowLeft aria-hidden="true" className="size-4" /></button>
           <p aria-live="polite" className="text-xs text-muted-foreground">{activeIndex + 1} of {screens.length}</p>
-          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(1)} aria-label="Next image" className={`flex size-11 items-center justify-center rounded-lg border border-white/15 disabled:opacity-30 ${focusClass}`}><ArrowRight aria-hidden="true" className="size-4" /></button>
+          <button type="button" disabled={screens.length < 2} onClick={() => changeImage(1)} aria-label="Next image" className={iconClass}><ArrowRight aria-hidden="true" className="size-4" /></button>
         </div>
       </dialog>
     </div>
