@@ -1,0 +1,106 @@
+/* Semantic colors shared by every page. Default stays dark until Nav resolves preference. */
+html:root {
+  --background: #080e12;
+  --foreground: #eef5f7;
+  --surface: #101a21;
+  --surface-elevated: #17252e;
+  --card: #101a21;
+  --card-foreground: #eef5f7;
+  --popover: #101a21;
+  --popover-foreground: #eef5f7;
+  --primary: #eef5f7;
+  --primary-foreground: #080e12;
+  --secondary: #17252e;
+  --secondary-foreground: #eef5f7;
+  --muted: #17252e;
+  --muted-foreground: #a5b5bf;
+  --accent: #5ee5e1;
+  --accent-foreground: #080e12;
+  --destructive: #fda4af;
+  --destructive-foreground: #080e12;
+  --border: #293b46;
+  --input: #354c5b;
+  --hairline: #293b46;
+  --ring: #5ee5e1;
+  --glow: #5ee5e1;
+  color-scheme: dark;
+}
+html:root[data-theme="light"] {
+  --background: #f7fafb;
+  --foreground: #142b37;
+  --surface: #ffffff;
+  --surface-elevated: #edf3f6;
+  --card: #ffffff;
+  --card-foreground: #142b37;
+  --popover: #ffffff;
+  --popover-foreground: #142b37;
+  --primary: #142b37;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f0f3;
+  --secondary-foreground: #142b37;
+  --muted: #edf3f6;
+  --muted-foreground: #4c6270;
+  --accent: #006d73;
+  --accent-foreground: #ffffff;
+  --destructive: #b4233c;
+  --destructive-foreground: #ffffff;
+  --border: #cad7de;
+  --input: #a4b7c3;
+  --hairline: #cad7de;
+  --ring: #006d73;
+  --glow: #006d73;
+  color-scheme: light;
+}
+html[data-theme] body { background: var(--background); color: var(--foreground); }
+html[data-theme] ::selection { background: var(--accent); color: var(--accent-foreground); }
+html[data-theme] :where(input, textarea, select) { color-scheme: inherit !important; }
+html[data-theme] :where(input, textarea, select)::placeholder { color: var(--muted-foreground); opacity: 1; }
+html[data-theme] :where(a, button, input, textarea, select, summary):focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
+
+/* Compatibility for older white-border and white-surface utility classes. */
+html[data-theme="light"] :where([class*="border-white/"]) { border-color: var(--border) !important; }
+html[data-theme="light"] :where([class*="divide-white/"] > :not(:last-child)) { border-color: var(--border) !important; }
+html[data-theme="light"] :where([class*="bg-white/"], [class*="bg-[#0b1115]"], [class*="bg-[#0d151b]"]) { background-color: var(--card) !important; }
+html[data-theme="light"] :where([class*="hover:bg-white/"]):hover { background-color: var(--secondary) !important; }
+html[data-theme="light"] :where([class*="text-muted-foreground/"]) { color: var(--muted-foreground) !important; }
+html[data-theme="light"] :where([class*="text-red-300"]) { color: var(--destructive) !important; }
+html[data-theme="light"] :where(input, textarea, select) { background: var(--card) !important; border-color: var(--input) !important; color: var(--foreground) !important; }
+html[data-theme="light"] select option { color: var(--foreground); background: var(--card); }
+html[data-theme="light"] dialog { background: var(--popover) !important; color: var(--foreground) !important; border-color: var(--border) !important; color-scheme: light !important; }
+html[data-theme="light"] dialog::backdrop { background: rgb(20 43 55 / 45%); }
+html[data-theme="light"] .glass-card { background: var(--card); border-color: var(--border); }
+html[data-theme="light"] .glass-card-hover:hover { background: var(--surface-elevated); box-shadow: 0 12px 30px rgb(20 43 55 / 8%); }
+
+/* Hero typography and interactions override fixed dark-effect colors. */
+html[data-theme="light"] .hero-name-accent { background: none !important; color: var(--accent) !important; -webkit-text-fill-color: var(--accent) !important; filter: none !important; text-shadow: none !important; }
+html[data-theme="light"] :where(.nico-typewriter-text, .neon-text) { color: var(--foreground); text-shadow: none; }
+html[data-theme="light"] .hero-action {
+  background: linear-gradient(#ffffff, #ffffff) padding-box, conic-gradient(from var(--nico-border-angle, 0deg), #cad7de, #00838a, #7b88c8, #cad7de) border-box !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 4px 14px rgb(20 43 55 / 5%);
+}
+html[data-theme="light"] .hero-action:hover,
+html[data-theme="light"] .hero-action:focus-visible { background: linear-gradient(#e8f5f5, #f0f3fc) padding-box, conic-gradient(from var(--nico-border-angle, 0deg), #cad7de, #00838a, #7b88c8, #cad7de) border-box !important; color: var(--foreground) !important; }
+html[data-theme="light"] .hero-portrait-frame { background: linear-gradient(#edf3f6, #ffffff) padding-box, conic-gradient(from var(--nico-border-angle, 0deg), #cad7de, #00838a, #7b88c8, #cad7de) border-box !important; box-shadow: 0 18px 45px rgb(20 43 55 / 9%); }
+html[data-theme="light"] .hero-portrait-frame::before { opacity: .2; }
+html[data-theme="light"] .hero-universe { opacity: .12 !important; }
+html[data-theme="light"] .universe-motion-toggle { background: var(--card); color: var(--foreground); border-color: var(--border); }
+html[data-theme="light"] .ambient-orb { opacity: .12 !important; }
+html[data-theme="light"] .neon-text { text-shadow: none; }
+html[data-theme="light"] .portfolio-nav-logo { filter: brightness(.55) saturate(1.4); }
+
+/* Ecosystem stays legible without changing orbit geometry or motion. */
+html[data-theme="light"] .tech-orbit-core,
+html[data-theme="light"] .tech-orbit-node { background: var(--card); color: var(--accent); border-color: var(--border); box-shadow: 0 3px 12px rgb(20 43 55 / 5%); }
+html[data-theme="light"] .tech-orbit-ring::before { border-color: #c4d9de; }
+html[data-theme="light"] .tech-orbit-stage { background: radial-gradient(circle, rgb(0 109 115 / 6%), transparent 65%); }
+html[data-theme="light"] #technologies article { background: var(--card) !important; border-color: var(--border); }
+html[data-theme="light"] #technologies article li { border-color: var(--border); }
+html[data-theme="light"] #technologies article li p:first-child { color: var(--foreground); }
+html[data-theme="light"] #technologies article li p + p { color: var(--muted-foreground); }
+html[data-theme="light"] .profile-flip-back,
+html[data-theme="light"] .profile-circle { background: var(--surface); color: var(--foreground); }
+/* Preserve black logo tiles: brand images retain their intended contrast. */
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-nav, .portfolio-nav * { transition: none !important; }
+}
