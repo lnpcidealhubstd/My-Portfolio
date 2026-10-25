@@ -1,11 +1,16 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  FaHtml5,
+  FaCss3Alt,
+  FaJsSquare,
+  FaReact,
   FaFacebook,
   FaFigma,
   FaGithub,
   FaLinkedin,
 } from "react-icons/fa";
+import { SiTypescript, SiTailwindcss, SiNextdotjs, SiVite } from "react-icons/si";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -30,6 +35,11 @@ import { usePortfolioMotion } from "@/hooks/usePortfolioMotion";
 import "@/portfolio-motion.css";
 import { HeroUniverse } from "@/components/site/HeroUniverse";
 import "@/hero-universe.css";
+import "@/tech-ecosystem.css";
+import codebilityLogo from "@/assets/codebility-logo.png";
+import ideahubLogo from "@/assets/ideahub-logo.png";
+import gmxAcademyLogo from "@/assets/gmx-academy-logo.png";
+import udemyLogo from "@/assets/udemy-logo.png";
 
 /*
  * CONTACT AND RESUME CONFIGURATION
@@ -63,77 +73,45 @@ const TECHNOLOGIES = [
   {
     number: "01",
     title: "Design & Prototyping",
-    description:
-      "Planning user journeys and turning ideas into clear, consistent interfaces.",
+    description: "From user journeys to consistent, interactive interfaces.",
     tools: [
-      {
-        label: "Figma",
-        detail: "Wireframes, UI design & interactive prototypes",
-        Icon: FaFigma,
-      },
-      {
-        label: "FigJam",
-        detail: "Discovery, information architecture & user flows",
-        Icon: Network,
-      },
-      {
-        label: "Design Systems & Tokens",
-        detail: "Reusable components & consistent visual styles",
-        Icon: Layers3,
-      },
-      {
-        label: "Responsive Design",
-        detail: "Layouts for desktop, tablet & mobile",
-        Icon: Code2,
-      },
+      { label: "Figma", detail: "Interface design & interactive prototypes", Icon: FaFigma },
+      { label: "FigJam", detail: "Discovery, information architecture & user flows", Icon: Network },
+      { label: "Design Systems & Tokens", detail: "Reusable components & visual foundations", Icon: Layers3 }
     ],
   },
   {
     number: "02",
-    title: "AI-Assisted Prototyping",
-    description:
-      "Using AI to explore concepts, clarify ideas, and support prototype development.",
+    title: "Frontend Development",
+    description: "Building responsive interfaces and supporting implementation.",
     tools: [
-      {
-        label: "Lovable",
-        detail: "Interactive product concepts & rapid prototypes",
-        Icon: Sparkles,
-      },
-      {
-        label: "Claude",
-        detail: "Design exploration & coding assistance",
-        Icon: Code2,
-      },
-      {
-        label: "ChatGPT",
-        detail: "Requirements clarification, UX copy & code refinement",
-        Icon: Sparkles,
-      },
+      { label: "HTML", detail: "Semantic page structure", Icon: FaHtml5 },
+      { label: "CSS", detail: "Layouts, styling & responsive behavior", Icon: FaCss3Alt },
+      { label: "JavaScript", detail: "Interactions & application behavior", Icon: FaJsSquare },
+      { label: "React", detail: "Reusable interface components", Icon: FaReact },
+      { label: "Tailwind CSS", detail: "Utility-based styling", Icon: SiTailwindcss },
+      { label: "TypeScript", detail: "Typed components & application code", Icon: SiTypescript }
     ],
   },
   {
     number: "03",
-    title: "Development & Handoff",
-    description:
-      "Connecting design decisions with implementation, collaboration, and delivery.",
+    title: "Frameworks & Build Tools",
+    description: "The foundations behind portfolio and client implementations.",
     tools: [
-      {
-        label: "Visual Studio Code",
-        detail: "Frontend editing & code refinement",
-        Icon: Code2,
-      },
-      {
-        label: "GitHub",
-        detail: "Version control & collaboration",
-        Icon: FaGithub,
-      },
-      {
-        label: "Vercel",
-        detail: "Deployment & preview sharing",
-        Icon: Triangle,
-      },
+      { label: "Next.js", detail: "Website framework used for the Everest rebuild", Icon: SiNextdotjs },
+      { label: "Vite", detail: "Development tooling for this portfolio", Icon: SiVite }
     ],
   },
+  {
+    number: "04",
+    title: "Collaboration & Delivery",
+    description: "Connecting local development with reviews and deployment.",
+    tools: [
+      { label: "Visual Studio Code", detail: "Frontend editing & code refinement", Icon: Code2 },
+      { label: "GitHub", detail: "Version control & collaboration", Icon: FaGithub },
+      { label: "Vercel", detail: "Deployment & preview sharing", Icon: Triangle }
+    ],
+  }
 ];
 
 const SKILLS = [
@@ -174,7 +152,7 @@ const SKILLS = [
     items: [
       "AI-assisted rapid prototyping",
       "GitHub collaboration",
-      "Frontend implementation support",
+      "Responsive frontend implementation",
       "Vercel deployment workflows",
     ],
   },
@@ -196,9 +174,6 @@ const secondaryButton =
   "border border-white/20 px-6 py-3 text-sm font-medium " +
   "transition-colors hover:border-accent/60 hover:text-accent " +
   focusClass;
-
-const panelClass =
-  "rounded-2xl border border-white/10 bg-white/[0.02]";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -401,6 +376,44 @@ function ContactForm() {
   );
 }
 
+
+function TechEcosystem() {
+  const [paused, setPaused] = useState(false);
+  const rings = [
+    TECHNOLOGIES[0].tools,
+    TECHNOLOGIES[1].tools,
+    [...TECHNOLOGIES[2].tools, ...TECHNOLOGIES[3].tools],
+  ];
+
+  return (
+    <div className="tech-ecosystem" data-paused={paused}>
+      <div className="tech-orbit-stage" role="img" aria-label="Technology ecosystem: design, frontend development, frameworks, and delivery tools">
+        <div className="tech-orbit-core" aria-hidden="true">
+          <Layers3 className="size-6 text-accent" />
+          <span>Design to<br />delivery</span>
+        </div>
+        {rings.map((tools, ringIndex) => (
+          <div key={ringIndex} className={`tech-orbit-ring tech-orbit-ring-${ringIndex + 1}`} aria-hidden="true">
+            {tools.map(({ label, Icon }, index) => (
+              <div key={label} className="tech-orbit-position" style={{ "--node-angle": `${(index / tools.length) * 360}deg` } as CSSProperties}>
+                <div className="tech-orbit-node">
+                  <Icon className="tech-orbit-icon" />
+                  <span>{label === "Design Systems & Tokens" ? "Design systems" : label === "Visual Studio Code" ? "VS Code" : label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5">
+        <p className="text-xs text-muted-foreground">Design · Frontend · Delivery</p>
+        <button type="button" aria-pressed={paused} onClick={() => setPaused((value) => !value)} className={`tech-orbit-toggle inline-flex min-h-11 items-center justify-center rounded-full border border-white/15 px-4 text-xs text-foreground hover:border-accent/40 ${focusClass}`}>
+          {paused ? "Resume animation" : "Pause animation"}
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function Home() {
   const motionRef = usePortfolioMotion();
@@ -609,126 +622,144 @@ function Home() {
           id="technologies"
           label="02 / My Toolkit"
           title="Technologies I Work With"
-          description="A focused toolkit for thoughtful design, faster exploration, and collaborative delivery."
+          description="Technologies I work with—from interface design and prototyping to frontend implementation and deployment."
         >
-          <div className="grid gap-5 md:grid-cols-3">
-            {TECHNOLOGIES.map((group) => (
-              <article
-                key={group.number}
-                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.04] to-white/[0.01] p-6 transition-colors duration-300 hover:border-accent/35 motion-reduce:transition-none sm:p-7"
-              >
-                {/* Subtle top accent */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-7 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
-                />
-
-                <div className="mb-6 flex items-center justify-between gap-3">
-                  <span className="text-mono text-xs tracking-widest text-accent">
-                    {group.number}
-                  </span>
-
-                  <span
-                    aria-hidden="true"
-                    className="h-px w-12 bg-white/10 transition-colors group-hover:bg-accent/40"
-                  />
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+            <TechEcosystem />
+            <div className="min-w-0">
+              <div className="divide-y divide-white/10">
+                {TECHNOLOGIES.map((group) => (
+                  <div key={group.number} className="py-5 first:pt-0">
+                    <p className="text-xs uppercase tracking-widest text-accent">{group.number} / {group.title}</p>
+                    <p className="mt-3 text-sm leading-7 text-foreground">{group.tools.map((tool) => tool.label).join(" · ")}</p>
+                    <p className="mt-2 text-sm leading-7 text-muted-foreground">{group.description}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 flex items-start gap-3 border-t border-accent/20 pt-6">
+                <Sparkles aria-hidden="true" className="mt-1 size-5 shrink-0 text-accent" />
+                <div>
+                  <h3 className="text-sm font-medium">AI-assisted workflow</h3>
+                  <p className="mt-2 text-sm leading-7 text-muted-foreground">Supporting rapid prototyping, frontend implementation, and code refinement.</p>
                 </div>
-
-                <h3 className="text-display text-xl font-medium leading-snug tracking-tight">
-                  {group.title}
-                </h3>
-
-                <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                  {group.description}
-                </p>
-
-                <ul className="mt-6 space-y-2 border-t border-white/10 pt-5">
-                  {group.tools.map(({ label, detail, Icon }) => (
-                    <li
-                      key={label}
-                      className="flex items-center gap-3 rounded-xl border border-transparent bg-white/[0.02] p-3"
-                    >
-                      <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-accent/[0.06] text-accent">
-                        <Icon
-                          aria-hidden="true"
-                          className="size-5"
-                        />
-                      </span>
-
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium leading-6 text-foreground">
-                          {label}
-                        </p>
-                        <p className="mt-0.5 text-xs leading-5 text-muted-foreground">
-                          {detail}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
+              </div>
+            </div>
           </div>
         </Section>
 
         {/* AFFILIATIONS */}
         <Section
           id="affiliations"
-          label="03 / Community & Collaboration"
-          title="Affiliations & Organizations"
+          label="03 / Community & Growth"
+          title="Affiliations & Learning"
         >
-          <div className="divide-y divide-white/10 border-y border-white/10">
-            <a
-              href="https://www.codebility.tech/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`group grid gap-4 rounded-sm py-7 sm:py-9 md:grid-cols-12 md:gap-10 ${focusClass}`}
-            >
-              <div className="flex items-center gap-4 md:col-span-5">
-                <span className="text-xs tabular-nums text-muted-foreground">
-                  01
-                </span>
-
-                <h3 className="text-display text-2xl font-medium tracking-tight transition-colors group-hover:text-accent">
-                  Codebility
+          <div className="space-y-8">
+            {[
+              {
+                heading: "Organizations",
+                entries: [
+                  {
+                    name: "Codebility",
+                    logo: codebilityLogo,
+                    href: "https://www.codebility.tech/",
+                    detail: "Explore Codebility and its work.",
+                    description: "",
+                  },
+                  {
+                    name: "Ideahub Studio",
+                    logo: ideahubLogo,
+                    href: "",
+                    detail: "Co-Founder · UI/UX Designer & Project Manager",
+                    description:
+                      "Product design, client collaboration, and delivery.",
+                  },
+                ],
+              },
+              {
+                heading: "Learning & Development",
+                entries: [
+                  {
+                    name: "GMx Academy",
+                    logo: gmxAcademyLogo,
+                    href: "https://academy.gringiemarfelix.com/",
+                    detail: "Web Development Training",
+                    description: "HTML · CSS · JavaScript",
+                  },
+                  {
+                    name: "Udemy",
+                    logo: udemyLogo,
+                    href: "https://www.udemy.com/",
+                    detail: "UI/UX Design Coursework",
+                    description: "UI/UX and interface design studies.",
+                  },
+                ],
+              },
+            ].map((group) => (
+              <div key={group.heading}>
+                <h3 className="mb-4 text-sm font-medium text-muted-foreground">
+                  {group.heading}
                 </h3>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  {group.entries.map((entry) => (
+                    <div
+                      key={entry.name}
+                      className="rounded-xl border border-white/10 bg-[#0b1115] p-5 transition-colors hover:border-accent/25 focus-within:border-accent/40 motion-reduce:transition-none"
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="flex size-14 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-black p-1.5">
+                          <img
+                            src={entry.logo}
+                            alt=""
+                            width={44}
+                            height={44}
+                            loading="lazy"
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <h4 className="text-display text-lg font-medium tracking-tight">
+                            {entry.href ? (
+                              <a
+                                href={entry.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`inline-flex min-h-7 items-center gap-2 rounded-sm transition-colors hover:text-accent ${focusClass}`}
+                              >
+                                {entry.name}
+
+                                <ArrowUpRight
+                                  aria-hidden="true"
+                                  className="size-3.5 shrink-0 text-accent"
+                                />
+
+                                <span className="sr-only">
+                                  {" "}
+                                  (opens in a new tab)
+                                </span>
+                              </a>
+                            ) : (
+                              entry.name
+                            )}
+                          </h4>
+
+                          <p className="mt-1 text-sm leading-6 text-accent">
+                            {entry.detail}
+                          </p>
+
+                          {entry.description && (
+                            <p className="mt-1 text-sm leading-6 text-muted-foreground">
+                              {entry.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              <div className="flex items-center justify-between gap-5 md:col-span-7">
-                <span className="text-sm text-muted-foreground">
-                  Visit Codebility
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </span>
-
-                <ArrowUpRight
-                  aria-hidden="true"
-                  className="size-5 shrink-0 text-accent transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 motion-reduce:transform-none motion-reduce:transition-none"
-                />
-              </div>
-            </a>
-
-            <article className="grid gap-4 py-7 sm:py-9 md:grid-cols-12 md:gap-10">
-              <div className="flex items-start gap-4 md:col-span-5">
-                <span className="pt-2 text-xs tabular-nums text-muted-foreground">
-                  02
-                </span>
-
-                <h3 className="text-display text-2xl font-medium tracking-tight">
-                  Ideahub Studio
-                </h3>
-              </div>
-
-              <div className="md:col-span-7">
-                <p className="text-sm font-medium leading-7 text-accent">
-                  Co-Founder · UI/UX Designer & Project Manager
-                </p>
-
-                <p className="mt-3 max-w-xl text-sm leading-7 text-muted-foreground">
-                  Connecting product design, client collaboration, and
-                  project delivery.
-                </p>
-              </div>
-            </article>
+            ))}
           </div>
         </Section>
 
