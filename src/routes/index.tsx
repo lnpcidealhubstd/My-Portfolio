@@ -937,125 +937,63 @@ function Home() {
             </div>
           </Reveal>
 
-          <div className="space-y-16 sm:space-y-24">
-            {featuredProjects.map((project, index) => {
-              const isLodging = project.slug === "lodging-technologies";
-              const isEverest = project.slug === "everest-energy-solutions";
-
-
-              return (
-                <Reveal key={project.slug}>
-                  <article className="group">
-                    {/* Project identity */}
-                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-                      <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                        {String(index + 1).padStart(2, "0")} /{" "}
-                        {isLodging
-                          ? "Design & Delivery"
-                          : "Digital Product Design"}
-                      </p>
-
-                      <span className="rounded-full border border-accent/20 bg-accent/[0.06] px-3 py-1.5 text-xs text-accent">
-                        {project.status}
-                      </span>
-                    </div>
-
-                    {/* Large, readable cover */}
-                    <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.01] p-3 sm:rounded-3xl sm:p-6">
+          {/* Compact bento: full project stories remain on the detail pages. */}
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-12">
+            {featuredProjects.map((project, index) => (
+              <Reveal
+                key={project.slug}
+                delay={(index % 2) * 60}
+                className={`min-w-0 h-full ${index % 4 === 0 || index % 4 === 3 ? "lg:col-span-7" : "lg:col-span-5"}`}
+              >
+                <article className={`project-card group flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border bg-background transition-colors duration-300 motion-reduce:transition-none ${index === 0 ? "border-accent/30" : "border-foreground/10 hover:border-accent/30"}`}>
+                  <Link
+                    to="/projects/$slug"
+                    params={{ slug: project.slug }}
+                    aria-label={`View ${project.title}`}
+                    className={`block rounded-t-2xl p-3 ${focusClass}`}
+                  >
+                    <div className="flex aspect-[16/9] items-center justify-center overflow-hidden rounded-xl bg-foreground/[0.03]">
                       {project.cover ? (
                         <img
                           src={project.cover}
-                          alt={`${project.title} — ${project.previewNote
-                            ? "temporary design preview"
-                            : "interface design preview"
-                            }`}
+                          alt={`${project.title} — project preview`}
                           loading="lazy"
-                          className="block h-auto w-full rounded-xl object-contain transition-transform duration-700 ease-out group-hover:scale-[1.015] motion-reduce:transform-none motion-reduce:transition-none"
+                          width={1600}
+                          height={900}
+                          className="project-preview h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transform-none motion-reduce:transition-none"
                         />
                       ) : (
-                        <div className="flex aspect-[16/10] items-center justify-center text-sm text-muted-foreground">
-                          Project screenshots coming soon.
-                        </div>
+                        <span className="px-4 text-center text-sm text-muted-foreground">Project preview coming soon.</span>
                       )}
                     </div>
-
-                    {project.previewNote && (
-                      <p className="mt-3 text-xs leading-6 text-muted-foreground">
-                        {project.previewNote}
-                      </p>
-                    )}
-
-                    {/* Editorial project information */}
-                    <div className="mt-8 grid gap-8 lg:grid-cols-12 lg:gap-12">
-                      <div className="lg:col-span-5">
-                        <p className="text-xs font-medium uppercase tracking-[0.15em] text-accent">
-                          {project.role}
-                        </p>
-
-                        <h3 className="text-display mt-3 text-3xl font-medium tracking-tight sm:text-4xl">
-                          {project.title}
-                        </h3>
-
-                        <Link
-                          to="/projects/$slug"
-                          params={{ slug: project.slug }}
-                          className={`mt-6 inline-flex min-h-11 items-center gap-3 rounded-md text-sm font-medium text-accent transition-colors hover:text-foreground ${focusClass}`}
-                        >
-                          Explore Case Study
-                          <ArrowUpRight
-                            aria-hidden="true"
-                            className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none"
-                          />
-                        </Link>
-                      </div>
-
-                      <div className="lg:col-span-7">
-                        <p className="max-w-2xl text-base leading-8 text-muted-foreground">
-                          {project.summary}
-                        </p>
-
-                        <dl className="mt-7 grid gap-6 border-t border-white/10 pt-6 sm:grid-cols-2">
-                          <div>
-                            <dt className="text-xs uppercase tracking-widest text-foreground">
-                              Design Contribution
-                            </dt>
-                            <dd className="mt-3 text-sm leading-7 text-muted-foreground">
-                              {isLodging
-                                ? "Discovery, requirements alignment, and interface planning."
-                                : isEverest
-                                  ? "UI/UX design for the web app, mobile app, and dashboard."
-                                  : project.role}
-                            </dd>
-                          </div>
-
-                          <div>
-                            <dt className="text-xs uppercase tracking-widest text-foreground">
-                              {isLodging
-                                ? "Project Management"
-                                : "Current Status"}
-                            </dt>
-                            <dd className="mt-3 text-sm leading-7 text-muted-foreground">
-                              {isLodging
-                                ? "Client collaboration and delivery coordination. Phase 1 completed; CRM ongoing, with scope and requirements under review and finalization."
-                                : project.status}
-                            </dd>
-                          </div>
-                        </dl>
-                      </div>
+                  </Link>
+                  <div className="flex flex-1 flex-col px-5 pb-5 pt-2 sm:px-6 sm:pb-6">
+                    <p className="text-xs leading-6 text-accent">{project.role}</p>
+                    <h3 className="text-display mt-1 text-xl font-medium tracking-tight sm:text-2xl">{project.title}</h3>
+                    <p className="mt-2 text-xs leading-6 text-muted-foreground">{project.status}</p>
+                    <div className="mt-auto pt-4">
+                      <Link
+                        to="/projects/$slug"
+                        params={{ slug: project.slug }}
+                        aria-label={`View project: ${project.title}`}
+                        className={`inline-flex min-h-11 items-center gap-2 rounded-full border border-foreground/15 px-4 text-sm font-medium text-foreground transition-colors hover:border-accent/50 hover:bg-accent/10 hover:text-accent motion-reduce:transition-none ${focusClass}`}
+                      >
+                        View Project
+                        <ArrowUpRight aria-hidden="true" className="size-4" />
+                      </Link>
                     </div>
-
-                  </article>
-                </Reveal>
-              );
-            })}
+                  </div>
+                </article>
+              </Reveal>
+            ))}
           </div>
 
           {/* Ongoing projects: quieter supporting grid */}
-          <div className="mt-20 border-t border-white/10 pt-10 sm:mt-28">
+          <div className="mt-10 border-t border-foreground/10 pt-8 sm:mt-12">
             <Reveal>
               <div className="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
                 <h3 className="text-display text-2xl font-medium">
-                  Work in Progress
+                  More Work in Progress
                 </h3>
                 <p className="text-sm text-muted-foreground">
                   A first look at ongoing design projects.

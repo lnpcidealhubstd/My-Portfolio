@@ -35,6 +35,21 @@ export const Route = createFileRoute("/projects/$slug")({
   component: ProjectDetail,
 });
 
+// Demo destinations come from portfolio-projects.ts. Keep the existing Lodging link.
+function ProjectLiveLink({ project, className = "" }: { project: Project; className?: string }) {
+  const isLodging = project.slug === "lodging-technologies";
+  const href = project.liveUrl ?? (isLodging ? "https://lodgingtechnologies.vercel.app/" : undefined);
+  if (!href) return null;
+
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`${actionClass} ${className}`}>
+      {isLodging ? "View Live Website" : "View Live Demo"}
+      <ArrowUpRight aria-hidden="true" className="size-4" />
+      <span className="sr-only">(opens in a new tab)</span>
+    </a>
+  );
+}
+
 function ProjectDetail() {
   const { project, study } = Route.useLoaderData();
   if (!study) return <OngoingPreview project={project} />;
@@ -72,23 +87,12 @@ function ProjectContent({ project, study }: { project: Project; study: CaseStudy
           </div>
           <h1 className="text-display mt-6 max-w-4xl text-4xl font-medium leading-tight sm:text-6xl">{project.title}</h1>
           <p className="mt-6 max-w-3xl text-base leading-8 text-muted-foreground">{project.summary}</p>
-          {project.slug === "lodging-technologies" && (
-            <a
-              href="https://lodgingtechnologies.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`${actionClass} mt-6`}
-            >
-              View Live Website
-              <ArrowUpRight aria-hidden="true" className="size-4" />
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
-          )}
+          <ProjectLiveLink project={project} className="mt-6" />
           <dl className="mt-8 grid gap-6 border-y border-white/10 py-6 sm:grid-cols-2">
             <div><dt className="text-xs text-muted-foreground">My Role</dt><dd className="mt-2 text-sm font-medium">{study.role}</dd></div>
             <div><dt className="text-xs text-muted-foreground">Current Status</dt><dd className="mt-2 text-sm font-medium">{study.status}</dd></div>
           </dl>
-          {hasPlaceholders(study) && <p className="mt-5 text-sm leading-7 text-muted-foreground">Some case-study details are still being documented. Unfinished sections are marked as placeholders.</p>}
+          {hasPlaceholders(study) && <p className="mt-5 text-sm leading-7 text-muted-foreground">Some case-study details are still being documented. Details awaiting confirmation are marked as placeholders.</p>}
         </Reveal>
 
         {project.previewNote && <p className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-muted-foreground">{project.previewNote}</p>}
@@ -190,10 +194,11 @@ function OngoingPreview({ project }: { project: Project }) {
       <Nav />
       <main className="mx-auto max-w-5xl px-5 py-16 sm:px-6">
         <Link to="/projects" className={`inline-flex min-h-11 items-center gap-2 rounded-lg text-sm text-accent ${focusClass}`}><ArrowLeft aria-hidden="true" className="size-4" /> All Projects</Link>
-        <p className="mt-8 text-sm text-accent">Ongoing</p>
+        <p className="mt-8 text-sm text-accent">{project.status}</p>
         <h1 className="text-display mt-4 text-4xl font-medium">{project.title}</h1>
+        <ProjectLiveLink project={project} className="mt-6" />
         <img src={project.cover} alt={`${project.title} design preview`} className="mt-8 h-auto w-full rounded-2xl border border-white/10" />
-        <p className="mt-6 text-sm text-muted-foreground">This project is ongoing. A full case study will be added later.</p>
+        <p className="mt-6 text-sm text-muted-foreground">{project.summary} A full case study will be added later.</p>
       </main>
       <Footer />
     </div>

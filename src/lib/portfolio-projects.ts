@@ -3,7 +3,14 @@ import saudiCover from "@/assets/Saudi.png";
 import healthcareCover from "@/assets/Healthcare.png";
 import aquabuildCover from "@/assets/Aquabuild.png";
 import lodgingCover from "@/assets/lodging-preview.png";
+import cabalenPreview from "@/assets/cabalen-preview.png";
+import kapekoPreview from "@/assets/kapeko-preview.png";
 
+// Temporary text previews; replace these with project screenshot imports when ready.
+function projectPreview(name: string, subtitle: string, color: string): string {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="#101923"/><rect x="64" y="64" width="1072" height="547" rx="24" fill="none" stroke="${color}" stroke-opacity=".45"/><text x="100" y="290" fill="${color}" font-family="Arial,sans-serif" font-size="68" font-weight="700">${name}</text><text x="100" y="355" fill="#d4e1e8" font-family="Arial,sans-serif" font-size="28">${subtitle}</text><text x="100" y="540" fill="#a8bdc8" font-family="Arial,sans-serif" font-size="22">LIVE DEMO · SCREENSHOT COMING SOON</text></svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
 export type Screen = {
     label: string;
     src: string;
@@ -20,6 +27,7 @@ export type Project = {
     status: string;
     hasCaseStudy: boolean;
     previewNote?: string;
+    liveUrl?: string;
 };
 
 export type CaseSection = {
@@ -39,7 +47,9 @@ export type CaseStudy = {
  * PROJECT ORDER
  * 1. Lodging Technologies
  * 2. Everest Energy Solutions
- * 3. Other ongoing projects
+ * 3. Cabalen Resto
+ * 4. Kapeko
+ * 5. Other ongoing projects
  *
  * This file exports PORTFOLIO_PROJECTS.
  * Do not import PORTFOLIO_PROJECTS into this same file.
@@ -79,6 +89,32 @@ export const PORTFOLIO_PROJECTS: readonly Project[] = [
         role: "UI/UX Designer",
         status: "Redesign & rebuild completed · CRM planned",
         hasCaseStudy: true,
+    },
+    {
+        slug: "cabalen-resto",
+        title: "Cabalen Resto",
+        tag: "Digital Ordering · Operations",
+        summary: "A scan-to-order restaurant platform connecting menu browsing, payment selection, live order tracking, kitchen preparation, and management views.",
+        cover: cabalenPreview,
+        screens: [{ label: "Cabalen Resto — Temporary Preview", src: cabalenPreview }],
+        role: "Role to be confirmed",
+        status: "Live demo",
+        hasCaseStudy: true,
+        previewNote: "Temporary preview. Project screenshots will be added separately.",
+        liveUrl: "https://resto-cabalen.vercel.app/",
+    },
+    {
+        slug: "kapeko",
+        title: "Kapeko",
+        tag: "Digital Ordering · Operations",
+        summary: "A scan-to-order coffee shop platform connecting menu browsing, payment selection, live order tracking, kitchen preparation, and management views.",
+        cover: kapekoPreview,
+        screens: [{ label: "Kapeko — Temporary Preview", src: kapekoPreview }],
+        role: "Role to be confirmed",
+        status: "Live demo",
+        hasCaseStudy: true,
+        previewNote: "Temporary preview. Project screenshots will be added separately.",
+        liveUrl: "https://kapco.vercel.app/",
     },
     {
         slug: "saudi-project",
@@ -137,6 +173,97 @@ export const PORTFOLIO_PROJECTS: readonly Project[] = [
  */
 
 const CASE_STUDIES: Record<string, CaseStudy> = {
+    "cabalen-resto": {
+        "role": "Role to be confirmed",
+        "status": "Live demo",
+        "sections": [
+            {
+                "title": "Overview",
+                "body": "Cabalen Resto connects the restaurant ordering process from table-side scanning through payment, preparation, and service."
+            },
+            {
+                "title": "Challenge",
+                "body": "The experience brings customer ordering and behind-the-counter activity into one connected workflow, so diners can follow their orders while the team coordinates payments, preparation, and service."
+            },
+            {
+                "title": "My Role",
+                "body": "Personal design, development, and project management responsibilities will be confirmed before this section is finalized.",
+                "draft": true
+            },
+            {
+                "title": "Process",
+                "body": "The demo follows the customer and team workflow described below.",
+                "items": [
+                    "Scan a table QR code and browse the menu.",
+                    "Choose items and place an order.",
+                    "Select GCash, bank, Maya / PayMaya, or over-the-counter payment.",
+                    "After payment clears, the kitchen receives the order for preparation.",
+                    "Track cooking, preparing, and serving status.",
+                    "Use management views to monitor sales, active tables, and inventory."
+                ]
+            },
+            {
+                "title": "Deliverables",
+                "body": "Demo interfaces cover the customer ordering journey and operational views.",
+                "items": [
+                    "Digital menu and ordering flow",
+                    "Payment options and order-status tracking",
+                    "Kitchen preparation workflow",
+                    "Administrative management views"
+                ]
+            },
+            {
+                "title": "Outcome / Current Status",
+                "body": "A live demo is available for exploration. Production deployment, live payment processing, and business results have not been confirmed."
+            }
+        ]
+    },
+    "kapeko": {
+        "role": "Role to be confirmed",
+        "status": "Live demo",
+        "sections": [
+            {
+                "title": "Overview",
+                "body": "Kapeko connects the coffee shop ordering process from table-side scanning through payment, preparation, and service."
+            },
+            {
+                "title": "Challenge",
+                "body": "The experience brings customer ordering and behind-the-counter activity into one connected workflow, so diners can follow their orders while the team coordinates payments, preparation, and service."
+            },
+            {
+                "title": "My Role",
+                "body": "Personal design, development, and project management responsibilities will be confirmed before this section is finalized.",
+                "draft": true
+            },
+            {
+                "title": "Process",
+                "body": "The demo follows the customer and team workflow described below.",
+                "items": [
+                    "Scan a table QR code and browse the menu.",
+                    "Choose items and place an order.",
+                    "Select GCash, bank, Maya / PayMaya, or over-the-counter payment.",
+                    "After payment clears, the kitchen receives the order for preparation.",
+                    "Track cooking, preparing, and serving status.",
+                    "Use management views to monitor sales, active tables, and inventory."
+                ]
+            },
+            {
+                "title": "Deliverables",
+                "body": "Demo interfaces cover the customer ordering journey and operational views.",
+                "items": [
+                    "Digital menu and ordering flow",
+                    "Payment options and order-status tracking",
+                    "Kitchen preparation workflow",
+                    "Administrative management views"
+                ]
+            },
+            {
+                "title": "Outcome / Current Status",
+                "body": "A live demo is available for exploration. Production deployment, live payment processing, and business results have not been confirmed."
+            }
+        ]
+    },
+
     "lodging-technologies": {
         "role": "UI/UX Designer & Project Manager",
         "status": "Phase 1 completed · CRM ongoing",
