@@ -16,8 +16,8 @@ export function HeroPortrait({ src }: { src: string }) {
       if (reduced.matches || !fine.matches || event.pointerType !== "mouse") return;
       const bounds = node.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
-      const x = Math.max(-1, Math.min(1, (event.clientX - bounds.left) / bounds.width * 2 - 1));
-      const y = Math.max(-1, Math.min(1, (event.clientY - bounds.top) / bounds.height * 2 - 1));
+      const x = Math.max(-1, Math.min(1, ((event.clientX - bounds.left) / bounds.width) * 2 - 1));
+      const y = Math.max(-1, Math.min(1, ((event.clientY - bounds.top) / bounds.height) * 2 - 1));
       node.style.setProperty("--portrait-x", `${x * 5}px`);
       node.style.setProperty("--portrait-y", `${y * 4}px`);
     };

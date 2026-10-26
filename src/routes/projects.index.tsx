@@ -2,10 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
-import {
-  PORTFOLIO_PROJECTS,
-  type Project,
-} from "@/lib/portfolio-projects";
+import { PORTFOLIO_PROJECTS, type Project } from "@/lib/portfolio-projects";
 
 const focusClass =
   "focus-visible:outline-none focus-visible:ring-2 " +
@@ -73,8 +70,7 @@ function ProjectCard({
       <div className="flex flex-1 flex-col px-5 pb-5 pt-2 sm:px-6 sm:pb-6">
         {!compact && (
           <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-            {String(index + 1).padStart(2, "0")} /{" "}
-            {index === 0 ? "Lead Project" : "Selected Work"}
+            {String(index + 1).padStart(2, "0")} / {index === 0 ? "Lead Project" : "Selected Work"}
           </p>
         )}
 
@@ -87,15 +83,9 @@ function ProjectCard({
           {project.title}
         </h2>
 
-        {!compact && (
-          <p className="mt-2 text-xs leading-6 text-muted-foreground">
-            {project.role}
-          </p>
-        )}
+        {!compact && <p className="mt-2 text-xs leading-6 text-muted-foreground">{project.role}</p>}
 
-        <p className="mt-2 text-xs leading-6 text-accent">
-          {project.status}
-        </p>
+        <p className="mt-2 text-xs leading-6 text-accent">{project.status}</p>
 
         <div className="mt-auto pt-4">
           <Link
@@ -121,22 +111,15 @@ function ProjectCard({
 }
 
 function ProjectsPage() {
-  const featuredProjects = PORTFOLIO_PROJECTS.filter(
-    (project) => project.hasCaseStudy,
-  );
+  const featuredProjects = PORTFOLIO_PROJECTS.filter((project) => project.hasCaseStudy);
 
-  const ongoingProjects = PORTFOLIO_PROJECTS.filter(
-    (project) => !project.hasCaseStudy,
-  );
+  const ongoingProjects = PORTFOLIO_PROJECTS.filter((project) => !project.hasCaseStudy);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
 
-      <main
-        id="projects-list"
-        className="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-16"
-      >
+      <main id="projects-list" className="mx-auto max-w-7xl px-5 py-10 sm:px-6 sm:py-16">
         <Link
           to="/"
           hash="projects"
@@ -157,8 +140,7 @@ function ProjectsPage() {
           </h1>
 
           <p className="mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-            Interface design, collaborative delivery, and connected digital
-            experiences.
+            Interface design, collaborative delivery, and connected digital experiences.
           </p>
         </header>
 
@@ -169,9 +151,7 @@ function ProjectsPage() {
                 key={project.slug}
                 className={[
                   "min-w-0",
-                  index % 4 === 0 || index % 4 === 3
-                    ? "lg:col-span-7"
-                    : "lg:col-span-5",
+                  index % 4 === 0 || index % 4 === 3 ? "lg:col-span-7" : "lg:col-span-5",
                 ].join(" ")}
               >
                 <ProjectCard project={project} index={index} />
@@ -185,10 +165,7 @@ function ProjectsPage() {
             aria-labelledby="ongoing-heading"
             className="mt-12 border-t border-foreground/10 pt-8"
           >
-            <h2
-              id="ongoing-heading"
-              className="text-display text-2xl font-medium"
-            >
+            <h2 id="ongoing-heading" className="text-display text-2xl font-medium">
               More Work in Progress
             </h2>
 
@@ -198,12 +175,7 @@ function ProjectsPage() {
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {ongoingProjects.map((project, index) => (
-                <ProjectCard
-                  key={project.slug}
-                  project={project}
-                  index={index}
-                  compact
-                />
+                <ProjectCard key={project.slug} project={project} index={index} compact />
               ))}
             </div>
           </section>

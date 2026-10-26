@@ -16,7 +16,11 @@ const contactSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
   email: z.string().trim().email("Enter a valid email").max(255, "Email is too long"),
   company: z.string().trim().max(120, "Company name is too long").optional().or(z.literal("")),
-  service: z.string().trim().min(2, "Tell me what you need").max(160, "Keep it under 160 characters"),
+  service: z
+    .string()
+    .trim()
+    .min(2, "Tell me what you need")
+    .max(160, "Keep it under 160 characters"),
   message: z
     .string()
     .trim()
@@ -41,10 +45,11 @@ function ContactPage() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "sent">("idle");
 
-  const update = (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValues((v) => ({ ...v, [key]: e.target.value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
-  };
+  const update =
+    (key: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setValues((v) => ({ ...v, [key]: e.target.value }));
+      if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
+    };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,7 +107,8 @@ function ContactPage() {
           </Reveal>
           <Reveal delay={100}>
             <p className="mt-8 max-w-xl text-lg leading-relaxed text-zinc-400">
-              Outline the scope, the constraint, and the deadline. I respond within two business days.
+              Outline the scope, the constraint, and the deadline. I respond within two business
+              days.
             </p>
           </Reveal>
         </div>
@@ -115,10 +121,14 @@ function ContactPage() {
           <Reveal className="md:col-span-7">
             <div>
               <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-8 backdrop-blur-sm sm:p-12">
-                <div className="mb-8 text-xs uppercase tracking-[0.25em] text-zinc-400">Send an inquiry</div>
+                <div className="mb-8 text-xs uppercase tracking-[0.25em] text-zinc-400">
+                  Send an inquiry
+                </div>
                 {status === "sent" ? (
                   <div className="rounded-lg border border-zinc-800 bg-zinc-900/60 p-10 text-center">
-                    <div className="mb-2 text-xs uppercase tracking-[0.25em] text-zinc-400">Received</div>
+                    <div className="mb-2 text-xs uppercase tracking-[0.25em] text-zinc-400">
+                      Received
+                    </div>
                     <p className="text-xl text-zinc-100">Thanks. I&apos;ll be in touch shortly.</p>
                     <button
                       type="button"
@@ -192,7 +202,9 @@ function ContactPage() {
             <div>
               <div className="space-y-12">
                 <div>
-                  <div className="mb-6 text-xs uppercase tracking-[0.25em] text-zinc-400">Direct</div>
+                  <div className="mb-6 text-xs uppercase tracking-[0.25em] text-zinc-400">
+                    Direct
+                  </div>
                   <a
                     href="mailto:centeno.lorenzo.nicholas@gmail.com"
                     className="group flex items-center gap-3 text-sm text-zinc-300 transition-colors hover:text-zinc-100"
@@ -203,21 +215,45 @@ function ContactPage() {
                 </div>
 
                 <div>
-                  <div className="mb-6 text-xs uppercase tracking-[0.25em] text-zinc-400">Social</div>
+                  <div className="mb-6 text-xs uppercase tracking-[0.25em] text-zinc-400">
+                    Social
+                  </div>
                   <div className="grid grid-cols-1 gap-3">
-                    <SocialLink href="https://www.linkedin.com" label="LinkedIn" icon={<LinkedInIcon className="size-4" />} />
-                    <SocialLink href="https://www.facebook.com" label="Facebook" icon={<FacebookIcon className="size-4" />} />
-                    <SocialLink href="https://www.instagram.com" label="Instagram" icon={<InstagramIcon className="size-4" />} />
-                    <SocialLink href="https://www.tiktok.com" label="TikTok" icon={<TikTokIcon className="size-4" />} />
-                    <SocialLink href="mailto:centeno.lorenzo.nicholas@gmail.com" label="Gmail" icon={<MailIcon className="size-4" />} />
+                    <SocialLink
+                      href="https://www.linkedin.com"
+                      label="LinkedIn"
+                      icon={<LinkedInIcon className="size-4" />}
+                    />
+                    <SocialLink
+                      href="https://www.facebook.com"
+                      label="Facebook"
+                      icon={<FacebookIcon className="size-4" />}
+                    />
+                    <SocialLink
+                      href="https://www.instagram.com"
+                      label="Instagram"
+                      icon={<InstagramIcon className="size-4" />}
+                    />
+                    <SocialLink
+                      href="https://www.tiktok.com"
+                      label="TikTok"
+                      icon={<TikTokIcon className="size-4" />}
+                    />
+                    <SocialLink
+                      href="mailto:centeno.lorenzo.nicholas@gmail.com"
+                      label="Gmail"
+                      icon={<MailIcon className="size-4" />}
+                    />
                   </div>
                 </div>
 
                 <div>
-                  <div className="mb-6 text-xs uppercase tracking-[0.25em] text-zinc-400">Availability</div>
+                  <div className="mb-6 text-xs uppercase tracking-[0.25em] text-zinc-400">
+                    Availability
+                  </div>
                   <p className="text-sm leading-relaxed text-zinc-400">
-                    Currently accepting select engagements for Q3–Q4 2026. Projects with defined scope, tight
-                    timelines, and clear decision makers are preferred.
+                    Currently accepting select engagements for Q3–Q4 2026. Projects with defined
+                    scope, tight timelines, and clear decision makers are preferred.
                   </p>
                 </div>
               </div>
@@ -258,7 +294,9 @@ function Field({
 
   return (
     <label className="block">
-      <span className="mb-2 block text-[10px] uppercase tracking-[0.25em] text-zinc-400">{label}</span>
+      <span className="mb-2 block text-[10px] uppercase tracking-[0.25em] text-zinc-400">
+        {label}
+      </span>
       {textarea ? (
         <textarea
           name={name}
@@ -284,7 +322,6 @@ function Field({
     </label>
   );
 }
-
 
 function SocialLink({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
   return (
@@ -352,4 +389,3 @@ function MailIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-

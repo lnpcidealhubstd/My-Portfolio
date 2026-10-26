@@ -102,14 +102,14 @@ export const Route = createFileRoute("/services/$slug")({
   head: ({ loaderData }) =>
     loaderData
       ? {
-        meta: [
-          { title: `${loaderData.service.title} | Nico Centeno` },
-          {
-            name: "description",
-            content: loaderData.service.short,
-          },
-        ],
-      }
+          meta: [
+            { title: `${loaderData.service.title} | Nico Centeno` },
+            {
+              name: "description",
+              content: loaderData.service.short,
+            },
+          ],
+        }
       : {},
 
   notFoundComponent: ServiceNotFound,
@@ -154,9 +154,7 @@ function ServiceDetail() {
           className="mx-auto max-w-7xl px-5 py-12 sm:px-6 sm:py-16"
         >
           <Reveal>
-            <p className="text-xs font-medium uppercase tracking-widest text-accent">
-              The Process
-            </p>
+            <p className="text-xs font-medium uppercase tracking-widest text-accent">The Process</p>
             <h2
               id="workflow-heading"
               className="text-display mt-4 text-3xl font-medium sm:text-4xl"
@@ -170,15 +168,9 @@ function ServiceDetail() {
               <li key={phase.k}>
                 <Reveal delay={index * 50} className="h-full">
                   <article className="h-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-8">
-                    <p className="text-sm font-medium text-accent">
-                      {phase.k}
-                    </p>
-                    <h3 className="text-display mt-5 text-xl font-medium">
-                      {phase.t}
-                    </h3>
-                    <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                      {phase.b}
-                    </p>
+                    <p className="text-sm font-medium text-accent">{phase.k}</p>
+                    <h3 className="text-display mt-5 text-xl font-medium">{phase.t}</h3>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">{phase.b}</p>
                   </article>
                 </Reveal>
               </li>
@@ -226,12 +218,8 @@ function ServiceNotFound() {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <h1 className="text-display text-3xl font-medium">
-          Service not found.
-        </h1>
-        <p className="mt-4 text-muted-foreground">
-          Explore the available services below.
-        </p>
+        <h1 className="text-display text-3xl font-medium">Service not found.</h1>
+        <p className="mt-4 text-muted-foreground">Explore the available services below.</p>
         <Link
           to="/services"
           className={`mt-6 inline-flex min-h-11 items-center rounded-lg px-4 text-accent ${focusClass}`}
@@ -249,9 +237,7 @@ function ServiceError({ reset }: { reset: () => void }) {
     <div className="min-h-screen bg-background text-foreground">
       <Nav />
       <main className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <h1 className="text-display text-3xl font-medium">
-          Unable to load this service.
-        </h1>
+        <h1 className="text-display text-3xl font-medium">Unable to load this service.</h1>
         <button
           type="button"
           onClick={reset}

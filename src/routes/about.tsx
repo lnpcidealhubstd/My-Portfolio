@@ -85,8 +85,7 @@ function About() {
         <div className="relative mx-auto max-w-7xl px-6">
           <Reveal>
             <div className="text-mono mb-4 text-xs uppercase tracking-[0.25em] text-accent flex items-center gap-2">
-              <span className="pulse-dot size-1.5 rounded-full bg-accent" />
-              / 01 — Biography
+              <span className="pulse-dot size-1.5 rounded-full bg-accent" />/ 01 — Biography
             </div>
             <h1 className="text-display text-4xl font-medium leading-tight sm:text-6xl lg:text-7xl">
               Architecting systems at the <br />
@@ -112,13 +111,23 @@ function About() {
               </div>
               <div className="lg:col-span-8 space-y-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
                 <p>
-                  Hello, I’m <strong className="text-foreground font-semibold">Lorenzo Nicholas "Nico" Centeno</strong>, a UI/UX Designer dedicated to building high-precision digital products and scalable design systems.
+                  Hello, I’m{" "}
+                  <strong className="text-foreground font-semibold">
+                    Lorenzo Nicholas "Nico" Centeno
+                  </strong>
+                  , a UI/UX Designer dedicated to building high-precision digital products and
+                  scalable design systems.
                 </p>
                 <p>
-                  My methodology combines the visual rigor of Figma Auto-Layout 5.0 and spatial token registries with modern AI-accelerated workflows. By utilizing tools like Lovable, Claude, and VS Code AI extensions, I rapidly convert visual designs into clean React code and deploy them directly via Vercel.
+                  My methodology combines the visual rigor of Figma Auto-Layout 5.0 and spatial
+                  token registries with modern AI-accelerated workflows. By utilizing tools like
+                  Lovable, Claude, and VS Code AI extensions, I rapidly convert visual designs into
+                  clean React code and deploy them directly via Vercel.
                 </p>
                 <p>
-                  This end-to-end fluency ensures that every concept is not just visually compelling, but technically feasible, production-ready, and optimized for developer handoff.
+                  This end-to-end fluency ensures that every concept is not just visually
+                  compelling, but technically feasible, production-ready, and optimized for
+                  developer handoff.
                 </p>
               </div>
             </div>
@@ -187,9 +196,7 @@ function About() {
             <div className="text-mono mb-2 text-xs uppercase tracking-[0.25em] text-accent">
               / 04 — Inquiries
             </div>
-            <h2 className="text-display text-3xl font-medium text-foreground mb-2">
-              Get in Touch
-            </h2>
+            <h2 className="text-display text-3xl font-medium text-foreground mb-2">Get in Touch</h2>
             <p className="text-xs text-muted-foreground mb-8">
               Have a project or design system requirement? Fill out the details below.
             </p>
@@ -202,7 +209,9 @@ function About() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="text-mono text-xs text-muted-foreground block mb-2 uppercase tracking-wider">Your Name</label>
+                    <label className="text-mono text-xs text-muted-foreground block mb-2 uppercase tracking-wider">
+                      Your Name
+                    </label>
                     <input
                       type="text"
                       required
@@ -211,7 +220,9 @@ function About() {
                     />
                   </div>
                   <div>
-                    <label className="text-mono text-xs text-muted-foreground block mb-2 uppercase tracking-wider">Your Email</label>
+                    <label className="text-mono text-xs text-muted-foreground block mb-2 uppercase tracking-wider">
+                      Your Email
+                    </label>
                     <input
                       type="email"
                       required
@@ -221,7 +232,9 @@ function About() {
                   </div>
                 </div>
                 <div>
-                  <label className="text-mono text-xs text-muted-foreground block mb-2 uppercase tracking-wider">Project Brief</label>
+                  <label className="text-mono text-xs text-muted-foreground block mb-2 uppercase tracking-wider">
+                    Project Brief
+                  </label>
                   <textarea
                     rows={4}
                     required

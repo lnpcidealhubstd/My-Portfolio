@@ -36,9 +36,7 @@ export function Process() {
                     <h3 className="text-display text-lg font-bold text-white mb-3 leading-snug">
                       {item.title}
                     </h3>
-                    <p className="text-white/50 text-xs leading-relaxed mb-8">
-                      {item.description}
-                    </p>
+                    <p className="text-white/50 text-xs leading-relaxed mb-8">{item.description}</p>
                   </div>
 
                   <div>

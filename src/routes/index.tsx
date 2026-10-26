@@ -44,11 +44,9 @@ import { HeroPortrait } from "@/components/site/HeroPortrait";
 /* Verified profile links. Resume PDF lives in the public folder. */
 const PROFILE = {
   email: "lorenz.centeno@gmail.com",
-  linkedin:
-    "https://www.linkedin.com/in/lorenzo-nicholas-centeno-b07a52106/",
+  linkedin: "https://www.linkedin.com/in/lorenzo-nicholas-centeno-b07a52106/",
   github: "https://github.com/lnpcidealhubstd",
-  facebook:
-    "https://www.facebook.com/lorenznicholas.centeno/directory_links",
+  facebook: "https://www.facebook.com/lorenznicholas.centeno/directory_links",
   resume: "/Nico-Centeno-Resume.pdf",
 };
 
@@ -65,8 +63,16 @@ const TECHNOLOGIES = [
     description: "From user journeys to consistent, interactive interfaces.",
     tools: [
       { label: "Figma", detail: "Interface design & interactive prototypes", Icon: FaFigma },
-      { label: "FigJam", detail: "Discovery, information architecture & user flows", Icon: Network },
-      { label: "Design Systems & Tokens", detail: "Reusable components & visual foundations", Icon: Layers3 }
+      {
+        label: "FigJam",
+        detail: "Discovery, information architecture & user flows",
+        Icon: Network,
+      },
+      {
+        label: "Design Systems & Tokens",
+        detail: "Reusable components & visual foundations",
+        Icon: Layers3,
+      },
     ],
   },
   {
@@ -79,7 +85,7 @@ const TECHNOLOGIES = [
       { label: "JavaScript", detail: "Interactions & application behavior", Icon: FaJsSquare },
       { label: "React", detail: "Reusable interface components", Icon: FaReact },
       { label: "Tailwind CSS", detail: "Utility-based styling", Icon: SiTailwindcss },
-      { label: "TypeScript", detail: "Typed components & application code", Icon: SiTypescript }
+      { label: "TypeScript", detail: "Typed components & application code", Icon: SiTypescript },
     ],
   },
   {
@@ -87,8 +93,12 @@ const TECHNOLOGIES = [
     title: "Frameworks & Build Tools",
     description: "The foundations behind portfolio and client implementations.",
     tools: [
-      { label: "Next.js", detail: "Website framework used for the Everest rebuild", Icon: SiNextdotjs },
-      { label: "Vite", detail: "Development tooling for this portfolio", Icon: SiVite }
+      {
+        label: "Next.js",
+        detail: "Website framework used for the Everest rebuild",
+        Icon: SiNextdotjs,
+      },
+      { label: "Vite", detail: "Development tooling for this portfolio", Icon: SiVite },
     ],
   },
   {
@@ -98,9 +108,9 @@ const TECHNOLOGIES = [
     tools: [
       { label: "Visual Studio Code", detail: "Frontend editing & code refinement", Icon: Code2 },
       { label: "GitHub", detail: "Version control & collaboration", Icon: FaGithub },
-      { label: "Vercel", detail: "Deployment & preview sharing", Icon: Triangle }
+      { label: "Vercel", detail: "Deployment & preview sharing", Icon: Triangle },
     ],
-  }
+  },
 ];
 
 const SKILLS = [
@@ -181,16 +191,13 @@ export const Route = createFileRoute("/")({
 });
 
 function TypewriterTagline() {
-  const message =
-    "Thoughtful design. Clear direction. Meaningful digital experiences.";
+  const message = "Thoughtful design. Clear direction. Meaningful digital experiences.";
 
   const [text, setText] = useState(message);
   const [typing, setTyping] = useState(false);
 
   useEffect(() => {
-    const preference = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -205,10 +212,7 @@ function TypewriterTagline() {
       setText(message.slice(0, position));
 
       if (position < message.length) {
-        timer = setTimeout(
-          typeNext,
-          message[position - 1] === "." ? 320 : 40,
-        );
+        timer = setTimeout(typeNext, message[position - 1] === "." ? 320 : 40);
       } else {
         setTyping(false);
       }
@@ -259,7 +263,8 @@ function ContactForm() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const fieldClass = "mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
+  const fieldClass =
+    "mt-2 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 py-3 text-base text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
 
   return (
     <>
@@ -288,57 +293,106 @@ function ContactForm() {
         <div className="p-6 sm:p-9">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.18em] text-accent">Start a Conversation</p>
-              <h2 id="inquiry-title" className="text-display mt-3 text-3xl font-medium">Tell me about your project.</h2>
+              <p className="text-xs uppercase tracking-[0.18em] text-accent">
+                Start a Conversation
+              </p>
+              <h2 id="inquiry-title" className="text-display mt-3 text-3xl font-medium">
+                Tell me about your project.
+              </h2>
             </div>
-            <button type="button" onClick={() => dialogRef.current?.close()} aria-label="Close contact form" className={`inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-xl hover:bg-white/5 ${focusClass}`}>
+            <button
+              type="button"
+              onClick={() => dialogRef.current?.close()}
+              aria-label="Close contact form"
+              className={`inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-white/15 text-xl hover:bg-white/5 ${focusClass}`}
+            >
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <p id="inquiry-description" className="mt-4 text-sm leading-7 text-muted-foreground">Share what you’re working on and where you need support.</p>
+          <p id="inquiry-description" className="mt-4 text-sm leading-7 text-muted-foreground">
+            Share what you’re working on and where you need support.
+          </p>
 
           {status === "success" ? (
             <div role="status" className="py-9">
               <Check aria-hidden="true" className="size-9 text-accent" />
               <h3 className="mt-5 text-2xl font-medium">Thanks for reaching out.</h3>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">Your inquiry has been submitted successfully.</p>
-              <button type="button" onClick={() => dialogRef.current?.close()} className={`${secondaryButton} mt-7`}>Close</button>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                Your inquiry has been submitted successfully.
+              </p>
+              <button
+                type="button"
+                onClick={() => dialogRef.current?.close()}
+                className={`${secondaryButton} mt-7`}
+              >
+                Close
+              </button>
             </div>
           ) : (
-            <form className="mt-7 space-y-5" onSubmit={async (event) => {
-              event.preventDefault();
-              if (!CONTACT_FORM_ENDPOINT || status === "sending") return;
-              const form = event.currentTarget;
-              const data = new FormData(form);
-              setStatus("sending");
-              try {
-                const response = await fetch(CONTACT_FORM_ENDPOINT, {
-                  method: "POST",
-                  body: data,
-                  headers: { Accept: "application/json" },
-                  signal: AbortSignal.timeout(20000),
-                });
-                if (!response.ok) throw new Error("Submission failed");
-                form.reset();
-                setStatus("success");
-              } catch {
-                setStatus("error");
-              }
-            }}>
+            <form
+              className="mt-7 space-y-5"
+              onSubmit={async (event) => {
+                event.preventDefault();
+                if (!CONTACT_FORM_ENDPOINT || status === "sending") return;
+                const form = event.currentTarget;
+                const data = new FormData(form);
+                setStatus("sending");
+                try {
+                  const response = await fetch(CONTACT_FORM_ENDPOINT, {
+                    method: "POST",
+                    body: data,
+                    headers: { Accept: "application/json" },
+                    signal: AbortSignal.timeout(20000),
+                  });
+                  if (!response.ok) throw new Error("Submission failed");
+                  form.reset();
+                  setStatus("success");
+                } catch {
+                  setStatus("error");
+                }
+              }}
+            >
               <fieldset disabled={status === "sending"} className="space-y-5 disabled:opacity-70">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="inquiry-name" className="text-sm font-medium">Name <span className="text-accent">*</span></label>
-                    <input id="inquiry-name" name="name" type="text" autoComplete="name" maxLength={100} required className={fieldClass} />
+                    <label htmlFor="inquiry-name" className="text-sm font-medium">
+                      Name <span className="text-accent">*</span>
+                    </label>
+                    <input
+                      id="inquiry-name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      maxLength={100}
+                      required
+                      className={fieldClass}
+                    />
                   </div>
                   <div>
-                    <label htmlFor="inquiry-email" className="text-sm font-medium">Email <span className="text-accent">*</span></label>
-                    <input id="inquiry-email" name="email" type="email" autoComplete="email" maxLength={254} required className={fieldClass} />
+                    <label htmlFor="inquiry-email" className="text-sm font-medium">
+                      Email <span className="text-accent">*</span>
+                    </label>
+                    <input
+                      id="inquiry-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      maxLength={254}
+                      required
+                      className={fieldClass}
+                    />
                   </div>
                 </div>
                 <div>
-                  <label htmlFor="inquiry-service" className="text-sm font-medium">Service needed</label>
-                  <select id="inquiry-service" name="service" defaultValue="" className={fieldClass}>
+                  <label htmlFor="inquiry-service" className="text-sm font-medium">
+                    Service needed
+                  </label>
+                  <select
+                    id="inquiry-service"
+                    name="service"
+                    defaultValue=""
+                    className={fieldClass}
+                  >
                     <option value="">Select a service</option>
                     <option value="UI/UX Design">UI/UX Design</option>
                     <option value="Project Management">Project Management</option>
@@ -346,17 +400,49 @@ function ContactForm() {
                   </select>
                 </div>
                 <div>
-                  <label htmlFor="inquiry-message" className="text-sm font-medium">Project details <span className="text-accent">*</span></label>
-                  <textarea id="inquiry-message" name="message" rows={5} maxLength={5000} required placeholder="What are you building or looking to improve?" className={`${fieldClass} resize-y`} />
+                  <label htmlFor="inquiry-message" className="text-sm font-medium">
+                    Project details <span className="text-accent">*</span>
+                  </label>
+                  <textarea
+                    id="inquiry-message"
+                    name="message"
+                    rows={5}
+                    maxLength={5000}
+                    required
+                    placeholder="What are you building or looking to improve?"
+                    className={`${fieldClass} resize-y`}
+                  />
                 </div>
               </fieldset>
-              {status === "error" && <p role="alert" className="text-sm leading-6 text-red-300">Your inquiry couldn’t be sent. Try again or email me directly. Your message is still here.</p>}
-              {!CONTACT_FORM_ENDPOINT && <p className="text-sm leading-6 text-muted-foreground">Online submissions are being set up. For now, please <a href={`mailto:${PROFILE.email}`} className={`rounded text-accent underline underline-offset-4 ${focusClass}`}>email me directly</a>.</p>}
-              <button type="submit" disabled={!CONTACT_FORM_ENDPOINT || status === "sending"} className={`${primaryButton} w-full disabled:cursor-not-allowed disabled:opacity-40`}>
+              {status === "error" && (
+                <p role="alert" className="text-sm leading-6 text-red-300">
+                  Your inquiry couldn’t be sent. Try again or email me directly. Your message is
+                  still here.
+                </p>
+              )}
+              {!CONTACT_FORM_ENDPOINT && (
+                <p className="text-sm leading-6 text-muted-foreground">
+                  Online submissions are being set up. For now, please{" "}
+                  <a
+                    href={`mailto:${PROFILE.email}`}
+                    className={`rounded text-accent underline underline-offset-4 ${focusClass}`}
+                  >
+                    email me directly
+                  </a>
+                  .
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={!CONTACT_FORM_ENDPOINT || status === "sending"}
+                className={`${primaryButton} w-full disabled:cursor-not-allowed disabled:opacity-40`}
+              >
                 {status === "sending" ? "Sending…" : "Send Inquiry"}
                 <ArrowUpRight aria-hidden="true" className="size-4" />
               </button>
-              <p role="status" className="sr-only">{status === "sending" ? "Sending your inquiry." : ""}</p>
+              <p role="status" className="sr-only">
+                {status === "sending" ? "Sending your inquiry." : ""}
+              </p>
             </form>
           )}
         </div>
@@ -364,7 +450,6 @@ function ContactForm() {
     </>
   );
 }
-
 
 function TechEcosystem() {
   const [paused, setPaused] = useState(false);
@@ -376,18 +461,40 @@ function TechEcosystem() {
 
   return (
     <div className="tech-ecosystem" data-paused={paused}>
-      <div className="tech-orbit-stage" role="img" aria-label="Technology ecosystem: design, frontend development, frameworks, and delivery tools">
+      <div
+        className="tech-orbit-stage"
+        role="img"
+        aria-label="Technology ecosystem: design, frontend development, frameworks, and delivery tools"
+      >
         <div className="tech-orbit-core" aria-hidden="true">
           <Layers3 className="size-6 text-accent" />
-          <span>Design to<br />delivery</span>
+          <span>
+            Design to
+            <br />
+            delivery
+          </span>
         </div>
         {rings.map((tools, ringIndex) => (
-          <div key={ringIndex} className={`tech-orbit-ring tech-orbit-ring-${ringIndex + 1}`} aria-hidden="true">
+          <div
+            key={ringIndex}
+            className={`tech-orbit-ring tech-orbit-ring-${ringIndex + 1}`}
+            aria-hidden="true"
+          >
             {tools.map(({ label, Icon }, index) => (
-              <div key={label} className="tech-orbit-position" style={{ "--node-angle": `${(index / tools.length) * 360}deg` } as CSSProperties}>
+              <div
+                key={label}
+                className="tech-orbit-position"
+                style={{ "--node-angle": `${(index / tools.length) * 360}deg` } as CSSProperties}
+              >
                 <div className="tech-orbit-node">
                   <Icon className="tech-orbit-icon" />
-                  <span>{label === "Design Systems & Tokens" ? "Design systems" : label === "Visual Studio Code" ? "VS Code" : label}</span>
+                  <span>
+                    {label === "Design Systems & Tokens"
+                      ? "Design systems"
+                      : label === "Visual Studio Code"
+                        ? "VS Code"
+                        : label}
+                  </span>
                 </div>
               </div>
             ))}
@@ -396,7 +503,12 @@ function TechEcosystem() {
       </div>
       <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5">
         <p className="text-xs text-muted-foreground">Design · Frontend · Delivery</p>
-        <button type="button" aria-pressed={paused} onClick={() => setPaused((value) => !value)} className={`tech-orbit-toggle inline-flex min-h-11 items-center justify-center rounded-full border border-white/15 px-4 text-xs text-foreground hover:border-accent/40 ${focusClass}`}>
+        <button
+          type="button"
+          aria-pressed={paused}
+          onClick={() => setPaused((value) => !value)}
+          className={`tech-orbit-toggle inline-flex min-h-11 items-center justify-center rounded-full border border-white/15 px-4 text-xs text-foreground hover:border-accent/40 ${focusClass}`}
+        >
           {paused ? "Resume animation" : "Pause animation"}
         </button>
       </div>
@@ -508,9 +620,11 @@ function BackgroundMouseEcho() {
       lastY = -1000;
     };
     const move = (event: PointerEvent) => {
-      if (reduced.matches || !fine.matches || event.pointerType !== "mouse" || document.hidden) return;
+      if (reduced.matches || !fine.matches || event.pointerType !== "mouse" || document.hidden)
+        return;
       const now = performance.now();
-      if (now - lastTime < 90 || Math.hypot(event.clientX - lastX, event.clientY - lastY) < 35) return;
+      if (now - lastTime < 90 || Math.hypot(event.clientX - lastX, event.clientY - lastY) < 35)
+        return;
       lastTime = now;
       lastX = event.clientX;
       lastY = event.clientY;
@@ -520,18 +634,28 @@ function BackgroundMouseEcho() {
       echo.style.left = `${event.clientX}px`;
       echo.style.top = `${event.clientY}px`;
       layer.appendChild(echo);
-      const animation = echo.animate([
-        { opacity: 0, transform: "translate(-50%, -50%) scale(0.65)" },
-        { opacity: 0.24, offset: 0.15 },
-        { opacity: 0, transform: "translate(-50%, -50%) scale(1.5)" },
-      ], { duration: 950, easing: "ease-out", fill: "forwards" });
+      const animation = echo.animate(
+        [
+          { opacity: 0, transform: "translate(-50%, -50%) scale(0.65)" },
+          { opacity: 0.24, offset: 0.15 },
+          { opacity: 0, transform: "translate(-50%, -50%) scale(1.5)" },
+        ],
+        { duration: 950, easing: "ease-out", fill: "forwards" },
+      );
       echoes.add(animation);
-      const remove = () => { echoes.delete(animation); echo.remove(); };
+      const remove = () => {
+        echoes.delete(animation);
+        echo.remove();
+      };
       animation.onfinish = remove;
       animation.oncancel = remove;
     };
-    const onVisibility = () => { if (document.hidden) clear(); };
-    const onExit = (event: PointerEvent) => { if (!event.relatedTarget) clear(); };
+    const onVisibility = () => {
+      if (document.hidden) clear();
+    };
+    const onExit = (event: PointerEvent) => {
+      if (!event.relatedTarget) clear();
+    };
     window.addEventListener("pointermove", move, { passive: true });
     window.addEventListener("blur", clear);
     window.addEventListener("scroll", clear, { passive: true });
@@ -632,12 +756,7 @@ function Home() {
       <BackgroundMouseEcho />
       <Nav />
 
-      <main
-        ref={motionRef}
-        id="main-content"
-        tabIndex={-1}
-        className="relative z-10"
-      >
+      <main ref={motionRef} id="main-content" tabIndex={-1} className="relative z-10">
         {/* HERO: keep the observer ref on this section. */}
         <section
           ref={heroRef}
@@ -657,10 +776,7 @@ function Home() {
                 id="hero-heading"
                 className="hero-enter hero-step-2 text-display mt-5 text-5xl font-medium leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl"
               >
-                Nico{" "}
-                <span className="hero-name-accent text-accent">
-                  Centeno
-                </span>
+                Nico <span className="hero-name-accent text-accent">Centeno</span>
               </h1>
 
               <p className="hero-enter hero-step-3 text-display mt-7 max-w-xl text-2xl font-medium leading-snug sm:text-3xl">
@@ -668,15 +784,9 @@ function Home() {
               </p>
 
               <div className="hero-enter hero-step-5 mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#projects"
-                  className={`${primaryButton} hero-action`}
-                >
+                <a href="#projects" className={`${primaryButton} hero-action`}>
                   View Projects
-                  <ArrowDown
-                    aria-hidden="true"
-                    className="hero-action-arrow size-4"
-                  />
+                  <ArrowDown aria-hidden="true" className="hero-action-arrow size-4" />
                 </a>
 
                 <a
@@ -686,10 +796,7 @@ function Home() {
                   className={`${secondaryButton} hero-action`}
                 >
                   View Resume
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="hero-action-arrow size-4"
-                  />
+                  <ArrowUpRight aria-hidden="true" className="hero-action-arrow size-4" />
                 </a>
               </div>
 
@@ -701,18 +808,13 @@ function Home() {
             <div className="min-w-0 lg:col-span-5">
               <figure className="hero-portrait-enter mx-auto w-full max-w-sm">
                 <HeroPortrait src={nicolasAsset} />
-
               </figure>
             </div>
           </div>
         </section>
 
         {/* ABOUT */}
-        <Section
-          id="about"
-          label="01 / Introduction"
-          title="About Me"
-        >
+        <Section id="about" label="01 / Introduction" title="About Me">
           <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-5">
               <h3 className="text-display max-w-md text-3xl font-medium leading-tight tracking-tight sm:text-4xl">
@@ -720,44 +822,38 @@ function Home() {
               </h3>
 
               <div className="mt-8 flex flex-wrap gap-2">
-                {["UI/UX Design", "Project Management", "Prototyping"].map(
-                  (label) => (
-                    <span
-                      key={label}
-                      className="rounded-full border border-accent/15 bg-accent/[0.04] px-3 py-1.5 text-xs text-accent"
-                    >
-                      {label}
-                    </span>
-                  ),
-                )}
+                {["UI/UX Design", "Project Management", "Prototyping"].map((label) => (
+                  <span
+                    key={label}
+                    className="rounded-full border border-accent/15 bg-accent/[0.04] px-3 py-1.5 text-xs text-accent"
+                  >
+                    {label}
+                  </span>
+                ))}
               </div>
             </div>
 
             <div className="lg:col-span-7">
               <p className="text-lg leading-8 text-foreground">
-                I’m Lorenzo Nicholas “Nico” Centeno, a UI/UX Designer and
-                Project Manager, and Co-Founder of Ideahub Studio.
+                I’m Lorenzo Nicholas “Nico” Centeno, a UI/UX Designer and Project Manager, and
+                Co-Founder of Ideahub Studio.
               </p>
 
               <p className="mt-5 text-base leading-8 text-muted-foreground">
-                I help transform ideas into clear, usable digital products
-                through discovery, user flows, interface design, and
-                collaborative delivery.
+                I help transform ideas into clear, usable digital products through discovery, user
+                flows, interface design, and collaborative delivery.
               </p>
 
               <div className="mt-7 space-y-5 border-l border-accent/25 pl-5 sm:pl-6">
                 <p className="text-base leading-8 text-muted-foreground">
-                  My approach connects user needs with business objectives.
-                  I work across design and project coordination to clarify
-                  requirements, align stakeholders, organize priorities,
-                  and support a smooth transition from concept to
-                  implementation.
+                  My approach connects user needs with business objectives. I work across design and
+                  project coordination to clarify requirements, align stakeholders, organize
+                  priorities, and support a smooth transition from concept to implementation.
                 </p>
 
                 <p className="text-base leading-8 text-muted-foreground">
-                  I also use AI-assisted prototyping to explore ideas
-                  quickly, communicate design decisions, and create
-                  interactive concepts for feedback.
+                  I also use AI-assisted prototyping to explore ideas quickly, communicate design
+                  decisions, and create interactive concepts for feedback.
                 </p>
               </div>
             </div>
@@ -776,9 +872,15 @@ function Home() {
               <div className="divide-y divide-white/10">
                 {TECHNOLOGIES.map((group) => (
                   <div key={group.number} className="py-5 first:pt-0">
-                    <p className="text-xs uppercase tracking-widest text-accent">{group.number} / {group.title}</p>
-                    <p className="mt-3 text-sm leading-7 text-foreground">{group.tools.map((tool) => tool.label).join(" · ")}</p>
-                    <p className="mt-2 text-sm leading-7 text-muted-foreground">{group.description}</p>
+                    <p className="text-xs uppercase tracking-widest text-accent">
+                      {group.number} / {group.title}
+                    </p>
+                    <p className="mt-3 text-sm leading-7 text-foreground">
+                      {group.tools.map((tool) => tool.label).join(" · ")}
+                    </p>
+                    <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                      {group.description}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -786,7 +888,9 @@ function Home() {
                 <Sparkles aria-hidden="true" className="mt-1 size-5 shrink-0 text-accent" />
                 <div>
                   <h3 className="text-sm font-medium">AI-assisted workflow</h3>
-                  <p className="mt-2 text-sm leading-7 text-muted-foreground">Supporting rapid prototyping, frontend implementation, and code refinement.</p>
+                  <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                    Supporting rapid prototyping, frontend implementation, and code refinement.
+                  </p>
                 </div>
               </div>
             </div>
@@ -794,11 +898,7 @@ function Home() {
         </Section>
 
         {/* AFFILIATIONS */}
-        <Section
-          id="affiliations"
-          label="03 / Community & Growth"
-          title="Affiliations & Learning"
-        >
+        <Section id="affiliations" label="03 / Community & Growth" title="Affiliations & Learning">
           <div className="space-y-8">
             {[
               {
@@ -816,8 +916,7 @@ function Home() {
                     logo: ideahubLogo,
                     href: "",
                     detail: "Co-Founder · UI/UX Designer & Project Manager",
-                    description:
-                      "Product design, client collaboration, and delivery.",
+                    description: "Product design, client collaboration, and delivery.",
                   },
                 ],
               },
@@ -842,9 +941,7 @@ function Home() {
               },
             ].map((group) => (
               <div key={group.heading}>
-                <h3 className="mb-4 text-sm font-medium text-muted-foreground">
-                  {group.heading}
-                </h3>
+                <h3 className="mb-4 text-sm font-medium text-muted-foreground">{group.heading}</h3>
 
                 <div className="grid gap-4 md:grid-cols-2">
                   {group.entries.map((entry) => (
@@ -880,19 +977,14 @@ function Home() {
                                   className="size-3.5 shrink-0 text-accent"
                                 />
 
-                                <span className="sr-only">
-                                  {" "}
-                                  (opens in a new tab)
-                                </span>
+                                <span className="sr-only"> (opens in a new tab)</span>
                               </a>
                             ) : (
                               entry.name
                             )}
                           </h4>
 
-                          <p className="mt-1 text-sm leading-6 text-accent">
-                            {entry.detail}
-                          </p>
+                          <p className="mt-1 text-sm leading-6 text-accent">{entry.detail}</p>
 
                           {entry.description && (
                             <p className="mt-1 text-sm leading-6 text-muted-foreground">
@@ -931,8 +1023,8 @@ function Home() {
               </div>
 
               <p className="max-w-md text-sm leading-7 text-muted-foreground">
-                A selection of interface design, digital experiences, and
-                projects guided from discovery toward delivery.
+                A selection of interface design, digital experiences, and projects guided from
+                discovery toward delivery.
               </p>
             </div>
           </Reveal>
@@ -945,7 +1037,9 @@ function Home() {
                 delay={(index % 2) * 60}
                 className={`min-w-0 h-full ${index % 4 === 0 || index % 4 === 3 ? "lg:col-span-7" : "lg:col-span-5"}`}
               >
-                <article className={`project-card group flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border bg-background transition-colors duration-300 motion-reduce:transition-none ${index === 0 ? "border-accent/30" : "border-foreground/10 hover:border-accent/30"}`}>
+                <article
+                  className={`project-card group flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border bg-background transition-colors duration-300 motion-reduce:transition-none ${index === 0 ? "border-accent/30" : "border-foreground/10 hover:border-accent/30"}`}
+                >
                   <Link
                     to="/projects/$slug"
                     params={{ slug: project.slug }}
@@ -963,13 +1057,17 @@ function Home() {
                           className="project-preview h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015] motion-reduce:transform-none motion-reduce:transition-none"
                         />
                       ) : (
-                        <span className="px-4 text-center text-sm text-muted-foreground">Project preview coming soon.</span>
+                        <span className="px-4 text-center text-sm text-muted-foreground">
+                          Project preview coming soon.
+                        </span>
                       )}
                     </div>
                   </Link>
                   <div className="flex flex-1 flex-col px-5 pb-5 pt-2 sm:px-6 sm:pb-6">
                     <p className="text-xs leading-6 text-accent">{project.role}</p>
-                    <h3 className="text-display mt-1 text-xl font-medium tracking-tight sm:text-2xl">{project.title}</h3>
+                    <h3 className="text-display mt-1 text-xl font-medium tracking-tight sm:text-2xl">
+                      {project.title}
+                    </h3>
                     <p className="mt-2 text-xs leading-6 text-muted-foreground">{project.status}</p>
                     <div className="mt-auto pt-4">
                       <Link
@@ -992,9 +1090,7 @@ function Home() {
           <div className="mt-10 border-t border-foreground/10 pt-8 sm:mt-12">
             <Reveal>
               <div className="mb-7 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-                <h3 className="text-display text-2xl font-medium">
-                  More Work in Progress
-                </h3>
+                <h3 className="text-display text-2xl font-medium">More Work in Progress</h3>
                 <p className="text-sm text-muted-foreground">
                   A first look at ongoing design projects.
                 </p>
@@ -1015,9 +1111,7 @@ function Home() {
                     </div>
 
                     <div className="mt-4 flex items-start justify-between gap-3">
-                      <h4 className="text-base font-medium">
-                        {project.title}
-                      </h4>
+                      <h4 className="text-base font-medium">{project.title}</h4>
                       <span className="shrink-0 text-xs leading-6 text-muted-foreground">
                         {project.status}
                       </span>
@@ -1058,9 +1152,8 @@ function Home() {
               </div>
 
               <p className="max-w-xl self-end text-base leading-8 text-muted-foreground lg:col-span-7">
-                Thoughtful interfaces, clear priorities, and collaborative
-                delivery—from understanding the requirements to supporting
-                implementation.
+                Thoughtful interfaces, clear priorities, and collaborative delivery—from
+                understanding the requirements to supporting implementation.
               </p>
             </div>
           </Reveal>
@@ -1084,10 +1177,7 @@ function Home() {
 
                       <div>
                         <div className="flex items-center gap-3">
-                          <Icon
-                            aria-hidden="true"
-                            className="size-5 shrink-0 text-accent"
-                          />
+                          <Icon aria-hidden="true" className="size-5 shrink-0 text-accent" />
 
                           <h3 className="text-display text-xl font-medium tracking-tight sm:text-2xl">
                             {title}
@@ -1144,8 +1234,7 @@ function Home() {
               </div>
 
               <p className="max-w-xl self-end text-base leading-8 text-muted-foreground lg:col-span-7">
-                Connecting interface design, client collaboration, and
-                project direction.
+                Connecting interface design, client collaboration, and project direction.
               </p>
             </div>
           </Reveal>
@@ -1175,10 +1264,9 @@ function Home() {
 
                   <div className="lg:col-span-7">
                     <p className="max-w-2xl text-base leading-8 text-muted-foreground">
-                      Bringing product ideas into focus through discovery,
-                      interface design, and client collaboration. Connecting
-                      design decisions with clear priorities and coordinated
-                      delivery.
+                      Bringing product ideas into focus through discovery, interface design, and
+                      client collaboration. Connecting design decisions with clear priorities and
+                      coordinated delivery.
                     </p>
 
                     <ul className="mt-6 space-y-4">
@@ -1228,9 +1316,9 @@ function Home() {
 
                   <div className="lg:col-span-7">
                     <p className="max-w-2xl text-base leading-8 text-muted-foreground">
-                      Supporting the project from discovery through Phase 1
-                      delivery, combining UI/UX design with requirements
-                      alignment, client collaboration, and delivery coordination.
+                      Supporting the project from discovery through Phase 1 delivery, combining
+                      UI/UX design with requirements alignment, client collaboration, and delivery
+                      coordination.
                     </p>
                     <ul className="mt-6 space-y-4">
                       {[
@@ -1238,8 +1326,14 @@ function Home() {
                         "Client collaboration and project delivery coordination.",
                         "Phase 1 completed; CRM ongoing, with scope and requirements under review and finalization.",
                       ].map((item) => (
-                        <li key={item} className="flex items-start gap-3 text-sm leading-7 text-muted-foreground">
-                          <Check aria-hidden="true" className="mt-1.5 size-3.5 shrink-0 text-accent/70" />
+                        <li
+                          key={item}
+                          className="flex items-start gap-3 text-sm leading-7 text-muted-foreground"
+                        >
+                          <Check
+                            aria-hidden="true"
+                            className="mt-1.5 size-3.5 shrink-0 text-accent/70"
+                          />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -1285,9 +1379,8 @@ function Home() {
 
                 <div className="lg:col-span-5 lg:pt-2">
                   <p className="max-w-xl text-base leading-8 text-muted-foreground">
-                    Have a product idea, a website to improve, or a project
-                    that needs clear design and direction? Let’s talk about
-                    how we can bring it to life.
+                    Have a product idea, a website to improve, or a project that needs clear design
+                    and direction? Let’s talk about how we can bring it to life.
                   </p>
 
                   <ContactForm />
@@ -1302,9 +1395,7 @@ function Home() {
               </div>
 
               <div className="mt-10 flex flex-col gap-5 border-t border-white/10 pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-muted-foreground">
-                  Thoughtful design. Clear direction.
-                </p>
+                <p className="text-sm text-muted-foreground">Thoughtful design. Clear direction.</p>
 
                 <SocialLinks />
               </div>
@@ -1341,9 +1432,7 @@ function Section({
     >
       <Reveal>
         <div className="mb-9 sm:mb-12">
-          <p className="text-xs font-medium uppercase tracking-widest text-accent">
-            {label}
-          </p>
+          <p className="text-xs font-medium uppercase tracking-widest text-accent">{label}</p>
           <h2
             id={`${id}-heading`}
             className="text-display mt-4 max-w-4xl text-3xl font-medium leading-tight tracking-tight sm:text-4xl lg:text-5xl"
@@ -1392,4 +1481,3 @@ function SocialLinks() {
     </ul>
   );
 }
-

@@ -69,13 +69,15 @@ export const SERVICES = [
     slug: "ui-ux-prototyping",
     index: "01",
     title: "High-Velocity UI/UX & Rapid Prototyping",
-    short: "Figma Auto-Layout 5.0, design token registries, and fast sync to live React prototypes.",
+    short:
+      "Figma Auto-Layout 5.0, design token registries, and fast sync to live React prototypes.",
   },
   {
     slug: "ai-native-architecture",
     index: "02",
     title: "AI-Native Product Architecture & Edge Delivery",
-    short: "AI orchestration via Lovable, Claude, VS Code, and GitHub for instant Vercel edge deployment.",
+    short:
+      "AI orchestration via Lovable, Claude, VS Code, and GitHub for instant Vercel edge deployment.",
   },
 ] as const;
 
@@ -103,7 +105,8 @@ export const DESIGN_PROJECTS = [
     slug: "saudi-project",
     title: "Saudi Project",
     tag: "Figma · Ongoing",
-    summary: "Ongoing UI/UX design project for a Saudi-based client — currently in active development.",
+    summary:
+      "Ongoing UI/UX design project for a Saudi-based client — currently in active development.",
     cover: saudiCover,
     screens: [{ label: "Preview", src: saudiCover }],
   },
